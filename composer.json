@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "api-ecosystem-for-laravel/dingo-api": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
+        "laravel-lang/lang": "^12.19",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
@@ -27,7 +28,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
