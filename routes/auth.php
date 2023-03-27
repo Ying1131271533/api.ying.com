@@ -15,7 +15,10 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
 
         // 需要登录的路由
         $api->group(['middleware' => 'api.auth'], function ($api) {
-            $api->get('user/{id}', [Login::class, 'index'])->name('v1.user.index');
+            // 退出登录
+            $api->post('logout', [LoginController::class, 'logout']);
+            // 刷新token
+            $api->post('refresh', [LoginController::class, 'refresh']);
         });
     });
 

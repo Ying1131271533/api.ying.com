@@ -21,6 +21,7 @@ class RegisterController extends BaseController
         if(!$result) throw new HttpException(500, '注册失败！');
         return $this->response->created();
         // 返回token
+        // $data['password'] = $request->validated()['password'];
         // $token = auth('api')->attempt($data);
         // return $this->respondWithToken($token);
     }

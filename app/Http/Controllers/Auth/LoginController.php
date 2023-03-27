@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Transformers\UserTransformer;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends BaseController
 {
@@ -17,6 +19,23 @@ class LoginController extends BaseController
             return $this->response->errorUnauthorized('账号或密码错误！');
         }
         return $this->respondWithToken($token);
+    }
+
+    /**
+     * 退出登录
+     */
+    public function logout()
+    {
+        auth('api')->logout();
+        return $this->response->noContent();
+    }
+
+    /**
+     * 刷新token  一般由前端来判断token是否快过期了 然后重新获取token
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth('api')->refresh());
     }
 
     /**
