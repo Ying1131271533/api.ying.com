@@ -27,6 +27,9 @@ class BaseRequest extends FormRequest
             'name'     => '名称',
             'email'    => '邮箱',
             'password' => '密码',
+            'parent_id' => '父级id',
+            'status' => '状态',
+            'level' => '级别',
         ];
     }
 }

@@ -18,6 +18,12 @@ class LoginController extends BaseController
         if (!$token = auth('api')->attempt($data)) {
             return $this->response->errorUnauthorized('账号或密码错误！');
         }
+
+        // 检查用户状态
+        if(auth('api')->user()->is_locked == 1) {
+            return $this->response->errorForbidden('用户被禁止使用！');
+        }
+
         return $this->respondWithToken($token);
     }
 

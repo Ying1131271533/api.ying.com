@@ -2,6 +2,66 @@
 
 use Illuminate\Support\Facades\DB;
 
+if (!function_exists('success')) {
+    /**
+     * 返回成功的api接口数据
+     *
+     * @param  array|string     $data           返回的数据
+     * @param  int              $code           程序状态码
+     * @param  int              $HttpStatus     http状态码
+     * @param  string           $msg            描述信息
+     * @return json                             api返回的json数据
+     */
+    function success($data = '', int $code = 200, int $HttpStatus = 200, string $msg = 'Success')
+    {
+        // 组装数据
+        $resultData = [
+            'code' => $code,
+            'msg'  => $msg,
+            'time' => time(),
+            'data' => $data,
+        ];
+
+        // 如果$data是字符串
+        // if (is_string($data)) {
+        //     $resultData['msg']  = $data;
+        //     $resultData['data'] = '';
+        // }
+
+        // 有分页数据
+        if (isset($data['currentPage'])) {
+            $resultData['total'] = $data['total'];
+            $resultData['data']  = $data['data'];
+        }
+
+        // 返回数据
+        return response()->json($resultData, $HttpStatus);
+    }
+}
+
+if (!function_exists('fail')) {
+    /**
+     * 返回失败的api接口数据
+     *
+     * @param  string    $msg           描述信息
+     * @param  int       $code          程序状态码
+     * @param  int       $HttpStatus    http状态码
+     * @return json                     api返回的json数据
+     */
+    function fail(string $msg = 'Error', int $code = 100, int $HttpStatus = 200)
+    {
+        // 组装数据
+        $resultData = [
+            'code' => $code,
+            'msg'  => $msg,
+            'time' => time(),
+        ];
+        // 返回数据
+        return response()->json($resultData, $HttpStatus);
+    }
+
+}
+
 if (!function_exists('categorys')) {
     /**
      * 返回博客分类
@@ -80,62 +140,28 @@ if (!function_exists('cache_time')) {
     }
 }
 
-if (!function_exists('success')) {
+if (!function_exists('get_children')) {
     /**
-     * 返回成功的api接口数据
+     * @description:  オラ!オラ!オラ!オラ!⎛⎝≥⏝⏝≤⎛⎝
+     * @author: 神织知更
+     * @time: 2022/03/31 21:56
      *
-     * @param  array|string     $data           返回的数据
-     * @param  int              $code           程序状态码
-     * @param  int              $HttpStatus     http状态码
-     * @param  string           $msg            描述信息
-     * @return json                             api返回的json数据
+     * 递归找子级数据
+     *
+     * @param  array    $data           二维数组
+     * @param  int      $parent_id      父级id
+     * @return array                    返回处理好的数组
      */
-    function success($data = '', int $code = 200, int $HttpStatus = 200, string $msg = 'Success')
+    function get_children(array $array = [], int $parent_id = 0)
     {
-        // 组装数据
-        $resultData = [
-            'code' => $code,
-            'msg'  => $msg,
-            'time' => time(),
-            'data' => $data,
-        ];
-
-        // 如果$data是字符串
-        // if (is_string($data)) {
-        //     $resultData['msg']  = $data;
-        //     $resultData['data'] = '';
-        // }
-
-        // 有分页数据
-        if (isset($data['currentPage'])) {
-            $resultData['total'] = $data['total'];
-            $resultData['data']  = $data['data'];
+        $tmp = [];
+        foreach ($array as $value) {
+            if ($value['parent_id'] == $parent_id) {
+                $value['children'] = get_children($array, $value['id']);
+                $tmp[]             = $value;
+            }
         }
-
-        // 返回数据
-        return response()->json($resultData, $HttpStatus);
-    }
-}
-
-if (!function_exists('fail')) {
-    /**
-     * 返回失败的api接口数据
-     *
-     * @param  string    $msg           描述信息
-     * @param  int       $code          程序状态码
-     * @param  int       $HttpStatus    http状态码
-     * @return json                     api返回的json数据
-     */
-    function fail(string $msg = 'Error', int $code = 100, int $HttpStatus = 200)
-    {
-        // 组装数据
-        $resultData = [
-            'code' => $code,
-            'msg'  => $msg,
-            'time' => time(),
-        ];
-        // 返回数据
-        return response()->json($resultData, $HttpStatus);
+        return $tmp;
     }
 
 }
