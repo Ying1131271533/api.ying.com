@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use App\Http\Requests\BaseRequest;
+use App\Rules\CategoryCheckLevel;
 use Illuminate\Validation\Rule;
 
 class CategoryRequest extends BaseRequest
@@ -14,7 +15,25 @@ class CategoryRequest extends BaseRequest
      */
     public function rules()
     {
-        return $this->scene();
+        $rules = array_merge($this->scene(), [
+            'parent_id' => 'integer',
+            // 'parent_id' => ['integer', new CategoryCheckLevel],
+            'level'     => 'integer',
+            'status'    => 'integer|in:0,1',
+        ],);
+        return $rules;
+    }
+
+    /**
+     * 获取已定义验证规则的错误消息。
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'status.in' => '状态必须是0或1',
+        ];
     }
 
     /**
@@ -29,28 +48,22 @@ class CategoryRequest extends BaseRequest
         switch ($routeName) {
             case 'categorys.store':
                 return [
-                    'name'      => 'required|max:20|unique:categorys',
-                    'parent_id' => 'integer',
-                    'status'    => 'integer|in:0,1',
-                    'level'     => 'integer|gt:0',
+                    'name' => 'required|max:20|unique:categories',
                 ];
                 break;
             case 'categorys.update':
                 return [
-                    'id'          => 'required|integer|gt:0|exists:users,id',
-                    'name'       => [
+                    'id'   => 'required|integer|gt:0|exists:users,id',
+                    'name' => [
                         'required',
                         'min:2',
                         'max:50',
-                        Rule::unique('categorys')->ignore($this->id), // 检查唯一性时，排除自己
+                        Rule::unique('categories')->ignore($this->id), // 检查唯一性时，排除自己
                     ],
-                    'parent_id'     => 'required|integer|gt:0|exists:users,id',
-                    'status'    => 'integer|in:0,1',
-                    'level'     => 'integer|gt:0',
                 ];
                 break;
             default:
-                return ['validate_error' => 'required'];
+                return [];
                 break;
 
         }

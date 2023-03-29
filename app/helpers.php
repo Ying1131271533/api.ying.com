@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 
 if (!function_exists('success')) {
@@ -62,21 +63,23 @@ if (!function_exists('fail')) {
 
 }
 
-if (!function_exists('categorys')) {
+if (!function_exists('categoryTree')) {
     /**
      * 返回博客分类
      *
      * @return array
      */
-    function categorys()
+    function categoryTree()
     {
-        // 获取分类数据
-        // $category = cache()->store('redis')->remember('category', cache_time(), function(){
-        $category = cache()->store('redis')->rememberForever('category', function () {
-            return DB::table('categorys')->pluck('name', 'id');
-        });
-        // 返回数据
-        return $category;
+        // 获取分类树状数据
+        $categorys = Category::with([
+            'children:id,parent_id,name,level',
+            'children.children:id,parent_id,name,level'
+        ])
+        ->select(['id', 'parent_id', 'name', 'level'])
+        ->where('parent_id', 0)
+        ->get();
+        return $categorys;
     }
 }
 
