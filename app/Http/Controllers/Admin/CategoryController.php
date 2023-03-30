@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\CategoryRequest;
+use App\Http\Services\Admin\CategoryServices;
 use App\Models\Category;
 
 class CategoryController extends BaseController
@@ -11,9 +12,11 @@ class CategoryController extends BaseController
     /**
      * 分类列表
      */
-    public function index()
+    public function index(CategoryRequest $request)
     {
-        return categoryTree();
+        $type = $request->input('type');
+        if($type == 'all') return cache_categorys_all();
+        return cache_categorys();
     }
 
     /**
@@ -24,35 +27,38 @@ class CategoryController extends BaseController
     {
         // 获取验证参数
         $validated = $request->validated();
-
-        // 获取父级id
-        $parent_id = $validated['parent_id'];
-
-        // 计算等级
-        $validated['level'] = $parent_id == 0 ? 1 : Category::find($parent_id)->level + 1;
-
-        // 分类不能超过3级
-        if($validated['level'] > 3) return $this->response->errorBadRequest('等级不能大于3级');
-
-        // 插入数据
-        $category = Category::create($validated);
-        if(!$category) return $this->response->errorForbidden('保存失败！');
+        CategoryServices::saveCategory($validated);
         return $this->response->created();
     }
 
     /**
      * 查看分类
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+        return $category;
     }
 
     /**
      * 更新分类
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, Category $category)
     {
-        //
+        // 获取验证参数
+        $validated = $request->validated();
+        CategoryServices::saveCategory($validated, $category);
+        return $this->response->noContent();
+    }
+
+    /**
+     * 分类 启用/禁用
+     */
+    public function status(Category $category)
+    {
+        // 获取验证参数
+        $category->status = $category->status == 1 ? 0 : 1;
+        $result = $category->save();
+        if(!$result) return $this->response->errorInternal('更改失败！');
+        return $this->response->noContent();
     }
 }

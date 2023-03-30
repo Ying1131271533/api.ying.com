@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryObserver
 {
@@ -14,10 +15,8 @@ class CategoryObserver
      */
     public function created(Category $category)
     {
-        // if ($category->parent_id != 0) {
-        //     $category->level = Category::find($category->parent_id)->level + 1;
-        //     $category->save();
-        // }
+        // 清除分类缓存
+        forget_cache_category();
     }
 
     /**
@@ -28,7 +27,8 @@ class CategoryObserver
      */
     public function updated(Category $category)
     {
-        //
+        // 清除分类缓存
+        forget_cache_category();
     }
 
     /**
@@ -39,7 +39,8 @@ class CategoryObserver
      */
     public function deleted(Category $category)
     {
-        //
+        // 清除分类缓存
+        forget_cache_category();
     }
 
     /**

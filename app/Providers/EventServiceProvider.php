@@ -29,8 +29,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // 分类模型观察者
-        // Category::observe(CategoryObserver::class);
+        // 分类模型 - 观察者
+        Category::observe(CategoryObserver::class);
     }
 
     /**

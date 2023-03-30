@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Category;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 if (!function_exists('success')) {
     /**
@@ -61,26 +61,6 @@ if (!function_exists('fail')) {
         return response()->json($resultData, $HttpStatus);
     }
 
-}
-
-if (!function_exists('categoryTree')) {
-    /**
-     * 返回博客分类
-     *
-     * @return array
-     */
-    function categoryTree()
-    {
-        // 获取分类树状数据
-        $categorys = Category::with([
-            'children:id,parent_id,name,level',
-            'children.children:id,parent_id,name,level'
-        ])
-        ->select(['id', 'parent_id', 'name', 'level'])
-        ->where('parent_id', 0)
-        ->get();
-        return $categorys;
-    }
 }
 
 if (!function_exists('cache_time')) {
@@ -168,3 +148,123 @@ if (!function_exists('get_children')) {
     }
 
 }
+
+if (!function_exists('category_tree')) {
+    /**
+     * 树状分类
+     *
+     * @param   bool|int    $status     分类状态
+     * @param   int         $level      分类层级
+     * @return  array
+     */
+    function category_tree($status = false)
+    // function category_tree($status = false, $level = 3)
+    {
+        $categorys = Category::with([
+            'children' => function($qeury) use ($status){
+                $qeury->when($status !== false, function($query) use ($status) {
+                    $query->where('status', $status);
+                })->select(['id', 'parent_id', 'name', 'level']);
+            },
+            'children.children' => function($qeury) use ($status){
+                $qeury->when($status !== false, function($query) use ($status) {
+                    $query->where('status', $status);
+                })->select(['id', 'parent_id', 'name', 'level']);
+            }
+        ])
+        ->select(['id', 'parent_id', 'name', 'level'])
+        ->when($status !== false, function($query) use ($status) {
+            $query->where('status', $status);
+        })
+        ->where('parent_id', 0)
+        ->get();
+
+        return $categorys;
+
+
+        // 拆分查询
+        // $sql = Category::select(['id', 'parent_id', 'name', 'level'])
+        // ->select(['id', 'parent_id', 'name', 'level']);
+        // $sql->when($status !== false, function($query) use ($status) {
+        //     $query->where('status', $status);
+        // })
+        // ->where('parent_id', 0);
+
+        // if($level > 1){
+        //     $sql->with([
+        //         'children' => function($qeury) use ($status){
+        //             $qeury->when($status !== false, function($query) use ($status) {
+        //                 $query->where('status', $status);
+        //             })->select(['id', 'parent_id', 'name', 'level']);
+        //         }
+        //     ]);
+        // }
+
+        // if($level > 2){
+        //     $sql->with([
+        //         'children.children' => function($qeury) use ($status){
+        //             $qeury->when($status !== false, function($query) use ($status) {
+        //                 $query->where('status', $status);
+        //             })->select(['id', 'parent_id', 'name', 'level']);
+        //         }
+        //     ]);
+        // }
+
+        // $categorys = $sql->get();
+        // return $categorys;
+
+
+        // 递归
+        // $categorys = Category::where('status', 1)->where('parent_id', 1)->get();
+        // return get_children($categorys->toArray(), 1);
+    }
+
+}
+
+if (!function_exists('cache_categorys')) {
+    /**
+     * 缓存没被禁用的分类
+     *
+     * @return  array
+     */
+    function cache_categorys()
+    {
+        $categorys = Cache::store('redis')->rememberForever('categorys_1', function() {
+            return category_tree(1);
+        });
+
+        return $categorys;
+    }
+
+}
+
+if (!function_exists('cache_categorys_all')) {
+    /**
+     * 缓存所有的分类
+     *
+     * @return  array
+     */
+    function cache_categorys_all()
+    {
+        $categorys = Cache::store('redis')->rememberForever('categorys', function() {
+            return category_tree();
+        });
+        return $categorys;
+    }
+
+}
+
+if (!function_exists('forget_cache_category')) {
+    /**
+     * 删除分类缓存
+     *
+     * @return  array
+     */
+    function forget_cache_category()
+    {
+        Cache::store('redis')->forget('categorys');
+        Cache::store('redis')->forget('categorys_1');
+    }
+
+}
+

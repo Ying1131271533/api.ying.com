@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 class CategoryRequest extends BaseRequest
 {
     /**
-     * Get the validation rules that apply to the request.
+     * 获取已定义验证规则
      *
      * @return array<string, mixed>
      */
@@ -18,7 +18,6 @@ class CategoryRequest extends BaseRequest
         $rules = array_merge($this->scene(), [
             'parent_id' => 'integer',
             // 'parent_id' => ['integer', new CategoryCheckLevel],
-            'level'     => 'integer',
             'status'    => 'integer|in:0,1',
         ],);
         return $rules;
@@ -44,7 +43,7 @@ class CategoryRequest extends BaseRequest
     protected function scene()
     {
         // 获取路由名称
-        $routeName = $this->route()->action['as'];
+        $routeName = $this->route()->getAction('as');
         switch ($routeName) {
             case 'categorys.store':
                 return [
@@ -53,12 +52,13 @@ class CategoryRequest extends BaseRequest
                 break;
             case 'categorys.update':
                 return [
-                    'id'   => 'required|integer|gt:0|exists:users,id',
+                    // 'id'   => 'required|integer|gt:0|exists:categories,id',
                     'name' => [
                         'required',
                         'min:2',
                         'max:50',
-                        Rule::unique('categories')->ignore($this->id), // 检查唯一性时，排除自己
+                        Rule::unique('categories')
+                        ->ignore($this->route()->originalParameter('category')), // 检查唯一性时，排除自己
                     ],
                 ];
                 break;
