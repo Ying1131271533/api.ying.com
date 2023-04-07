@@ -19,7 +19,7 @@ class CategoryRequest extends BaseRequest
             'parent_id' => 'integer',
             // 'parent_id' => ['integer', new CategoryCheckLevel],
             'status'    => 'integer|in:0,1',
-        ],);
+        ], );
         return $rules;
     }
 
@@ -58,7 +58,7 @@ class CategoryRequest extends BaseRequest
                         'min:2',
                         'max:50',
                         Rule::unique('categories')
-                        ->ignore($this->route()->originalParameter('category')), // 检查唯一性时，排除自己
+                            ->ignore($this->category), // 检查唯一性时，排除自己
                     ],
                 ];
                 break;

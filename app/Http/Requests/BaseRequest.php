@@ -24,12 +24,22 @@ class BaseRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'     => '名称',
-            'email'    => '邮箱',
-            'password' => '密码',
-            'parent_id' => '父级id',
-            'status' => '状态',
-            'level' => '级别',
+            'name'         => '名称',
+            'email'        => '邮箱',
+            'password'     => '密码',
+            'parent_id'    => '父级id',
+            'status'       => '状态',
+            'level'        => '级别',
+            'user_id'      => '用户id',
+            'category_id'  => '分类id',
+            'description'  => '描述',
+            'price'        => '价格',
+            'stock'        => '库存',
+            'cover'        => '封面',
+            'pics'         => '详情图集',
+            'is_on'        => '是否上架',
+            'is_recommend' => '是否推荐',
+            'details'      => '详情',
         ];
     }
 }

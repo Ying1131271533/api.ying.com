@@ -256,7 +256,7 @@ if (!function_exists('cache_categorys_all')) {
 
 if (!function_exists('forget_cache_category')) {
     /**
-     * 删除分类缓存
+     * 清除分类缓存
      *
      * @return  array
      */
@@ -266,5 +266,18 @@ if (!function_exists('forget_cache_category')) {
         Cache::store('redis')->forget('categorys_1');
     }
 
+}
+
+if (!function_exists('oss_url')) {
+    /**
+     * 返回oss_url
+     * @param  string   $key  路径
+     *
+     * @return  string
+     */
+    function oss_url($key)
+    {
+        return config('filesystems.disks.oss.bucket_url') . '/' . $key;
+    }
 }
 

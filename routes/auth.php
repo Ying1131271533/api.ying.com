@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\OssController;
 use App\Http\Controllers\Auth\RegisterController;
 
 $api = app('Dingo\Api\Routing\Router');
@@ -19,6 +20,9 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
             $api->post('logout', [LoginController::class, 'logout']);
             // 刷新token
             $api->post('refresh', [LoginController::class, 'refresh']);
+
+            // 阿里云OSS Token
+            $api->get('oss-token', [OssController::class, 'token']);
         });
     });
 

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\GoodsController;
 use App\Http\Controllers\Admin\UserController;
 
 $api = app('Dingo\Api\Routing\Router');
@@ -11,8 +13,8 @@ $params = [
         'bindings', // 支持模型注入
         'serializer:default_array', // 去掉 transformer 的包裹层
     ],
-    'limit'      => 60,
-    'expires' => 1,
+    'limit'      => 60, // 有效时间内能够访问的次数
+    'expires' => 1, // 有效时间/分钟
 ];
 
 $api->version('v1', $params, function ($api) {
@@ -42,6 +44,28 @@ $api->version('v1', $params, function ($api) {
             $api->resource('categorys', CategoryController::class, [
                 'except' => ['destroy']
             ]);
+
+            /**
+             * 商品管理
+             */
+            // 商品上架
+            $api->patch('goods/{good}/on', [GoodsController::class, 'isOn']);
+            // 推荐商品
+            $api->patch('goods/{good}/recommend', [GoodsController::class, 'isRecommend']);
+            // 商品管理资源路由
+            $api->resource('goods', GoodsController::class, [
+                'except' => ['destroy']
+            ]);
+
+            /**
+             * 评论管理
+             */
+            // 评价列表
+            $api->get('comments', [CommentController::class, 'index']);
+            // 评价详情
+            $api->get('comments/{comment}', [CommentController::class, 'show']);
+            // 商家回复
+            $api->post('comments/{comment}/reply', [CommentController::class, 'reply']);
         });
     });
 

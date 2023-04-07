@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Good extends Model
+class Comment extends Model
 {
     use HasFactory;
 
@@ -16,16 +16,13 @@ class Good extends Model
      */
     protected $fillable = [
         'user_id',
-        'category_id',
-        'title',
-        'description',
-        'price',
-        'stock',
-        'cover',
+        'goods_id',
+        'rate',
+        'content',
+        'reply',
         'pics',
-        'is_on',
-        'is_recommend',
-        'details',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -35,19 +32,18 @@ class Good extends Model
      */
     protected $casts = [
         'pics'  => 'array',
-        'price' => 'double',
     ];
 
     /**
-     * 获取这个商品所属的分类
+     * 获取这个评论所属的商品
      */
-    public function category()
+    public function goods()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Good::class, 'goods_id', 'id');
     }
 
     /**
-     * 获取这个商品所属的用户
+     * 获取这个评论所属的用户
      */
     public function user()
     {

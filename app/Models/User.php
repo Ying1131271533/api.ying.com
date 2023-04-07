@@ -64,4 +64,20 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * 获取这个用户创建的所有商品
+     */
+    public function goods()
+    {
+        return $this->hasMany(Good::class);
+    }
+
+    /**
+     * 获取这个用户创建的所有评论
+     */
+    public function comment()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

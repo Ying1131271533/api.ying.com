@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin;
 
 use App\Http\Requests\BaseRequest;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
 class GoodsRequest extends BaseRequest
@@ -15,7 +14,19 @@ class GoodsRequest extends BaseRequest
      */
     public function rules()
     {
-        return $this->scene();
+        $rules = array_merge($this->scene(), [
+            'category_id'  => 'required|integer|gt:0|exists:categories,id',
+            'title'        => 'required|max:255',
+            'description'  => 'required|max:255',
+            'price'        => 'required|min:0',
+            'stock'        => 'required|min:0',
+            'cover'        => 'required',
+            'pics'         => 'required|array',
+            'is_on'        => 'in:0,1',
+            'is_recommend' => 'in:0,1',
+            'details'      => 'required',
+        ], );
+        return $rules;
     }
 
     /**
@@ -26,32 +37,25 @@ class GoodsRequest extends BaseRequest
     protected function scene()
     {
         // 获取路由名称
-        $routeName = Route::current()->action['as'];
+        $routeName = $this->route()->getAction('as');
         switch ($routeName) {
-            case 'categorys.store':
+            case 'goods.store':
                 return [
-                    'name'       => 'required|max:20|unique:categorys',
-                    'parent_id'     => 'integer|gt:0|exists:categorys,id',
-                    'category_id' => 'integer|gt:0|exists:categorys,id',
-                    'content'     => 'min:4',
+                    'title' => 'required|max:255|unique:goods',
                 ];
                 break;
-            case 'categorys.update':
+            case 'goods.update':
                 return [
-                    'id'          => 'required|integer|gt:0',
-                    'user_id'     => 'required|integer|gt:0|exists:users,id',
-                    'category_id' => 'required|integer|gt:0|exists:categorys,id',
-                    'title'       => [
+                    'title' => [
                         'required',
-                        'min:2',
-                        'max:50',
-                        Rule::unique('categorys')->ignore($this->id), // 检查唯一性时，排除自己
+                        'max:255',
+                        Rule::unique('goods')
+                            ->ignore($this->good), // 检查唯一性时，排除自己
                     ],
-                    'content'     => 'required|min:4',
                 ];
                 break;
             default:
-                return ['validate_error' => 'required'];
+                return [];
                 break;
 
         }

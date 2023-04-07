@@ -15,8 +15,8 @@ class Category extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
         'parent_id',
+        'name',
         'level',
         'status',
     ];
@@ -27,5 +27,13 @@ class Category extends Model
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id', 'id');
+    }
+
+    /**
+     * 获取这个分类的所有商品
+     */
+    public function goods()
+    {
+        return $this->hasMany(Good::class);
     }
 }
