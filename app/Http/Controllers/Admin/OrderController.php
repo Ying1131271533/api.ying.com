@@ -55,7 +55,7 @@ class OrderController extends BaseController
         if(!$result) return $this->response->errorInternal('发货失败！');
 
         // 发货之后，邮件提醒 - 使用框架的队列
-        Mail::to($order->user)->queue(new OrderPost($order));
+        Mail::to($order->user)->send(new OrderPost($order));
 
         return $this->response->noContent();
     }
