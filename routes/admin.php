@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\GoodsController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\TestController;
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -16,7 +18,7 @@ $params = [
     'limit'      => 60, // 有效时间内能够访问的次数
     'expires' => 1, // 有效时间/分钟
 ];
-
+$api->get('test', [TestController::class, 'index']);
 $api->version('v1', $params, function ($api) {
 
     // 前缀
@@ -65,7 +67,17 @@ $api->version('v1', $params, function ($api) {
             // 评价详情
             $api->get('comments/{comment}', [CommentController::class, 'show']);
             // 商家回复
-            $api->post('comments/{comment}/reply', [CommentController::class, 'reply']);
+            $api->patch('comments/{comment}/reply', [CommentController::class, 'reply']);
+
+            /**
+             * 订单管理
+             */
+            // 订单列表
+            $api->get('orders', [OrderController::class, 'index']);
+            // 订单详情
+            $api->get('orders/{order}', [OrderController::class, 'show']);
+            // 订单发货
+            $api->patch('orders/{order}/post', [OrderController::class, 'post']);
         });
     });
 

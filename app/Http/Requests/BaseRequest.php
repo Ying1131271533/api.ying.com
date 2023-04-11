@@ -40,6 +40,9 @@ class BaseRequest extends FormRequest
             'is_on'        => '是否上架',
             'is_recommend' => '是否推荐',
             'details'      => '详情',
+            'reply'        => '回复',
+            'express_type' => '快递类型',
+            'express_no'   => '快递单号',
         ];
     }
 }

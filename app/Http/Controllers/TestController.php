@@ -8,6 +8,6 @@ class TestController extends BaseController
 {
     public function index(Request $request)
     {
-
+        return ['name' => '阿卡丽'];
     }
 }

@@ -80,4 +80,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Comment::class);
     }
+
+    /**
+     * 获取这个用户的所有订单
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

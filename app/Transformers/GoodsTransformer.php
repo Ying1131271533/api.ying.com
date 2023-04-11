@@ -19,7 +19,7 @@ class GoodsTransformer extends TransformerAbstract
         // 设置关联分类、用户模型
         // 多个访问地址方式1：goods?include=category,user
         // 多个访问地址方式2：goods?include[]=category&include[]=user
-        $this->setAvailableIncludes(['category', 'user']);
+        $this->setAvailableIncludes(['category', 'user', 'comments']);
 
         $pics_url = [];
         foreach ($good->pics as $pic) {
@@ -40,7 +40,7 @@ class GoodsTransformer extends TransformerAbstract
             'cover'        => $good->cover,
             'cover_url'    => oss_url($good->cover),
             'pics'         => $good->pics,
-            'pics_url'         => $pics_url,
+            'pics_url'     => $pics_url,
             'is_on'        => $good->is_on,
             'is_recommend' => $good->is_recommend,
             'details'      => $good->details,
@@ -63,5 +63,13 @@ class GoodsTransformer extends TransformerAbstract
     public function includeUser(Good $good)
     {
         return $this->item($good->user, new UserTransformer());
+    }
+
+    /**
+     * 加载评论数据
+     */
+    public function includeComments(Good $good)
+    {
+        return $this->collection($good->comments, new CommentTransformer());
     }
 }

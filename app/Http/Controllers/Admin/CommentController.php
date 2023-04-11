@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Requests\Admin\CommentRequest;
 use App\Models\Comment;
 use App\Models\Good;
 use App\Transformers\CommentTransformer;
@@ -41,8 +42,11 @@ class CommentController extends BaseController
     /**
      * 商家回复
      */
-    public function reply(Request $request, Comment $comment)
+    public function reply(CommentRequest $request, Comment $comment)
     {
-        //
+        $validated = $request->validated();
+        $result = $comment->fill($validated)->save();
+        if(!$result) return $this->response->errorInternal('回复失败！');
+        return $this->response->noContent();
     }
 }
