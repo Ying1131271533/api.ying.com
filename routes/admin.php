@@ -20,6 +20,7 @@ $params = [
 ];
 
 $api->version('v1', $params, function ($api) {
+    // 测试
     $api->get('test', [TestController::class, 'index']);
     // 前缀
     $api->group(['prefix' => 'admin'], function ($api) {
