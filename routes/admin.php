@@ -18,9 +18,9 @@ $params = [
     'limit'      => 60, // 有效时间内能够访问的次数
     'expires' => 1, // 有效时间/分钟
 ];
-$api->get('test', [TestController::class, 'index']);
-$api->version('v1', $params, function ($api) {
 
+$api->version('v1', $params, function ($api) {
+    $api->get('test', [TestController::class, 'index']);
     // 前缀
     $api->group(['prefix' => 'admin'], function ($api) {
 
