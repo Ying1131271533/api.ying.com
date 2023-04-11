@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\OrderRequest;
 use App\Mail\OrderPost;
+use App\Mail\OrderPosts;
 use App\Models\Order;
 use App\Transformers\OrderTransformer;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class OrderController extends BaseController
         if(!$result) return $this->response->errorInternal('发货失败！');
 
         // 发货之后，邮件提醒 - 使用框架的队列
-        Mail::to($order->user)->queue(new OrderPost($order));
+        Mail::to($order->user)->send(new OrderPosts($order));
 
         return $this->response->noContent();
     }
