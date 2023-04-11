@@ -37,6 +37,6 @@ class SendEmailToOrderUser
         if(!$result) throw new BadRequestException('发货失败！');
 
         // 发货之后，邮件提醒 - 使用框架的队列
-        Mail::to($event->order->user)->queue(new MailOrderPosts($event->order));
+        Mail::to($event->order->user)->queue(new MailOrderPost($event->order));
     }
 }
