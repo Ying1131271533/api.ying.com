@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\OrderPost as EventsOrderPost;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\OrderRequest;
 use App\Mail\OrderPost;
@@ -49,14 +50,22 @@ class OrderController extends BaseController
      */
     public function post(OrderRequest $request, Order $order)
     {
+        // 过滤的参数
         $validated = $request->validated();
-        // 发货状态
-        $validated['status'] = 3;
-        $result = $order->fill($validated)->save();
-        if(!$result) return $this->response->errorInternal('发货失败！');
 
-        // 发货之后，邮件提醒 - 使用框架的队列
-        Mail::to($order->user)->queue(new OrderPost($order));
+        // 常规发货
+        // $validated = $request->validated();
+        // // 发货状态
+        // $validated['status'] = 3;
+        // $result = $order->fill($validated)->save();
+        // if(!$result) return $this->response->errorInternal('发货失败！');
+
+        // // 发货之后，邮件提醒 - 使用框架的队列
+        // Mail::to($order->user)->queue(new OrderPost($order));
+
+        // 使用事件分发
+        event(new EventsOrderPost($validated, $order));
+        EventsOrderPost::dispatch($validated, $order);
 
         return $this->response->noContent();
     }
