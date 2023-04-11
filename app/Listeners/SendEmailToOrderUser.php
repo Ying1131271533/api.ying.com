@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\OrderPost;
 use App\Mail\OrderPost as MailOrderPost;
+use App\Mail\OrderPosts as MailOrderPosts;
 use App\Models\Order;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,17 +13,14 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class SendEmailToOrderUser
 {
-    protected $validated;
-    protected $order;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct($validated, Order $order)
+    public function __construct()
     {
-        $this->validated = $validated;
-        $this->order = $order;
+        //
     }
 
     /**
@@ -34,11 +32,11 @@ class SendEmailToOrderUser
     public function handle(OrderPost $event)
     {
         // 发货状态
-        $this->validated['status'] = 3;
-        $result = $this->order->fill($this->validated)->save();
+        $event->validated['status'] = 3;
+        $result = $event->order->fill($event->validated)->save();
         if(!$result) throw new BadRequestException('发货失败！');
 
         // 发货之后，邮件提醒 - 使用框架的队列
-        Mail::to($this->order->user)->queue(new MailOrderPost($this->order));
+        Mail::to($event->order->user)->queue(new MailOrderPosts($event->order));
     }
 }

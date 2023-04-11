@@ -63,8 +63,9 @@ class OrderController extends BaseController
         // // 发货之后，邮件提醒 - 使用框架的队列
         // Mail::to($order->user)->queue(new OrderPost($order));
 
+        // 使用事件辅助函数分发
+        // event(new EventsOrderPost($validated, $order));
         // 使用事件分发
-        event(new EventsOrderPost($validated, $order));
         EventsOrderPost::dispatch($validated, $order);
 
         return $this->response->noContent();
