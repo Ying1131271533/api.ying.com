@@ -64,9 +64,9 @@ class OrderController extends BaseController
         // Mail::to($order->user)->queue(new OrderPost($order));
 
         // 使用事件辅助函数分发
-        event(new EventsOrderPost($validated, $order));
+        // event(new EventsOrderPost($validated, $order));
         // 使用事件分发
-        // EventsOrderPost::dispatch($validated, $order);
+        EventsOrderPost::dispatch($validated, $order);
 
         return $this->response->noContent();
     }
