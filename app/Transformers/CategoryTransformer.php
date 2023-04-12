@@ -11,12 +11,13 @@ class CategoryTransformer extends TransformerAbstract
     {
         return [
             'id'         => $category->id,
-            // 'parent_id'  => $category->parent_id,
+            'parent_id'  => $category->parent_id,
             'name'       => $category->name,
-            // 'level'      => $category->level,
-            // 'status'     => $category->status,
-            // 'created_at' => $category->created_at->toDateTimeString(),
-            // 'updated_at' => $category->updated_at->toDateTimeString(),
+            'level'      => $category->level,
+            'status'     => $category->status,
+            'group'      => $category->group,
+            'created_at' => $category->created_at->toDateTimeString(),
+            'updated_at' => $category->updated_at->toDateTimeString(),
         ];
     }
 }

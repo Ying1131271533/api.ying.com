@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\GoodsController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\TestController;
 
@@ -79,6 +81,22 @@ $api->version('v1', $params, function ($api) {
             $api->get('orders/{order}', [OrderController::class, 'show']);
             // 订单发货
             $api->patch('orders/{order}/post', [OrderController::class, 'post']);
+
+            /**
+             * 轮播图管理
+             */
+            // 状态
+            $api->patch('slides/{slide}/status', [SlideController::class, 'status']);
+            // 排序
+            $api->patch('slides/{slide}/sort', [SlideController::class, 'sort'])->name('slides.sort');
+            // 管理资源路由
+            $api->resource('slides', SlideController::class);
+
+            /**
+             * 菜单管理
+             */
+            // 列表
+            $api->get('menus', [MenuController::class, 'index']);
         });
     });
 

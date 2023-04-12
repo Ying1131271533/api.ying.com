@@ -15,7 +15,7 @@ class CategoryServices extends BaseServices
         $category = $model ? $model : new Category();
 
         // 获取父级id
-        $parent_id = $data['parent_id'];
+         $parent_id = isset($data['parent_id']) ? $data['parent_id'] : 0;
 
         // 计算等级
         $data['level'] = $parent_id == 0 ? 1 : Category::find($parent_id)->level + 1;

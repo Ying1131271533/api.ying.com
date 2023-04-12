@@ -157,7 +157,7 @@ if (!function_exists('category_tree')) {
      * @param   int         $level      分类层级
      * @return  array
      */
-    function category_tree($status = false)
+    function category_tree($group = 'goods', $status = false)
     // function category_tree($status = false, $level = 3)
     {
         $categorys = Category::with([
@@ -172,14 +172,15 @@ if (!function_exists('category_tree')) {
                 })->select(['id', 'parent_id', 'name', 'level']);
             }
         ])
-        ->select(['id', 'parent_id', 'name', 'level'])
         ->when($status !== false, function($query) use ($status) {
             $query->where('status', $status);
         })
+        ->where('group', $group)
         ->where('parent_id', 0)
+        ->select(['id', 'parent_id', 'name', 'level'])
         ->get();
 
-        return $categorys;
+        return $categorys->toArray();
 
 
         // 拆分查询
@@ -230,7 +231,7 @@ if (!function_exists('cache_categorys')) {
     function cache_categorys()
     {
         $categorys = Cache::store('redis')->rememberForever('categorys_1', function() {
-            return category_tree(1);
+            return category_tree('goods', 1);
         });
 
         return $categorys;
@@ -247,7 +248,7 @@ if (!function_exists('cache_categorys_all')) {
     function cache_categorys_all()
     {
         $categorys = Cache::store('redis')->rememberForever('categorys', function() {
-            return category_tree();
+            return category_tree('goods');
         });
         return $categorys;
     }
@@ -264,6 +265,41 @@ if (!function_exists('forget_cache_category')) {
     {
         Cache::store('redis')->forget('categorys');
         Cache::store('redis')->forget('categorys_1');
+        Cache::store('redis')->forget('menus');
+        Cache::store('redis')->forget('menus_1');
+    }
+
+}
+
+if (!function_exists('cache_menus')) {
+    /**
+     * 缓存没被禁用的菜单
+     *
+     * @return  array
+     */
+    function cache_menus()
+    {
+        $menus = Cache::store('redis')->rememberForever('menus_1', function() {
+            return category_tree('menu', 1);
+        });
+
+        return $menus;
+    }
+
+}
+
+if (!function_exists('cache_menus_all')) {
+    /**
+     * 缓存所有的菜单
+     *
+     * @return  array
+     */
+    function cache_menus_all()
+    {
+        $menus = Cache::store('redis')->rememberForever('menus', function() {
+            return category_tree('menu');
+        });
+        return $menus;
     }
 
 }
@@ -280,4 +316,5 @@ if (!function_exists('oss_url')) {
         return config('filesystems.disks.oss.bucket_url') . '/' . $key;
     }
 }
+
 

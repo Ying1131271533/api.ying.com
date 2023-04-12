@@ -10,6 +10,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\OrderPost;
 use App\Listeners\SendEmailToOrderUser;
+use App\Models\Slide;
+use App\Observers\SlideObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -36,6 +38,7 @@ class EventServiceProvider extends ServiceProvider
     {
         // 分类模型 - 观察者
         Category::observe(CategoryObserver::class);
+        // Slide::observe(SlideObserver::class);
     }
 
     /**

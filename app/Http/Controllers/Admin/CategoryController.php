@@ -6,13 +6,15 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Services\Admin\CategoryServices;
 use App\Models\Category;
+use App\Transformers\CategoryTransformer;
+use Illuminate\Http\Request;
 
 class CategoryController extends BaseController
 {
     /**
      * 分类列表
      */
-    public function index(CategoryRequest $request)
+    public function index(Request $request)
     {
         $type = $request->input('type');
         if($type == 'all') return cache_categorys_all();
@@ -36,7 +38,7 @@ class CategoryController extends BaseController
      */
     public function show(Category $category)
     {
-        return $category;
+        return $this->response->item($category, new CategoryTransformer);
     }
 
     /**

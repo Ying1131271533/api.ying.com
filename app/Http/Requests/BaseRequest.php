@@ -43,6 +43,9 @@ class BaseRequest extends FormRequest
             'reply'        => '回复',
             'express_type' => '快递类型',
             'express_no'   => '快递单号',
+            'url'          => '链接',
+            'img'          => '图片',
+            'sort'         => '排序',
         ];
     }
 }

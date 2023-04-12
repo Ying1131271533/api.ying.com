@@ -25,7 +25,7 @@ class GoodsRequest extends BaseRequest
             'is_on'        => 'in:0,1',
             'is_recommend' => 'in:0,1',
             'details'      => 'required',
-        ], );
+        ]);
         return $rules;
     }
 

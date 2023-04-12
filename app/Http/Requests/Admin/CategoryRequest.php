@@ -19,7 +19,8 @@ class CategoryRequest extends BaseRequest
             'parent_id' => 'integer',
             // 'parent_id' => ['integer', new CategoryCheckLevel],
             'status'    => 'integer|in:0,1',
-        ], );
+            'group'    => 'max:100',
+        ]);
         return $rules;
     }
 
