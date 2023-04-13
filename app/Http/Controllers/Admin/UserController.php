@@ -16,7 +16,7 @@ class UserController extends BaseController
     {
         $name  = $request->input('name');
         $email = $request->input('email');
-        $limit = $request->input('limit', 2);
+        $limit = $request->input('limit', 10);
         $users = User::when($name, function ($query) use ($name) {
             $query->where('name', 'like', "%{$name}%");
         })

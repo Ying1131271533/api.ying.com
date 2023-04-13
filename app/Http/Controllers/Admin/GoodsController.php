@@ -20,6 +20,7 @@ class GoodsController extends BaseController
         $category_id  = $request->query('category_id');
         $is_on        = $request->query('is_on', false);
         $is_recommend = $request->query('is_recommend', false);
+        $limit = $request->query('limit', 10);
 
         $goods = Good::when($title, function ($query) use ($title) {
             $query->where('title', 'like', "%{$title}%");
@@ -33,7 +34,7 @@ class GoodsController extends BaseController
         ->when($is_recommend !== false, function ($query) use ($is_recommend) {
             $query->where('is_recommend', $is_recommend);
         })
-        ->paginate(2);
+        ->paginate($limit);
 
         return $this->response->paginator($goods, new GoodsTransformer);
     }

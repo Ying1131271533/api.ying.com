@@ -23,7 +23,7 @@ class CommentController extends BaseController
             $query->where('rate', $rate);
         })
         ->when($goods_title, function($query) use ($goods_title) {
-            // 获取相关的商品id，老师说一般项目里面这样用，因为like很耗费性能
+            // 获取相关的商品id，老师说一般项目里面不会这样用，因为like很耗费性能
             $goods_ids = Good::where('title', 'like', "%{$goods_title}%")->pluck('id');
             $query->whereIn('goods_id', $goods_ids);
         })
