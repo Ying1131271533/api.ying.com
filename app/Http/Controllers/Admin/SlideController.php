@@ -16,10 +16,11 @@ class SlideController extends BaseController
     public function index(Request $request)
     {
         $status = $request->query('status');
+        $limit = $request->query('limit', 10);
         $slides = Slide::when($status, function ($query) use ($status) {
             $query->where('status', $status);
         })
-        ->paginate(2);
+        ->paginate($limit);
         return $this->response->paginator($slides, new SlideTransformer);
     }
 
