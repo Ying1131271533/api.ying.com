@@ -14,12 +14,21 @@ return new class extends Migration
     public function up()
     {
         Schema::create('order_details', function (Blueprint $table) {
-            $table->id();
-            $table->integer('order_id')->comment('订单id');
-            $table->integer('goods_id')->comment('商品id');
+            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('order_id')->comment('订单id');
+            $table->unsignedBigInteger('goods_id')->comment('商品id');
             $table->double('price')->comment('价格');
             $table->integer('number')->comment('数量');
             $table->timestamps();
+
+            // 单个索引
+            $table->index('order_id');
+            $table->index('goods_id');
+            // 外键约束
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('goods_id')->references('id')->on('goods');
+            // 主键
+            $table->primary(['id', 'order_id', 'goods_id']);
         });
     }
 

@@ -23,7 +23,7 @@ $params = [
 
 $api->version('v1', $params, function ($api) {
     // 测试
-    $api->get('test', [TestController::class, 'index']);
+    $api->get('test', [TestController::class, 'index'])->name('admin.test');
     // 前缀
     $api->group(['prefix' => 'admin'], function ($api) {
 
@@ -34,7 +34,7 @@ $api->version('v1', $params, function ($api) {
              * 用户管理
              */
             // 用户 启用/禁用
-            $api->patch('users/{user}/lock', [UserController::class, 'lock']);
+            $api->patch('users/{user}/lock', [UserController::class, 'lock'])->name('users.lock');
             // 用户管理资源路由
             $api->resource('users', UserController::class, ['only' => [
                 'index', 'show',
@@ -44,7 +44,7 @@ $api->version('v1', $params, function ($api) {
              * 分类管理
              */
             // 分类 启用/禁用
-            $api->patch('categorys/{category}/status', [CategoryController::class, 'status']);
+            $api->patch('categorys/{category}/status', [CategoryController::class, 'status'])->name('categorys.status');
             // 分类管理资源路由
             $api->resource('categorys', CategoryController::class, [
                 'except' => ['destroy']
@@ -54,9 +54,9 @@ $api->version('v1', $params, function ($api) {
              * 商品管理
              */
             // 商品上架
-            $api->patch('goods/{good}/on', [GoodsController::class, 'isOn']);
+            $api->patch('goods/{good}/on', [GoodsController::class, 'isOn'])->name('goods.on');
             // 推荐商品
-            $api->patch('goods/{good}/recommend', [GoodsController::class, 'isRecommend']);
+            $api->patch('goods/{good}/recommend', [GoodsController::class, 'isRecommend'])->name('goods.recommend');
             // 商品管理资源路由
             $api->resource('goods', GoodsController::class, [
                 'except' => ['destroy']
@@ -66,27 +66,27 @@ $api->version('v1', $params, function ($api) {
              * 评论管理
              */
             // 评价列表
-            $api->get('comments', [CommentController::class, 'index']);
+            $api->get('comments', [CommentController::class, 'index'])->name('comments.index');
             // 评价详情
-            $api->get('comments/{comment}', [CommentController::class, 'show']);
+            $api->get('comments/{comment}', [CommentController::class, 'show'])->name('comments.show');
             // 商家回复
-            $api->patch('comments/{comment}/reply', [CommentController::class, 'reply']);
+            $api->patch('comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply');
 
             /**
              * 订单管理
              */
             // 订单列表
-            $api->get('orders', [OrderController::class, 'index']);
+            $api->get('orders', [OrderController::class, 'index'])->name('orders.index');
             // 订单详情
-            $api->get('orders/{order}', [OrderController::class, 'show']);
+            $api->get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
             // 订单发货
-            $api->patch('orders/{order}/post', [OrderController::class, 'post']);
+            $api->patch('orders/{order}/post', [OrderController::class, 'post'])->name('orders.post');
 
             /**
              * 轮播图管理
              */
             // 状态
-            $api->patch('slides/{slide}/status', [SlideController::class, 'status']);
+            $api->patch('slides/{slide}/status', [SlideController::class, 'status'])->name('slides.status');
             // 排序
             $api->patch('slides/{slide}/sort', [SlideController::class, 'sort'])->name('slides.sort');
             // 管理资源路由
@@ -96,7 +96,7 @@ $api->version('v1', $params, function ($api) {
              * 菜单管理
              */
             // 列表
-            $api->get('menus', [MenuController::class, 'index']);
+            $api->get('menus', [MenuController::class, 'index'])->name('menus.index');
         });
     });
 

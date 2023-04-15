@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('slides', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->comment('轮播图名称');
+            $table->string('name')->unique()->comment('轮播图名称');
             $table->string('img')->comment('轮播图图片');
             $table->string('url', 255)->nullable()->comment('跳转链接');
             $table->integer('sort')->comment('排序');

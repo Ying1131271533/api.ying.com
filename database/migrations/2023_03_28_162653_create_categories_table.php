@@ -14,12 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->integer('parent_id')->default(0)->comment('父级id');
-            $table->char('name', 20)->comment('分类名称');
+            $table->id('id');
+            $table->unsignedBigInteger('parent_id')->default(0)->comment('父级id');
+            $table->char('name', 20)->unique()->comment('分类名称');
             $table->tinyInteger('status')->default(1)->comment('状态：0 禁用 1 正常');
             $table->tinyInteger('level')->default(1)->comment('级别：1 2 3...');
             $table->timestamps();
+
+            $table->index('parent_id');
         });
     }
 

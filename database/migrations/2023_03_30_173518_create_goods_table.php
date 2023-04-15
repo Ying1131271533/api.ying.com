@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('goods', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id')->comment('创建商品的用户id');
-            $table->integer('category_id')->comment('分类id');
-            $table->string('title', 255)->comment('标题');
+            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('user_id')->comment('创建商品的用户id');
+            $table->unsignedBigInteger('category_id')->comment('分类id');
+            $table->string('title', 255)->unique()->comment('标题');
             $table->string('cover', 100)->comment('封面图');
             $table->string('description', 255)->comment('描述');
             $table->json('pics')->comment('详情图集');
@@ -27,6 +27,14 @@ return new class extends Migration
             $table->tinyInteger('is_recommend')->default(0)->comment('推荐商品：0 否 1是');
             $table->mediumText('details')->comment('商品详情');
             $table->timestamps();
+            // 单个索引
+            $table->index('user_id');
+            $table->index('category_id');
+            // 外键约束
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('category_id')->references('id')->on('categories');
+            // 主键
+            $table->primary(['id', 'user_id', 'category_id']);
         });
     }
 
