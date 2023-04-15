@@ -51,7 +51,6 @@ class PermissionSeeder extends Seeder
             ['name' => 'slides.update', 'cn_name' => '轮播图更新'],
             ['name' => 'slides.destroy', 'cn_name' => '轮播图删除'],
             ['name' => 'menus.index', 'cn_name' => '菜单列表'],
-
         ];
         // 添加角色
         // 为角色添加权限
