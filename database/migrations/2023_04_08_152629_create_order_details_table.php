@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::create('order_details', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
             $table->unsignedBigInteger('order_id')->comment('订单id');
             $table->unsignedBigInteger('goods_id')->comment('商品id');
             $table->double('price')->comment('价格');
@@ -28,7 +27,7 @@ return new class extends Migration
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('goods_id')->references('id')->on('goods');
             // 主键
-            $table->primary(['id', 'order_id', 'goods_id']);
+            $table->primary(['order_id', 'goods_id']);
         });
     }
 

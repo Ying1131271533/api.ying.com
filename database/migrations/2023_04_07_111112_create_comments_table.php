@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->id();
             $table->unsignedBigInteger('user_id')->comment('买家id');
             $table->unsignedBigInteger('goods_id')->comment('商品id');
             $table->tinyInteger('rate')->default(1)->comment('评论等级：1 好评 2 中评 3 差评');
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('goods_id')->references('id')->on('goods');
             // 主键
-            $table->primary(['id', 'user_id', 'goods_id']);
+            // $table->primary(['id', 'user_id', 'goods_id']);
         });
     }
 

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('goods', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->comment('创建商品的用户id');
             $table->unsignedBigInteger('category_id')->comment('分类id');
             $table->string('title', 255)->unique()->comment('标题');
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('categories');
             // 主键
-            $table->primary(['id', 'user_id', 'category_id']);
+            // $table->primary(['id', 'user_id', 'category_id']);
         });
     }
 
