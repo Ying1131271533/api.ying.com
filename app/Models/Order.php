@@ -36,7 +36,7 @@ class Order extends Model
     protected function payType(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => pay_type($value),
+            get: fn ($value) => pay_type_name($value),
         );
     }
 

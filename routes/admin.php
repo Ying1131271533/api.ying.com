@@ -28,7 +28,7 @@ $api->version('v1', $params, function ($api) {
     $api->group(['prefix' => 'admin'], function ($api) {
 
         // 需要登录的路由
-        $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
+        $api->group([], function ($api) {
 
             /**
              * 用户管理

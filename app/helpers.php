@@ -318,14 +318,14 @@ if (!function_exists('oss_url')) {
 }
 
 
-if (!function_exists('pay_type')) {
+if (!function_exists('pay_type_name')) {
     /**
      * 返回支付类型
      * @param  string   $type  支付类型
      *
      * @return  string
      */
-    function pay_type($type)
+    function pay_type_name($type)
     {
         $pay_name = '未知';
         switch ($type) {
