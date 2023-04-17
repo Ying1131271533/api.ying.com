@@ -26,6 +26,7 @@ return new class extends Migration
             // 单个索引
             $table->index('user_id');
             $table->index('goods_id');
+            $table->index('rate');
             // 外键约束
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('goods_id')->references('id')->on('goods');

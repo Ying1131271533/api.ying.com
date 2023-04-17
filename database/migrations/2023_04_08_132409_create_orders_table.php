@@ -20,15 +20,19 @@ return new class extends Migration
             $table->double('amount')->comment('总金额 单位分');
             $table->tinyInteger('status')->default(1)->comment('订单状态: 1 下单 2 支付 3 发货 4 收货(结单)');
             $table->integer('address_id')->comment('收货地址id');
-            $table->string('express_type')->comment('快递类型: SF YT YD');
-            $table->string('express_no')->comment('快递单号');
+            $table->string('express_type')->nullable()->comment('快递类型: SF YT YD');
+            $table->string('express_no')->nullable()->comment('快递单号');
             $table->timestamp('pay_time')->nullable()->comment('支付时间');
-            $table->string('pay_type')->nullable()->comment('支付类型：支付宝 微信');
+            // $table->string('pay_type')->nullable()->comment('支付类型：支付宝 微信');
+            $table->tinyInteger('pay_type')->nullable()->comment('支付类型：1 支付宝 2 微信');
             $table->string('trade_no')->nullable()->comment('支付单号');
             $table->timestamps();
 
             // 单个索引
             $table->index('user_id');
+            $table->index('order_no');
+            $table->index('trade_no');
+            $table->index('status');
             // 外键约束
             $table->foreign('user_id')->references('id')->on('users');
             // 主键

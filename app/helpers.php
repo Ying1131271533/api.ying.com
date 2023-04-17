@@ -318,3 +318,29 @@ if (!function_exists('oss_url')) {
 }
 
 
+if (!function_exists('pay_type')) {
+    /**
+     * 返回支付类型
+     * @param  string   $type  支付类型
+     *
+     * @return  string
+     */
+    function pay_type($type)
+    {
+        $pay_name = '未知';
+        switch ($type) {
+            case 1:
+                $pay_name = '支付宝';
+                break;
+            case 2:
+                $pay_name = '微信';
+                break;
+            default:
+                break;
+        }
+        return $pay_name;
+    }
+}
+
+
+

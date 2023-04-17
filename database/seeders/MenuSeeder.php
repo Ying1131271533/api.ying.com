@@ -86,7 +86,7 @@ class MenuSeeder extends Seeder
                 'level'     => 1,
                 'children'  => [
                     [
-                        'name'  => '评价列表',
+                        'name'  => '订单列表',
                         'group' => 'menu',
                         'level' => 2,
                     ],

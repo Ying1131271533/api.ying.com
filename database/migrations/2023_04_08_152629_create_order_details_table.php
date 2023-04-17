@@ -21,11 +21,17 @@ return new class extends Migration
             $table->timestamps();
 
             // 单个索引
-            $table->index('order_id');
-            $table->index('goods_id');
+            // $table->index('order_id');
+            // $table->index('goods_id');
+
+            // 复合索引
+            // 这里会生成 'order_id,goods_id' 和 'goods_id' 两个索引
+            $table->index(['order_id', 'goods_id']);
+
             // 外键约束
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('goods_id')->references('id')->on('goods');
+
             // 主键
             $table->primary(['order_id', 'goods_id']);
         });

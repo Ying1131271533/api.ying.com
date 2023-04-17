@@ -17,7 +17,7 @@ $params = [
         'bindings', // 支持模型注入
         'serializer:default_array', // 去掉 transformer 的包裹层
     ],
-    'limit'      => 60, // 有效时间内能够访问的次数
+    'limit'   => 60, // 有效时间内能够访问的次数
     'expires' => 1, // 有效时间/分钟
 ];
 
@@ -28,7 +28,7 @@ $api->version('v1', $params, function ($api) {
     $api->group(['prefix' => 'admin'], function ($api) {
 
         // 需要登录的路由
-        $api->group(['middleware' => 'api.auth'], function ($api) {
+        $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
 
             /**
              * 用户管理

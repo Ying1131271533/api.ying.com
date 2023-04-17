@@ -14,9 +14,9 @@ class GoodsRequest extends BaseRequest
      */
     public function rules()
     {
-        $rules = array_merge($this->scene(), [
+        $rules = array_merge([
             'category_id'  => 'required|integer|gt:0|exists:categories,id',
-            'title'        => 'required|max:255',
+            'title'        => 'required|max:191',
             'description'  => 'required|max:255',
             'price'        => 'required|min:0',
             'stock'        => 'required|min:0',
@@ -25,7 +25,7 @@ class GoodsRequest extends BaseRequest
             'is_on'        => 'in:0,1',
             'is_recommend' => 'in:0,1',
             'details'      => 'required',
-        ]);
+        ], $this->scene());
         return $rules;
     }
 
@@ -37,7 +37,7 @@ class GoodsRequest extends BaseRequest
     protected function scene()
     {
         // 获取路由名称
-        $routeName = $this->route()->getAction('as');
+        $routeName = $this->route()->getName();
         switch ($routeName) {
             case 'goods.store':
                 return [

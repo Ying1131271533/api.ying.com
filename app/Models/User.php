@@ -16,7 +16,8 @@ class User extends Authenticatable implements JWTSubject
 
     use HasRoles;
 
-    // guard_name(看守器)默认改成api
+    // guard_name(看守器) 默认值从web改成api
+    // 要不然分配角色和权限时会显示找不到角色或者权限
     protected $guard_name = 'api';
 
     /**

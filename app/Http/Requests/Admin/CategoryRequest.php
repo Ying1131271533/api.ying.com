@@ -15,12 +15,12 @@ class CategoryRequest extends BaseRequest
      */
     public function rules()
     {
-        $rules = array_merge($this->scene(), [
+        $rules = array_merge([
             'parent_id' => 'integer',
             // 'parent_id' => ['integer', new CategoryCheckLevel],
             'status'    => 'integer|in:0,1',
             'group'    => 'max:100',
-        ]);
+        ], $this->scene());
         return $rules;
     }
 
@@ -44,7 +44,7 @@ class CategoryRequest extends BaseRequest
     protected function scene()
     {
         // 获取路由名称
-        $routeName = $this->route()->getAction('as');
+        $routeName = $this->route()->getName();
         switch ($routeName) {
             case 'categorys.store':
                 return [

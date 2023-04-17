@@ -14,7 +14,12 @@ class SlideRequest extends BaseRequest
      */
     public function rules()
     {
-        return $this->scene();
+        $rules = array_merge([
+            'name' => 'required|max:100',
+            'img'  => 'required',
+            'url'  => 'max:255',
+        ], $this->scene());
+        return $rules;
     }
 
     /**
@@ -25,13 +30,11 @@ class SlideRequest extends BaseRequest
     protected function scene()
     {
         // 获取路由名称
-        $routeName = $this->route()->getAction('as');
+        $routeName = $this->route()->getName();
         switch ($routeName) {
             case 'slides.store':
                 return [
                     'name' => 'required|max:100|unique:slides',
-                    'img'  => 'required',
-                    'url'  => 'max:255',
                 ];
                 break;
             case 'slides.update':
@@ -40,9 +43,7 @@ class SlideRequest extends BaseRequest
                         'required',
                         'max:100',
                         Rule::unique('slides')->ignore($this->slide), // 检查唯一性时，排除自己
-                    ],
-                    'img'  => 'required',
-                    'url'  => 'max:255',
+                    ]
                 ];
                 break;
             case 'slides.sort':
