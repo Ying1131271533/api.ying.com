@@ -29,7 +29,7 @@ class Order extends Model
     ];
 
     /**
-     * 获取支付类型
+     * 获取支付类型 - 这种只能访问表存在的字段
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */

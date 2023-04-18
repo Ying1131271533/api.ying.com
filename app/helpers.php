@@ -307,13 +307,24 @@ if (!function_exists('cache_menus_all')) {
 if (!function_exists('oss_url')) {
     /**
      * 返回oss_url
-     * @param  string   $key  路径
+     * @param  string   $url  路径
      *
      * @return  string
      */
-    function oss_url($key)
+    function oss_url($url)
     {
-        return config('filesystems.disks.oss.bucket_url') . '/' . $key;
+        // 如果没有url
+        if(empty($url)) return '';
+
+        // 如果$url包含了http等，是一个完整的地址，直接返回
+        if(
+            strpos($url, 'http://') !== false
+            || strpos($url, 'https://') !== false
+            || strpos($url, 'data:image') !== false
+        ){
+            return $url;
+        }
+        return config('filesystems.disks.oss.bucket_url') . '/' . $url;
     }
 }
 
@@ -339,6 +350,21 @@ if (!function_exists('pay_type_name')) {
                 break;
         }
         return $pay_name;
+    }
+}
+
+if (!function_exists('make_code')) {
+    /**
+     * 返回验证码
+     * @param  string   $length  验证码长度
+     *
+     * @return  string
+     */
+    function make_code($length = 6)
+    {
+        $max = pow(10, $length) - 1;
+        $min = pow(10, $length - 1);
+        return (string) rand($min, $max);
     }
 }
 

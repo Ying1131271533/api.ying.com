@@ -18,17 +18,21 @@ class GoodFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 1,
-            'category_id' => $this->faker->text(20),
-            'title' => $this->faker->randomElement(Category::where(['level' => 3, 'status' => 1, 'group' => 'goods'])->pluck('id')),
-            'description' => $this->faker->text(),
-            'price' => $this->faker->text(),
-            'stock' => $this->faker->text(),
-            'cover' => $this->faker->text(),
-            'pics' => $this->faker->text(),
-            'is_on' => $this->faker->text(),
-            'is_recommend' => $this->faker->text(),
-            'details' => $this->faker->text(),
+            'user_id'      => 1,
+            'category_id'  => $this->faker->randomElement(Category::where(['level' => 3, 'status' => 1, 'group' => 'goods'])->pluck('id')),
+            'title'        => $this->faker->text(20),
+            'description'  => $this->faker->text(40),
+            'price'        => $this->faker->randomFloat(2, 1000, 10000),
+            'stock'        => $this->faker->numberBetween(10, 100),
+            'cover'        => 'http://placeimg.com/640/480/any',
+            'pics'         => [
+                'http://placeimg.com/640/480/any',
+                'http://placeimg.com/640/480/any',
+                'http://placeimg.com/640/480/any',
+            ],
+            'is_on'        => $this->faker->numberBetween(0, 1),
+            'is_recommend' => $this->faker->numberBetween(0, 1),
+            'details'      => $this->faker->paragraphs(4, true),
         ];
     }
 }

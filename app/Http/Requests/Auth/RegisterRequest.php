@@ -16,7 +16,7 @@ class RegisterRequest extends BaseRequest
         return [
             'name'     => 'required|min:3|max:16|unique:users',
             'email'    => 'required|email|unique:users',
-            'password' => 'required|min:6|max:50|confirmed',
+            'password' => 'required|min:6|max:50|confirmed', // 必须有 password_confirmation
         ];
     }
 }

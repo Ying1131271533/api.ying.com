@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,6 +38,25 @@ class Good extends Model
         'pics'  => 'array',
         'price' => 'double',
     ];
+
+    /**
+     * 追加字段 配合下面的访问器使用
+     *
+     * @var array
+     */
+    protected $appends = [
+        'cover_url',
+    ];
+
+    /**
+     * 获取oss封面链接 - 这种可以访问不存在的字段
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function getCoverUrlAttribute()
+    {
+        return oss_url($this->cover);
+    }
 
     /**
      * 获取这个商品所属的分类
