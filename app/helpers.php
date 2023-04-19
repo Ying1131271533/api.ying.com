@@ -44,12 +44,12 @@ if (!function_exists('fail')) {
     /**
      * 返回失败的api接口数据
      *
-     * @param  string    $msg           描述信息
-     * @param  int       $code          程序状态码
-     * @param  int       $HttpStatus    http状态码
-     * @return json                     api返回的json数据
+     * @param  string|array     $msg            描述信息
+     * @param  int              $code           程序状态码
+     * @param  int              $HttpStatus     http状态码
+     * @return json                             api返回的json数据
      */
-    function fail(string $msg = 'Error', int $code = 100, int $HttpStatus = 200)
+    function fail($msg = 'Error', int $code = 400, int $HttpStatus = 400)
     {
         // 组装数据
         $resultData = [

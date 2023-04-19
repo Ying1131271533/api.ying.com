@@ -63,8 +63,19 @@ class UserRequest extends BaseRequest
                 break;
             case 'auth.updateEmail':
                 return [
-                    'code'  => 'required|digits:4',
                     'email' => 'required|email|unique:users,email',
+                    'code'  => 'required|digits:4',
+                ];
+                break;
+            case 'auth.phoneCode':
+                return [
+                    'phone' => 'required|regex:/^1[3-9]\d{9}$/|unique:users,phone',
+                ];
+                break;
+            case 'auth.updatePhone':
+                return [
+                    'phone' => 'required|regex:/^1[3-9]\d{9}$/|unique:users,phone',
+                    'code'  => 'required|digits:4',
                 ];
                 break;
             default:

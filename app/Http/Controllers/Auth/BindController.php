@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\SendSms;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\UserRequest;
 use App\Mail\SendCode;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Overtrue\EasySms\EasySms;
 
 class BindController extends BaseController
 {
+    public function __construct()
+    {
+        // 检查手机验证码
+        $this->middleware(['check.email.code'])->only(['updateEmail']);
+        $this->middleware(['check.phone.code'])->only(['updatePhone']);
+    }
+
     /**
      * 发送邮件的验证码
      */
@@ -28,17 +37,41 @@ class BindController extends BaseController
     /**
      * 修改邮箱
      */
-    public function updateEmail(UserRequest $request)
+    public function updateEmail(Request $request)
     {
-        $validated = $request->validated();
-        // 验证code是否正确
-        if(!Cache::store('redis')->has('email_code:' . $validated['email'])) {
-            return $this->response->errorBadRequest('验证码或邮箱错误！');
-        }
-
         // 更新邮箱
         $user = auth('api')->user();
-        $user->email = $validated['email'];
+        $user->email = $request->input('email');
+        $user->save();
+
+        // 删除验证码缓存
+        Cache::store('redis')->delete('email_code:' . $request->input('email'));
+
+        return $this->response->noContent();
+    }
+
+    /**
+     * 发送手机的验证码
+     */
+    public function phoneCode(UserRequest $request)
+    {
+        $validated = $request->validated();
+
+        // 发送短信事件
+        SendSms::dispatch($validated['phone']);
+        // SendSms::dispatch($validated['phone'], '绑定手机');
+
+        return $this->response->noContent();
+    }
+
+    /**
+     * 修改手机号
+     */
+    public function updatePhone(Request $request)
+    {
+        // 更新手机号
+        $user = auth('api')->user();
+        $user->phone = $request->input('phone');
         $user->save();
 
         return $this->response->noContent();

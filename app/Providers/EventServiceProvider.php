@@ -27,6 +27,9 @@ class EventServiceProvider extends ServiceProvider
         OrderPost::class => [
             SendEmailToOrderUser::class,
         ],
+        \App\Events\SendSms::class => [
+            \App\Listeners\SendCodeToUser::class,
+        ],
     ];
 
     /**

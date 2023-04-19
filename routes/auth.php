@@ -30,7 +30,11 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
             // 发送邮件验证码
             $api->post('email/code', [BindController::class, 'emailCode'])->name('auth.emailCode');
             // 修改邮箱
-            $api->post('email/update', [BindController::class, 'updateEmail'])->name('auth.updateEmail');
+            $api->patch('email/update', [BindController::class, 'updateEmail'])->name('auth.updateEmail');
+            // 发送手机验证码
+            $api->post('phone/code', [BindController::class, 'phoneCode'])->name('auth.phoneCode');
+            // 修改手机号
+            $api->patch('phone/update', [BindController::class, 'updatePhone'])->name('auth.updatePhone');
         });
     });
 
