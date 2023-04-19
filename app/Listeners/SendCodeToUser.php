@@ -49,6 +49,12 @@ class SendCodeToUser implements ShouldQueue
      */
     public function handle(SendSms $event)
     {
+        // 获取短信是否超过5次
+        $sendNumber = Cache::store('redis')->get('phone_code_number:' . $event->phone);
+        if(!empty($sendNumber) && $sendNumber > 4) {
+            return abort(400, '每天获取短信验证码不能超过5次');
+        }
+
         // 获取sms配置
         $config = config('sms');
         $easySms = new EasySms($config);
@@ -74,6 +80,6 @@ class SendCodeToUser implements ShouldQueue
         // 缓存验证码
         Cache::store('redis')->put('phone_code:' . $event->phone, $code, now()->addMinute(15));
         // 缓存验证码次数加一
-        // Cache::store('redis')->incr('phone_code_number:' . $event->phone);
+        Cache::store('redis')->incr('phone_code_number:' . $event->phone);
     }
 }
