@@ -8,11 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
-class TestController extends BaseController
+class SeckillGoodsController extends BaseController
 {
     public function index(Request $request)
     {
         Cache::store('redis')->set('akali', 100);return 1;
+
+        // 秒杀商品库存key
+        $stockKey = "seckill_goods_key:1:stock";
+        // 秒杀成功用户key
+        $userIdKey = "seckill_goods_key:1:user";
+
         // 实例化redisLock
         $redisLock = new RedisLock();
         if ($redisLock->lockByLua()) {
