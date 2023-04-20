@@ -13,7 +13,7 @@ class TestController extends BaseController
     protected $_lockFlag;
     public function index(Request $request)
     {
-        // Cache::store('redis')->set('akali', 100);
+        Cache::store('redis')->set('akali', 100);return 1;
         $lock = Cache::store('redis')->lock('foo', 10); // 锁定10秒
         if ($lock->get()) {
 
