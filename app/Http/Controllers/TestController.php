@@ -13,7 +13,7 @@ class TestController extends BaseController
     protected $_lockFlag;
     public function index(Request $request)
     {
-        Cache::store('redis')->set('akali', 100);return 1;
+        // Cache::store('redis')->set('akali', 100);return 1;
         $lock = Cache::store('redis')->lock('foo', 10); // 锁定10秒
         if ($lock->get()) {
 
@@ -25,7 +25,7 @@ class TestController extends BaseController
             // 释放锁
             $lock->release();
         }
-        return 1;
+        return '完成';
         if ($this->lock()) {
             // 下面是...业务代码
         }else{
