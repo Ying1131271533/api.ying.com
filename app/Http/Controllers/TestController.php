@@ -18,7 +18,10 @@ class TestController extends BaseController
         if ($lock->get()) {
 
             // 逻辑代码
-            Cache::store('redis')->decrement('akali');
+            $akali = Cache::store('redis')->get('akali');
+            if($akali > 0) {
+                Cache::store('redis')->decrement('akali');
+            }
             // 释放锁
             $lock->release();
         }
