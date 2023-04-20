@@ -9,6 +9,7 @@ use App\Mail\SendCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redis;
 use Overtrue\EasySms\EasySms;
 
 class BindController extends BaseController
@@ -40,7 +41,7 @@ class BindController extends BaseController
     public function updateEmail(Request $request)
     {
         // 更新邮箱
-        $user = auth('api')->user();
+        $user        = auth('api')->user();
         $user->email = $request->input('email');
         $user->save();
 
@@ -56,10 +57,14 @@ class BindController extends BaseController
     public function phoneCode(UserRequest $request)
     {
         $validated = $request->validated();
+        $phone     = $validated['phone'];
+
+        // 验证码
+        $code = make_code(4);
 
         // 发送短信事件
-        SendSms::dispatch($validated['phone']);
-        // SendSms::dispatch($validated['phone'], '绑定手机');
+        SendSms::dispatch($phone, $code);
+        // SendSms::dispatch($phone, $code, '绑定手机');
 
         return $this->response->noContent();
     }
@@ -69,11 +74,9 @@ class BindController extends BaseController
      */
     public function updatePhone(Request $request)
     {
-        // 更新手机号
         $user = auth('api')->user();
         $user->phone = $request->input('phone');
         $user->save();
-
         return $this->response->noContent();
     }
 }

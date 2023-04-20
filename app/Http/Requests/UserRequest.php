@@ -69,7 +69,7 @@ class UserRequest extends BaseRequest
                 break;
             case 'auth.phoneCode':
                 return [
-                    'phone' => 'required|regex:/^1[3-9]\d{9}$/|unique:users,phone',
+                    'phone' => 'required|regex:/^1[3-9]\d{9}$/',
                 ];
                 break;
             case 'auth.updatePhone':

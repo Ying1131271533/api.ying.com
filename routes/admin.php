@@ -7,7 +7,6 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\TestController;
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -22,8 +21,6 @@ $params = [
 ];
 
 $api->version('v1', $params, function ($api) {
-    // 测试
-    $api->get('test', [TestController::class, 'index'])->name('admin.test');
     // 前缀
     $api->group(['prefix' => 'admin'], function ($api) {
 

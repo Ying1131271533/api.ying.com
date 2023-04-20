@@ -19,8 +19,8 @@ class SendSms
      *
      * @return void
      */
-    public function __construct(public $phone)
-    // public function __construct(public $phone, public $type)
+    public function __construct(public $phone, public $code)
+    // public function __construct(public $phone, public $code, public $type)
     {
         //
     }

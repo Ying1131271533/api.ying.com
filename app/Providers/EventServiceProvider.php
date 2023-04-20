@@ -28,7 +28,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailToOrderUser::class,
         ],
         \App\Events\SendSms::class => [
-            \App\Listeners\SendCodeToUser::class,
+            \App\Listeners\SendCodeForPreconditions::class, // 发送验证码的前提条件
+            \App\Listeners\SendCodeToUser::class, // 发送短信验证码
         ],
     ];
 

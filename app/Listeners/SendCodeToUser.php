@@ -6,6 +6,8 @@ use App\Events\SendSms;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Overtrue\EasySms\EasySms;
 
 class SendCodeToUser implements ShouldQueue
@@ -49,18 +51,9 @@ class SendCodeToUser implements ShouldQueue
      */
     public function handle(SendSms $event)
     {
-        // 获取短信是否超过5次
-        $sendNumber = Cache::store('redis')->get('phone_code_number:' . $event->phone);
-        if(!empty($sendNumber) && $sendNumber > 4) {
-            return abort(400, '每天获取短信验证码不能超过5次');
-        }
-
         // 获取sms配置
         $config = config('sms');
         $easySms = new EasySms($config);
-
-        // 验证码
-        $code = make_code(4);
 
         try {
             // 发送验证码到手机
@@ -69,17 +62,28 @@ class SendCodeToUser implements ShouldQueue
                 'template' => $config['template']['ordinary'],
                 // 看短信模版有几个变量，就填几个变量
                 'data' => [
-                    'code' => $code,
+                    'code' => $event->code,
                     // 'type' => $event->type,
                 ],
             ]);
         } catch (\Exception $e) {
-            return response()->json($e->getExceptions(), 400);
+            return $e->getExceptions();
+            // 打印错误信息
+            // dd($e->getExceptions());
         }
 
-        // 缓存验证码
-        Cache::store('redis')->put('phone_code:' . $event->phone, $code, now()->addMinute(15));
-        // 缓存验证码次数加一
-        Cache::store('redis')->incr('phone_code_number:' . $event->phone);
+        // 缓存验证码，过期时间15分钟
+        Cache::store('redis')->put('phone_code:' . $event->phone, $event->code, now()->addMinute(15));
+
+        // 记录次数的缓存，过期时间明天凌晨0点
+        if (!Cache::store('redis')->has('phone_code_number:' . $event->phone)) {
+            Cache::store('redis')->set('phone_code_number:' . $event->phone, 0, now()->tomorrow());
+        }
+
+        // 发送次数加一
+        Cache::store('redis')->increment('phone_code_number:' . $event->phone);
+
+        // 记录一分钟内获取了短信
+        Cache::store('redis')->set('phone_code_ttl:' . $event->phone, 1, now()->addMinute(1));
     }
 }

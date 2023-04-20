@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\IndexController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\TestController;
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -16,6 +17,9 @@ $params = [
 ];
 
 $api->version('v1', $params, function ($api) {
+
+    // 测试
+    $api->get('test', [TestController::class, 'index'])->name('test');
 
     // 首页数据
     $api->get('index', [IndexController::class, 'index'])->name('index');
