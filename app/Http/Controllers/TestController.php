@@ -12,7 +12,7 @@ class TestController extends BaseController
 {
     public function index(Request $request)
     {
-        Cache::store('redis')->set('akali', 100);return 1;
+        // Cache::store('redis')->set('akali', 100);return 1;
         // 实例化redisLock
         $redisLock = new RedisLock();
         if ($redisLock->lockByLua()) {
