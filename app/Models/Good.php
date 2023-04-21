@@ -22,6 +22,7 @@ class Good extends Model
         'description',
         'price',
         'stock',
+        'sales',
         'cover',
         'pics',
         'is_on',
@@ -46,6 +47,8 @@ class Good extends Model
      */
     protected $appends = [
         'cover_url',
+        // 这里因为只有商品详情才会用到，所以这里在查询的时候，手动添加 使用 offset()
+        // 'pics_url',
     ];
 
     /**
@@ -56,6 +59,19 @@ class Good extends Model
     public function getCoverUrlAttribute()
     {
         return oss_url($this->cover);
+    }
+
+    /**
+     * 获取商品图集oss链接
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function getPicsUrlAttribute()
+    {
+        // 使用集合处理每一项元素，返回处理后新的集合
+        return collect($this->pics)->map(function($item, $key){
+            return oss_url($item);
+        });
     }
 
     /**
@@ -80,5 +96,13 @@ class Good extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'goods_id', 'id');
+    }
+
+    /**
+     * 获取这个商品的所有订单
+     */
+    public function orderDateils()
+    {
+        return $this->hasMany(OrderDetails::class);
     }
 }

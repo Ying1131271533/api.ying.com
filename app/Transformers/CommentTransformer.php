@@ -26,8 +26,8 @@ class CommentTransformer extends TransformerAbstract
             'reply'      => $comment->reply,
             'pics'       => $comment->pics,
             'pics_url'   => $comment->pics_url,
-            'created_at' => $comment->created_at->toDateTimeString(),
-            'updated_at' => $comment->updated_at->toDateTimeString(),
+            'created_at' => $comment->created_at,
+            'updated_at' => $comment->updated_at,
         ];
     }
 

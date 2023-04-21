@@ -29,6 +29,9 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'phone',
+        'avatar',
+        'is_locked',
     ];
 
     /**
@@ -48,6 +51,15 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    /**
+     * 追加字段
+     *
+     * @var array
+     */
+    protected $appends = [
+        'avatar_url',
     ];
 
      // Rest omitted for brevity
@@ -70,6 +82,17 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+
+    /**
+     * 获取用户头像的oss链接
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function getAvatarUrlAttribute()
+    {
+        return oss_url($this->avatar);
     }
 
     /**

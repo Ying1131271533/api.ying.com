@@ -48,6 +48,7 @@ class BaseRequest extends FormRequest
             'sort'         => '排序',
             'old_password' => '旧密码',
             'phone'        => '电话',
+            'avatar'       => '头像',
         ];
     }
 }

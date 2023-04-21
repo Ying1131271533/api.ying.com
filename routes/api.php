@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\GoodsController;
 use App\Http\Controllers\Api\IndexController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\TestController;
@@ -24,6 +25,13 @@ $api->version('v1', $params, function ($api) {
     // 首页数据
     $api->get('index', [IndexController::class, 'index'])->name('index');
 
+    // 商品详情
+    $api->get('goods/{good}', [GoodsController::class, 'show'])->name('goods.show');
+
+    // 商品列表
+    $api->get('goods', [GoodsController::class, 'index'])->name('goods.index');
+
+
     // 需要登录的路由
     $api->group(['middleware' => 'api.auth'], function ($api) {
         /**
@@ -33,5 +41,7 @@ $api->version('v1', $params, function ($api) {
         $api->get('user', [UserController::class, 'userInfo'])->name('user.info');
         // 更新用户信息
         $api->patch('user', [UserController::class, 'updateUserInfo'])->name('user.updateInfo');
+        // 更新用户头像
+        $api->patch('user/avatar', [UserController::class, 'updateUserAvatar'])->name('user.updateAvatar');
     });
 });

@@ -44,8 +44,8 @@ class GoodsTransformer extends TransformerAbstract
             'is_on'        => $good->is_on,
             'is_recommend' => $good->is_recommend,
             'details'      => $good->details,
-            'created_at'   => $good->created_at->toDateTimeString(),
-            'updated_at'   => $good->updated_at->toDateTimeString(),
+            'created_at'   => $good->created_at,
+            'updated_at'   => $good->updated_at,
         ];
     }
 

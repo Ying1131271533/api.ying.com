@@ -16,8 +16,8 @@ class CategoryTransformer extends TransformerAbstract
             'level'      => $category->level,
             'status'     => $category->status,
             'group'      => $category->group,
-            'created_at' => $category->created_at->toDateTimeString(),
-            'updated_at' => $category->updated_at->toDateTimeString(),
+            'created_at' => $category->created_at,
+            'updated_at' => $category->updated_at,
         ];
     }
 }

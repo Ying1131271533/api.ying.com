@@ -15,12 +15,12 @@ class IndexController extends BaseController
      */
     public function index()
     {
-        // 轮图数据
+        // 轮播图数据
         $slides = Slide::where('status', 1)->orderBy('sort')->get();
         // 分类数据
         $categorys = cache_categorys();
         // 推荐商品
-        $goods = Good::where('is_on', 1)->where('is_recommend', 1)->take(20)->get();
+        $goods = Good::where('is_on', 1)->where('is_recommend', 1)->limit(20)->get();
 
         // 返回数据
         return $this->response->array([

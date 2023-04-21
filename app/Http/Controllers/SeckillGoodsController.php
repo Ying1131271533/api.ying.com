@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Redis;
 
 class SeckillGoodsController extends BaseController
 {
+    // Lua脚本
     public function index(Request $request)
     {
-        Cache::store('redis')->set('akali', 100);return 1;
+        Redis::set('akali', 100);return 1;
 
         // 秒杀商品库存key
         $stockKey = "seckill_goods_key:1:stock";
@@ -25,7 +26,7 @@ class SeckillGoodsController extends BaseController
 
             // 逻辑代码
             $akali = Redis::get('akali');
-            if($akali > 0) {
+            if ($akali > 0) {
                 Redis::decr('akali');
             }
 
@@ -38,6 +39,26 @@ class SeckillGoodsController extends BaseController
             return $this->response->errorBadRequest('抢购失败');
         }
         return $this->response->noContent();
+    }
+
+    // Laravel自带的原子锁
+    public function akali()
+    {
+        Cache::store('redis')->set('akali', 100);return 1;
+        $lock = Cache::store('redis')->lock('foo', 10); // 锁定10秒
+        if ($lock->get()) {
+
+            // 逻辑代码
+            $akali = Cache::store('redis')->get('akali');
+            if ($akali > 0) {
+                // 自减一
+                Cache::store('redis')->decrement('akali');
+            }
+
+            // 释放锁
+            $lock->release();
+        }
+
     }
 
 }

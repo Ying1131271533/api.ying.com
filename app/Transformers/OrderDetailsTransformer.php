@@ -17,8 +17,8 @@ class OrderDetailsTransformer extends TransformerAbstract
             'goods_id'   => $orderDetails->goods_id,
             'price'      => $orderDetails->price,
             'number'     => $orderDetails->number,
-            'created_at' => $orderDetails->created_at->toDateTimeString(),
-            'updated_at' => $orderDetails->updated_at->toDateTimeString(),
+            'created_at' => $orderDetails->created_at,
+            'updated_at' => $orderDetails->updated_at,
         ];
     }
 

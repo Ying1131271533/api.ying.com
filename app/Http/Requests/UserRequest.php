@@ -50,6 +50,11 @@ class UserRequest extends BaseRequest
                     ],
                 ];
                 break;
+            case 'user.updateAvatar':
+                return [
+                    'avatar' => 'required|max:191',
+                ];
+                break;
             case 'auth.updatePassword':
                 return [
                     'old_password' => 'required|min:6|max:50|current_password:api',

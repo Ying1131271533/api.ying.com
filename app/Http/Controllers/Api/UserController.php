@@ -26,4 +26,15 @@ class UserController extends BaseController
         $user->fill($validated)->save();
         return $this->response->noContent();
     }
+
+    /**
+     * 更新用户头像
+     */
+    public function updateUserAvatar(UserRequest $reuqest)
+    {
+        $validated = $reuqest->validated();
+        $user = auth('api')->user();
+        $user->fill($validated)->save();
+        return $this->response->noContent();
+    }
 }
