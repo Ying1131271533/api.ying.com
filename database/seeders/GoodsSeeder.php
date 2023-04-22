@@ -16,6 +16,6 @@ class GoodsSeeder extends Seeder
     public function run()
     {
         // 生成大量测试用的商品数据
-        Good::factory()->count(500)->create();
+        Good::factory()->count(100)->create();
     }
 }

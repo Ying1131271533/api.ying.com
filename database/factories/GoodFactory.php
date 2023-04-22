@@ -24,6 +24,7 @@ class GoodFactory extends Factory
             'description'  => $this->faker->text(40),
             'price'        => $this->faker->randomFloat(2, 1000, 10000),
             'stock'        => $this->faker->numberBetween(10, 100),
+            'sales'        => $this->faker->numberBetween(10, 100),
             'cover'        => 'http://placeimg.com/640/480/any',
             'pics'         => [
                 'http://placeimg.com/640/480/any',

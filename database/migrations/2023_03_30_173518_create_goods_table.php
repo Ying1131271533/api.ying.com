@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('goods', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('id'); // 自增主键
             $table->unsignedBigInteger('user_id')->comment('创建商品的用户id');
             $table->unsignedBigInteger('category_id')->comment('分类id');
             $table->string('title')->unique()->comment('标题');

@@ -32,6 +32,7 @@ class BaseRequest extends FormRequest
             'level'        => '级别',
             'user_id'      => '用户id',
             'category_id'  => '分类id',
+            'goods_id'  => '商品id',
             'description'  => '描述',
             'price'        => '价格',
             'stock'        => '库存',
@@ -49,6 +50,7 @@ class BaseRequest extends FormRequest
             'old_password' => '旧密码',
             'phone'        => '电话',
             'avatar'       => '头像',
+            'number'       => '数量',
         ];
     }
 }

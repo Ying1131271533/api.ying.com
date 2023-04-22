@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Dingo\Api\Facade\Route;
 use Illuminate\Validation\Rule;
 
 class AkaliRequest extends BaseRequest
@@ -39,9 +38,9 @@ class AkaliRequest extends BaseRequest
     protected function scene()
     {
         // 获取路由名称
-        $routeName = Route::current()->action['as'];
-        switch ($routeName) {
-            case 'v1.article.store':
+        $route_name = $this->route()->getName();
+        switch ($route_name) {
+            case 'article.store':
                 return [
                     'id'    => 'required|integer|gt:0|exists:articles,id',
                     'title' => [
@@ -51,7 +50,7 @@ class AkaliRequest extends BaseRequest
                     ],
                 ];
                 break;
-            case 'v1.article.update':
+            case 'article.update':
                 return [
                     'id'    => 'required|integer|gt:0|exists:articles,id',
                     'title'  => [
@@ -63,7 +62,7 @@ class AkaliRequest extends BaseRequest
                 ];
                 break;
             default:
-                return ['validate_error' => 'required'];
+                return [];
                 break;
 
         }

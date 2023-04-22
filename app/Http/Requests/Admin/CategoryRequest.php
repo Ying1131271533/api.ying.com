@@ -44,8 +44,8 @@ class CategoryRequest extends BaseRequest
     protected function scene()
     {
         // 获取路由名称
-        $routeName = $this->route()->getName();
-        switch ($routeName) {
+        $route_name = $this->route()->getName();
+        switch ($route_name) {
             case 'categorys.store':
                 return [
                     'name' => 'required|max:20|unique:categories',

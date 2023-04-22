@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\CategoryRequest;
-use App\Http\Services\Admin\CategoryServices;
+use App\Http\Services\Admin\CategoryService;
 use App\Models\Category;
 use App\Transformers\CategoryTransformer;
 use Illuminate\Http\Request;
@@ -29,7 +29,7 @@ class CategoryController extends BaseController
     {
         // 获取验证参数
         $validated = $request->validated();
-        CategoryServices::saveCategory($validated);
+        CategoryService::saveCategory($validated);
         return $this->response->created();
     }
 
@@ -48,7 +48,7 @@ class CategoryController extends BaseController
     {
         // 获取验证参数
         $validated = $request->validated();
-        CategoryServices::saveCategory($validated, $category);
+        CategoryService::saveCategory($validated, $category);
         return $this->response->noContent();
     }
 

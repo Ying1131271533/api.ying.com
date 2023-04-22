@@ -5,9 +5,10 @@ namespace App\Http\Services\Admin;
 use App\Models\Category;
 use App\Models\Good;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class GoodsServices
+class GoodsService
 {
     public static function saveGoods($data, $model = null)
     {
@@ -17,7 +18,7 @@ class GoodsServices
         // 找到分类
         $category = Category::find($data['category_id']);
         // 是否被禁用
-        if($category['status'] == 0) throw new UnprocessableEntityHttpException('分类已被禁用');
+        if($category['status'] == 0) throw new BadRequestHttpException('分类已被禁用');
         // 是否为3级分类
         if($category['level'] != 3) throw new UnprocessableEntityHttpException('分类必须为3级');
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\BaseController;
 use App\Models\Good;
 use App\Transformers\GoodsTransformer;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
 class GoodsController extends BaseController
@@ -17,19 +18,64 @@ class GoodsController extends BaseController
         // 分类数据
         $catgorys = cache_categorys();
 
+        // 要注意每个搜索条件或者排序条件的先后顺序
+
+        // 搜索条件
+        $where       = [];
+        $title       = $request->query('title');
+        $category_id = $request->query('category_id');
+
+        if ($title) $where[] = ['title', 'like', "%{$title}%"];
+        if ($category_id) $where[] = ['category_id', $category_id];
+
+        // 排序
+        $sales          = $request->query('sales');
+        $price          = $request->query('price');
+        $comments_count = $request->query('comments_count');
+
         // 商品的分页数据
-        $goods = Good::select('id', 'title', 'cover', 'price')
-        ->where('is_on', 1)
-        ->withCount('comments')
-        ->paginate(20);
+        $goods = Good::select('id', 'title', 'cover', 'price', 'category_id', 'stock', 'sales')
+            ->withCount('comments')
+
+        // 第一种方式
+        // ->where($where)
+        // 第二种方式
+            ->where('is_on', 1)
+            ->when($title, function ($query) use ($title) {
+                $query->where('title', 'like', "%{$title}%");
+            })
+            ->when($category_id, function ($query) use ($category_id) {
+                $query->where('category_id', $category_id);
+            })
+
+        // 老师：正常的排序没有这么简单，而是使用了复杂的算法
+            ->when($sales == 1, function ($query) {
+                $query->orderBy('sales', 'desc');
+            })
+            ->when($price == 1, function ($query) {
+                $query->orderBy('price', 'desc');
+            })
+            ->when($comments_count == 1, function ($query) {
+                $query->orderBy('comments_count', 'desc');
+            })
+            ->orderBy('updated_at', 'desc')
+            ->simplePaginate(20)
+            // 维持搜索条件
+            ->appends([
+                'title'          => $title,
+                'category_id'    => $category_id,
+                'sales'          => $sales,
+                'price'          => $price,
+                'comments_count' => $comments_count,
+            ]);
 
         // 推荐商品
         $recommend_goods = Good::select('id', 'title', 'cover', 'price')
-        ->where(['is_on' => 1, 'is_recommend' => 1])
-        ->withCount('comments')
-        ->inRandomOrder()
-        ->limit(10)
-        ->get();
+            ->where(['is_on' => 1, 'is_recommend' => 1])
+            ->withCount('comments')
+            ->inRandomOrder()
+            ->limit(10)
+            ->get();
 
         return $this->response->array([
             'categorys'       => $catgorys,
@@ -46,9 +92,9 @@ class GoodsController extends BaseController
     {
         // 详情
         $goods = Good::where('id', $id)
-        ->with(['comments', 'comments.user' => function ($query) {
-            $query->select('id', 'name', 'avatar');
-        }])
+            ->with(['comments', 'comments.user' => function ($query) {
+                $query->select('id', 'name', 'avatar');
+            }])
             ->first($id)
             ->append('pics_url');
         // $goods = Good::where('id', $id)->first();

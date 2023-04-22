@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\GoodsController;
 use App\Http\Controllers\Api\IndexController;
 use App\Http\Controllers\Api\UserController;
@@ -34,6 +35,7 @@ $api->version('v1', $params, function ($api) {
 
     // 需要登录的路由
     $api->group(['middleware' => 'api.auth'], function ($api) {
+
         /**
          * 个人中心
          */
@@ -43,5 +45,12 @@ $api->version('v1', $params, function ($api) {
         $api->patch('user', [UserController::class, 'updateUserInfo'])->name('user.updateInfo');
         // 更新用户头像
         $api->patch('user/avatar', [UserController::class, 'updateUserAvatar'])->name('user.updateAvatar');
+
+        /**
+         * 购物车
+         */
+        $api->resource('carts', CartController::class, [
+            'except' => ['show']
+        ]);
     });
 });

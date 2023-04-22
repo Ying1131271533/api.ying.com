@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\GoodsRequest;
-use App\Http\Services\Admin\GoodsServices;
+use App\Http\Services\Admin\GoodsService;
 use App\Models\Good;
 use App\Transformers\GoodsTransformer;
 use Illuminate\Http\Request;
@@ -45,7 +45,7 @@ class GoodsController extends BaseController
     public function store(GoodsRequest $request)
     {
         $validated = $request->validated();
-        GoodsServices::saveGoods($validated);
+        GoodsService::saveGoods($validated);
         return $this->response->created();
     }
 
@@ -63,7 +63,7 @@ class GoodsController extends BaseController
     public function update(GoodsRequest $request, Good $good)
     {
         $validated = $request->validated();
-        GoodsServices::saveGoods($validated, $good);
+        GoodsService::saveGoods($validated, $good);
         return $this->response->noContent();
     }
 

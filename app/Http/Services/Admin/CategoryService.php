@@ -7,7 +7,7 @@ use App\Models\Category;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class CategoryServices extends BaseServices
+class CategoryService extends BaseServices
 {
     public static function saveCategory($data, $model = null)
     {
