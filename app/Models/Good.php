@@ -11,24 +11,32 @@ class Good extends Model
     use HasFactory;
 
     /**
+     * 不可以批量赋值的属性。
+     * 给空数组 既是所有属性都可以赋值
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
      * 可批量赋值的属性。
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'category_id',
-        'title',
-        'description',
-        'price',
-        'stock',
-        'sales',
-        'cover',
-        'pics',
-        'is_on',
-        'is_recommend',
-        'details',
-    ];
+    // protected $fillable = [
+    //     'user_id',
+    //     'category_id',
+    //     'title',
+    //     'description',
+    //     'price',
+    //     'stock',
+    //     'sales',
+    //     'cover',
+    //     'pics',
+    //     'is_on',
+    //     'is_recommend',
+    //     'details',
+    // ];
 
     /**
      * 类型转换
@@ -47,7 +55,7 @@ class Good extends Model
      */
     protected $appends = [
         'cover_url',
-        // 这里因为只有商品详情才会用到，所以这里在查询的时候，手动添加 使用 offset()
+        // 这里因为只有商品详情才会用到，所以这里在查询的时候，手动追加字段 使用 append()
         // 'pics_url',
     ];
 

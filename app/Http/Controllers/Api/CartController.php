@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Api\CartRequest;
-use App\Http\Services\Api\CartService;
+use App\Services\Api\CartService;
 use App\Models\Cart;
+use App\Transformers\CartTransformer;
 use Illuminate\Http\Request;
 
 class CartController extends BaseController
@@ -15,7 +16,8 @@ class CartController extends BaseController
      */
     public function index()
     {
-        //
+        $carts = Cart::where('user_id', auth('api')->id())->get();
+        return $this->response->collection($carts, new CartTransformer);
     }
 
     /**
@@ -40,18 +42,21 @@ class CartController extends BaseController
     }
 
     /**
-     * 勾选
+     * 选中
      */
     public function isChecked(Cart $cart)
     {
-        //
+        $cart->is_checked = $cart->is_checked == 0 ? 1 : 0;
+        $cart->save();
+        return $this->response->noContent();
     }
 
     /**
      * 移除
      */
-    public function destroy($cart)
+    public function destroy(Cart $cart)
     {
-        //
+        $cart->delete();
+        return $this->response->noContent();
     }
 }

@@ -19,7 +19,6 @@ class Cart extends Model
         'goods_id',
         'number',
         'is_checked',
-        'group',
     ];
 
     /**
@@ -28,5 +27,13 @@ class Cart extends Model
     public function goods()
     {
         return $this->belongsTo(Good::class);
+    }
+
+    /**
+     * 获取这个购物车所属的商品
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\GoodsController;
 use App\Http\Controllers\Api\IndexController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\TestController;
 
@@ -49,8 +50,19 @@ $api->version('v1', $params, function ($api) {
         /**
          * 购物车
          */
+        // 选中
+        $api->patch('carts/{cart}/checked', [CartController::class, 'isChecked']);
+        // 资源路由
         $api->resource('carts', CartController::class, [
             'except' => ['show']
         ]);
+
+        /**
+         * 订单
+         */
+        // 订单预览页
+        $api->get('orders/preview', [OrderController::class, 'preview'])->name('order.preview');
+        // 提交订单
+        $api->post('orders', [OrderController::class, 'store'])->name('order.store');
     });
 });

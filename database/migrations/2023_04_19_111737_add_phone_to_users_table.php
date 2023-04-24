@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('phone')->after('email_verified_at')->nullable()->comment('电话');
+            $table->string('phone')->after('email_verified_at')->unique()->nullable()->comment('电话');
         });
     }
 

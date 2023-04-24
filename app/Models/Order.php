@@ -11,22 +11,30 @@ class Order extends Model
     use HasFactory;
 
     /**
+     * 不可以批量赋值的属性。
+     * 给空数组 既是所有属性都可以赋值
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
      * 可批量赋值的属性。
      *
      * @var array
      */
-    protected $fillable = [
-        'order_no',
-        'user_id',
-        'amount',
-        'status',
-        'address_id',
-        'express_type',
-        'express_no',
-        'pay_time',
-        'pay_type',
-        'trade_no',
-    ];
+    // protected $fillable = [
+    //     'order_no',
+    //     'user_id',
+    //     'amount',
+    //     'status',
+    //     'address_id',
+    //     'express_type',
+    //     'express_no',
+    //     'pay_time',
+    //     'pay_type',
+    //     'trade_no',
+    // ];
 
     /**
      * 获取支付类型 - 这种只能访问表存在的字段

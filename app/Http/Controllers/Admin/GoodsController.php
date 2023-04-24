@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\GoodsRequest;
-use App\Http\Services\Admin\GoodsService;
+use App\Services\Admin\GoodsService;
 use App\Models\Good;
 use App\Transformers\GoodsTransformer;
 use Illuminate\Http\Request;

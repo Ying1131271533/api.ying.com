@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Api;
 
 use App\Http\Requests\BaseRequest;
 
-class LoginRequest extends BaseRequest
+class OrderRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,9 +14,7 @@ class LoginRequest extends BaseRequest
     public function rules()
     {
         return [
-            // 'email'    => 'required|email',
-            'account'  => 'required',
-            'password' => 'required|min:6|max:50',
+            'address_id' => 'required', // TODO 地址要存在才行 exists:address,id
         ];
     }
 }

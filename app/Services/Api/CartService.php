@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Api;
+namespace App\Services\Api;
 
 use App\Models\Cart;
 use App\Models\Good;

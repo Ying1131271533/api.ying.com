@@ -62,7 +62,7 @@ class User extends Authenticatable implements JWTSubject
         'avatar_url',
     ];
 
-     // Rest omitted for brevity
+    // Rest omitted for brevity
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -83,7 +83,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-
 
     /**
      * 获取用户头像的oss链接
@@ -126,4 +125,16 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Cart::class);
     }
+
+    /**
+     * 查询用户密码
+     */
+    public function findForPassword($identifier)
+    {
+        return $this->orWhere('email', $identifier)
+            ->orWhere('phone', $identifier)
+            ->orWhere('name', $identifier)
+            ->first();
+    }
+
 }

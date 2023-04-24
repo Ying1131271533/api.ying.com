@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Services;
 
 use Dingo\Api\Routing\Helpers;
 
-class BaseServices
+class BaseService
 {
     use Helpers;
 }

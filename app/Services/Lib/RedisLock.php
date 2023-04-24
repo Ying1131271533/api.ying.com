@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Services\Lib;
+namespace App\Services\Lib;
 
 use Illuminate\Support\Facades\Redis;
 
-class RedisLocks
+class RedisLock
 {
     /**
      * @var 当前锁标识，用于解锁
@@ -46,11 +46,11 @@ class RedisLocks
     public function lockByLua($key = 'lock', $expire = 5)
     {
         // ttl - 过期时间
-        $script = <<<EOF
+        $script = <<<'LUA'
 
             local key = KEYS[1]
-            local value = ARGV[1]
-            local ttl = ARGV[2]
+            local value = KEYS[2]
+            local ttl = KEYS[3]
 
             if (redis.call('setnx', key, value) == 1) then
                 return redis.call('expire', key, ttl)
@@ -59,19 +59,21 @@ class RedisLocks
             end
 
             return 0
-EOF;
+LUA;
 
         $this->_lockFlag = md5(microtime(true));
-        return $this->_eval($script, [$key, $this->_lockFlag, $expire]);
+
+        $result = Redis::eval($script, 3, $key, $this->_lockFlag, $expire);
+        return $result;
     }
 
     // 解锁
     public function unlock($key = 'lock')
     {
-        $script = <<<EOF
+        $script = <<<'LUA'
 
             local key = KEYS[1]
-            local value = ARGV[1]
+            local value = KEYS[2]
 
             if (redis.call('exists', key) == 1 and redis.call('get', key) == value)
             then
@@ -79,17 +81,12 @@ EOF;
             end
 
             return 0
-EOF;
+LUA;
 
         if ($this->_lockFlag) {
-            return $this->_eval($script, [$key, $this->_lockFlag]);
+            $result = Redis::eval($script, 2, $key, $this->_lockFlag);
+            return $result;
         }
-    }
-
-    private function _eval($script, array $params, $keyNum = 1)
-    {
-        $hash = $this->_redis->script('load', $script);
-        return $this->_redis->evalSha($hash, $params, $keyNum);
     }
 
 }

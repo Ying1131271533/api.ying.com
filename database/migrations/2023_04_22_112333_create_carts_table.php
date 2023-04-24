@@ -23,7 +23,7 @@ return new class extends Migration
             // 'specs' => [ '布料：黄色', '尺寸：L' ],
             // $table->json('specs')->comment('商品规格');
             $table->integer('number')->default(1)->comment('数量');
-            $table->tinyInteger('is_checked')->default(0)->comment('是否勾选：0 否 1 是');
+            $table->tinyInteger('is_checked')->default(0)->comment('是否选中：0 否 1 是');
             $table->timestamps();
 
             $table->index(['user_id', 'goods_id']);

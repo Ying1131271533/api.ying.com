@@ -14,7 +14,11 @@ class LoginController extends BaseController
      */
     public function login(LoginRequest $request)
     {
-        $data = $request->validated();
+        $validated = $request->validated();
+        // 获取账号类型 邮箱/手机
+        $type = filter_var($validated['account'], FILTER_VALIDATE_EMAIL ) ? 'email' : 'phone';
+        $data = [$type => $validated['account'], 'password' => $validated['password']];
+        // 验证账号
         if (!$token = auth('api')->attempt($data)) {
             return $this->response->errorUnauthorized('账号或密码错误！');
         }
