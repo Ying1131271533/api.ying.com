@@ -5,7 +5,7 @@ namespace App\Rules\Api;
 use App\Models\Good;
 use Illuminate\Contracts\Validation\Rule;
 
-class GoodsStock implements Rule
+class CheckGoodsStock implements Rule
 {
     /**
      * Create a new rule instance.
@@ -26,9 +26,9 @@ class GoodsStock implements Rule
      */
     public function passes($attribute, $value)
     {
-        $stock = Good::find($this->goods_id)->value('stock');
+        $stock = Good::where('id', $this->goods_id)->value('stock');
         // 数量必须少于库存
-        return ($value < $stock);
+        return (int)$value < $stock;
     }
 
     /**

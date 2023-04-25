@@ -26,9 +26,9 @@ class GoodsIsOn implements Rule
      */
     public function passes($attribute, $value)
     {
-        $goods = Good::find($this->goods_id);
+        $is_on = Good::where('id', $this->goods_id)->value('is_on');
         // 商品必须是上架
-        return ($goods->is_on == 1);
+        return ($is_on == 1);
     }
 
     /**

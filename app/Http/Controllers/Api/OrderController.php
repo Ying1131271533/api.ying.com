@@ -6,9 +6,11 @@ use App\Facades\UtilService;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Api\OrderRequest;
 use App\Models\Cart;
+use App\Models\Good;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class OrderController extends BaseController
@@ -41,7 +43,7 @@ class OrderController extends BaseController
     }
 
     /**
-     * 订单预览页
+     * 提交订单
      */
     public function store(OrderRequest $request)
     {
@@ -52,11 +54,13 @@ class OrderController extends BaseController
         $order_no = UtilService::generateReceiptCode(); // 生成订单号
         $amount   = 0;
 
-        // 获取选中的购物车
-        $carts = Cart::where('user_id', $user_id)
+        // 获取选中的购物车 - 查询构造器
+        $cartsQuery = Cart::where('user_id', $user_id)
             ->where('is_checked', 1)
-            ->with('goods:id,price')
-            ->get();
+            ->with('goods:id,title,price,stock');
+
+        // 查询构造器获取购物车数据
+        $carts = $cartsQuery->get();
         if (empty($carts)) {
             return $this->response->errorBadRequest('未选择商品！');
         }
@@ -66,24 +70,50 @@ class OrderController extends BaseController
 
         // 计算总金额
         foreach ($carts as $key => $cart) {
+            // 是否存在库存不足的商品
+            if ($cart->goods->stock < $cart->number) {
+                return $this->response->errorBadRequest('商品：' . $cart->goods->title . ' 库存不足，请重新选择商品！');
+            }
             $orderDetailData[] = [
                 'goods_id' => $cart->goods->id,
                 'price'    => $cart->goods->price,
                 'number'   => $cart->number,
             ];
+            // 总金额
             $amount += $cart->goods->price * $cart->number;
         }
 
-        // 生成订单
-        $order = Order::create([
-            'user_id'    => $user_id,
-            'order_on'   => $order_no,
-            'address_id' => $validated['address_id'],
-            'amount'     => $amount,
-        ]);
+        // 开启事务
+        DB::beginTransaction();
 
-        // 生成订单详情
+        try {
+            // 生成订单
+            $order = Order::create([
+                'user_id'    => $user_id,
+                'order_no'   => $order_no,
+                'address_id' => $validated['address_id'],
+                'amount'     => $amount,
+            ]);
 
-        return $amount;
+            // 生成订单详情
+            $order->details()->createMany($orderDetailData);
+
+            // 查询构造器删除选中的购物车数据
+            $cartsQuery->delete();
+
+            // 减去商品对应的库存量
+            foreach ($carts as $cart) {
+                Good::where('id', $cart->goods_id)->decrement('stock', $cart->number);
+            }
+
+            // 提交事务
+            DB::commit();
+            return $this->response->created();
+        } catch (\Exception$e) {
+            // 回滚事务
+            DB::rollBack();
+            throw $e;
+            // return $this->response->errorInternal($e->getMessage());
+        }
     }
 }

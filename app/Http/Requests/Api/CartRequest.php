@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use App\Http\Requests\BaseRequest;
+use App\Rules\Api\CheckGoodsStock;
 use App\Rules\Api\GoodsIsOn;
 use App\Rules\Api\GoodsStock;
 
@@ -40,7 +41,7 @@ class CartRequest extends BaseRequest
                     'number'   => [
                         'integer',
                         'gt:0',
-                        new GoodsStock($this->goods_id),
+                        new CheckGoodsStock($this->goods_id),
                     ],
                 ];
                 break;
@@ -50,9 +51,9 @@ class CartRequest extends BaseRequest
                         'required',
                         'integer',
                         'gt:0',
-                        new GoodsStock($this->cart->goods->id),
                         new GoodsIsOn($this->cart->goods_id),
-                        // new GoodsStock($this->cart->goods),
+                        new CheckGoodsStock($this->cart->goods->id),
+                        // new CheckGoodsStock($this->cart->goods),
                         // function ($attribute, $value, $fail) {
                         //     if($value > $this->cart->goods->stock) {
                         //         $fail('数量不能大于库存！');
