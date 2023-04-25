@@ -47,6 +47,10 @@ class OrderController extends BaseController
      */
     public function store(OrderRequest $request)
     {
+        // 测试远程一对多
+        $order = Order::find(2);
+        $goods = $order->goods;
+        return $goods;
         $validated = $request->validated();
 
         // 处理订单数据

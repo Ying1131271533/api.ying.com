@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Order extends Model
 {
@@ -62,5 +63,20 @@ class Order extends Model
     public function details()
     {
         return $this->hasMany(OrderDetails::class, 'order_id');
+    }
+
+    /**
+     * 订单远程一对多，关联的商品
+     */
+    public function goods(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Good::class, // 要远程访问的最终模型
+            OrderDetails::class, // 中间模型
+            'order_id', // orders 在 goods_details 表上的外键(中间模型和本模型关联的外键)
+            'id', // 在 goods 表上的外键...(最终关联模型的本地键)
+            'id', // 在 orders 表上的本地键...(本模型和中间模型关联的本地键)
+            'goods_id' // 在 goods 表格上的本地键...(中间表和最终模型关联的一个键)
+        );
     }
 }
