@@ -73,10 +73,10 @@ class Order extends Model
         return $this->hasManyThrough(
             Good::class, // 要远程访问的最终模型
             OrderDetails::class, // 中间模型
-            'order_id', // orders 在 goods_details 表上的外键(中间模型和本模型关联的外键)
-            'id', // 在 goods 表上的外键...(最终关联模型的本地键)
-            'id', // 在 orders 表上的本地键...(本模型和中间模型关联的本地键)
-            'goods_id' // 在 goods 表格上的本地键...(中间表和最终模型关联的一个键)
+            'order_id', // 中间模型和本模型关联的外键
+            'id', // 最终关联模型的本地键
+            'id', // 本模型和中间模型关联的本地键
+            'goods_id' // 中间表和最终模型关联的一个外键
         );
     }
 }

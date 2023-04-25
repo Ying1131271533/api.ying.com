@@ -8,6 +8,7 @@ use App\Http\Requests\Api\OrderRequest;
 use App\Models\Cart;
 use App\Models\Good;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -48,9 +49,12 @@ class OrderController extends BaseController
     public function store(OrderRequest $request)
     {
         // 测试远程一对多
-        $order = Order::find(2);
-        $goods = $order->goods;
-        return $goods;
+        // $order = Order::find(1);
+        // $goods = $order->goods;
+        // return $goods;
+        // $user = User::find(1);
+        // $goods = $user->cartGoods;
+        // return $goods;
         $validated = $request->validated();
 
         // 处理订单数据

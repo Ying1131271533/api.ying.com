@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -135,6 +136,21 @@ class User extends Authenticatable implements JWTSubject
             ->orWhere('phone', $identifier)
             ->orWhere('name', $identifier)
             ->first();
+    }
+
+    /**
+     * 订单远程一对多，关联的商品
+     */
+    public function cartGoods(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Good::class, // 要远程访问的最终模型
+            Cart::class, // 中间模型
+            'user_id', // 中间模型和本模型关联的外键
+            'id', // 最终关联模型的本地键
+            'id', // 本模型和中间模型关联的本地键
+            'goods_id' // 中间表和最终模型关联的一个外键
+        );
     }
 
 }
