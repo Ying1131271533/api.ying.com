@@ -16,6 +16,32 @@ class PayController extends BaseController
     {
         $validated = $request->validated();
 
+        // 订单状态是否为 1
+        if($order->status == 1) {
+            $errorMsg = '订单异常';
+            switch ($order->status) {
+                case 2:
+                    $errorMsg = '订单已支付';
+                    break;
+                case 3:
+                    $errorMsg = '订单已发货';
+                    break;
+                case 4:
+                    $errorMsg = '订单已收货';
+                    break;
+                case 5:
+                    $errorMsg = '订单已过期';
+                    break;
+                case 6:
+                    $errorMsg = '订单已退换';
+                    break;
+                case 7:
+                    $errorMsg = '订单已退货';
+                    break;
+            }
+            return $this->response->errorBadRequest($errorMsg);
+        }
+
         // 支付宝
         if ($validated['type'] == 'aliyun') {
             $order = [
