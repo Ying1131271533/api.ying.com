@@ -23,7 +23,7 @@ class PayController extends BaseController
                 'total_amount' => $order->amount,
                 'subject'      => $order->goods()->first()->title . ' 等 ' . $order->goods()->count() . '件商品',
             ];
-
+            return $order;
             // 电脑支付
             // return Pay::alipay()->web($order);
             // 扫码支付

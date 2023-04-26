@@ -71,6 +71,6 @@ $api->version('v1', $params, function ($api) {
         /**
          * 支付
          */
-        $api->get('orders/{order}/pay', [PayController::class, 'pay'])->name('pay');
+        $api->get('orders/{order}/pay', [PayController::class, 'pay'])->name('order.pay');
     });
 });
