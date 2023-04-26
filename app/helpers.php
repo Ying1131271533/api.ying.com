@@ -338,7 +338,7 @@ if (!function_exists('pay_type_name')) {
      */
     function pay_type_name($type)
     {
-        $pay_name = '未知';
+        $pay_name = null;
         switch ($type) {
             case 1:
                 $pay_name = '支付宝';

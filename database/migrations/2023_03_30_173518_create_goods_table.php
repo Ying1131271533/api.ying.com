@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('cover', 100)->comment('封面图');
             $table->string('description', 255)->comment('描述');
             $table->json('pics')->comment('详情图集');
-            $table->double('price', 10, 2)->comment('价格');
+            $table->decimal('price', 10, 2)->comment('价格');
             $table->integer('stock')->comment('库存');
             $table->tinyInteger('is_on')->default(0)->comment('上架：0 否 1 是');
             $table->tinyInteger('is_recommend')->default(0)->comment('推荐商品：0 否 1是');

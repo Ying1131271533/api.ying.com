@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('order_details', function (Blueprint $table) {
             $table->unsignedBigInteger('order_id')->comment('订单id');
             $table->unsignedBigInteger('goods_id')->comment('商品id');
-            $table->double('price')->comment('价格');
+            $table->decimal('price', 10, 2)->comment('价格');
             $table->integer('number')->comment('数量');
             $table->timestamps();
 

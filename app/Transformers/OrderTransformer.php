@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Good;
 use App\Models\Order;
 use League\Fractal\TransformerAbstract;
 
@@ -10,7 +11,7 @@ class OrderTransformer extends TransformerAbstract
     public function transform(Order $order)
     {
         // 可include的模型
-        $this->setAvailableIncludes(['user', 'details']);
+        $this->setAvailableIncludes(['user', 'details', 'goods']);
         return [
             'id'           => $order->id,
             'order_no'     => $order->order_no,
@@ -42,5 +43,13 @@ class OrderTransformer extends TransformerAbstract
     public function includeDetails(Order $order)
     {
         return $this->collection($order->details, new OrderDetailsTransformer());
+    }
+
+    /**
+     * 加载订单详情的商品数据
+     */
+    public function includeGoods(Order $order)
+    {
+        return $this->collection($order->goods, new GoodsTransformer());
     }
 }

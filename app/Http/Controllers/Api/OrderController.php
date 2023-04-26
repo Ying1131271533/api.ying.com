@@ -9,6 +9,7 @@ use App\Models\Cart;
 use App\Models\Good;
 use App\Models\Order;
 use App\Models\User;
+use App\Transformers\OrderTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -52,9 +53,9 @@ class OrderController extends BaseController
         // $order = Order::find(1);
         // $goods = $order->goods;
         // return $goods;
-        // $user = User::find(1);
-        // $goods = $user->cartGoods;
-        // return $goods;
+        $goods = User::with('cartGoods')->find(1);
+        return $goods;
+
         $validated = $request->validated();
 
         // 处理订单数据
@@ -123,5 +124,13 @@ class OrderController extends BaseController
             throw $e;
             // return $this->response->errorInternal($e->getMessage());
         }
+    }
+
+    /**
+     * 订单详情
+     */
+    public function show(Order $order)
+    {
+        return $this->response->item($order, new OrderTransformer);
     }
 }

@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         // 这里一般处理 凌晨备份数据库 清空日志表、、等等之类的业务需求
         $schedule->call(function () {
             $orders = Order::where('status', 1)
-            ->where('created_at', '<', now()->subMinutes(10))
+            ->where('created_at', '<', now()->subDays(1))
             ->with('details.goods')
             ->get();
 

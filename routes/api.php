@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\GoodsController;
 use App\Http\Controllers\Api\IndexController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PayController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\TestController;
 
@@ -64,5 +65,12 @@ $api->version('v1', $params, function ($api) {
         $api->get('orders/preview', [OrderController::class, 'preview'])->name('order.preview');
         // 提交订单
         $api->post('orders', [OrderController::class, 'store'])->name('order.store');
+        // 订单详情页
+        $api->get('orders/{order}', [OrderController::class, 'show'])->name('order.show');
+
+        /**
+         * 支付
+         */
+        $api->get('orders/{order}/pay', [PayController::class, 'pay'])->name('pay');
     });
 });

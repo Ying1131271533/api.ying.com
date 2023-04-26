@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d39c9878a5e110d97f8edeba35703bc0",
+    "content-hash": "02cfde07a5dc7709d411b767bcee9e72",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -7503,6 +7503,208 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "yansongda/laravel-pay",
+            "version": "v3.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yansongda/laravel-pay.git",
+                "reference": "14261fbf0285af683e8b687eba99ecab1903af1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yansongda/laravel-pay/zipball/14261fbf0285af683e8b687eba99ecab1903af1a",
+                "reference": "14261fbf0285af683e8b687eba99ecab1903af1a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^8.0 || ^9.0 || ^10.0",
+                "illuminate/support": "^8.0 || ^9.0 || ^10.0",
+                "yansongda/pay": "~3.2.0"
+            },
+            "require-dev": {
+                "laravel/framework": "^8.0 || ^9.0 || ^10.0",
+                "laravel/lumen-framework": "^8.0 || ^9.0 || ^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Yansongda\\LaravelPay\\PayServiceProvider"
+                    ],
+                    "aliases": {
+                        "Pay": "Yansongda\\LaravelPay\\Facades\\Pay"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Yansongda\\LaravelPay\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "yansongda",
+                    "email": "me@yansongda.cn"
+                }
+            ],
+            "description": "专注 Alipay/WeChat/Unipay 的 laravel 支付扩展包",
+            "keywords": [
+                "alipay",
+                "laravel",
+                "package",
+                "pay",
+                "unipay",
+                "wechat"
+            ],
+            "support": {
+                "issues": "https://github.com/yansongda/laravel-pay/issues",
+                "source": "https://github.com/yansongda/laravel-pay"
+            },
+            "time": "2023-03-09T10:03:45+00:00"
+        },
+        {
+            "name": "yansongda/pay",
+            "version": "v3.2.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yansongda/pay.git",
+                "reference": "81df62a8637526c0beabe3a5803513672c9337aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yansongda/pay/zipball/81df62a8637526c0beabe3a5803513672c9337aa",
+                "reference": "81df62a8637526c0beabe3a5803513672c9337aa",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-openssl": "*",
+                "ext-simplexml": "*",
+                "php": ">=7.4",
+                "psr/container": "^1.1 | ^2.0",
+                "psr/event-dispatcher": "^1.0",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^1.0",
+                "psr/log": "^1.1 | ^2.0 | ^3.0",
+                "yansongda/supports": "~3.2.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "guzzlehttp/guzzle": "^7.0",
+                "mockery/mockery": "^1.4",
+                "monolog/monolog": "^2.2",
+                "phpstan/phpstan": "^1.0.0",
+                "phpunit/phpunit": "^9.0",
+                "symfony/event-dispatcher": "^5.2.0",
+                "symfony/http-foundation": "^5.2.0",
+                "symfony/psr-http-message-bridge": "^2.1",
+                "symfony/var-dumper": "^5.1"
+            },
+            "suggest": {
+                "hyperf/utils": "Hyperf 框架下使用 SDK，请安装",
+                "illuminate/container": "Laravel 框架下使用 SDK，请安装",
+                "php-di/php-di": "其它/无框架下使用 SDK，请安装"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Functions.php"
+                ],
+                "psr-4": {
+                    "Yansongda\\Pay\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "yansongda",
+                    "email": "me@yansongda.cn"
+                }
+            ],
+            "description": "可能是我用过的最优雅的 Alipay 和 WeChat 的支付 SDK 扩展包了",
+            "keywords": [
+                "alipay",
+                "pay",
+                "wechat"
+            ],
+            "support": {
+                "homepage": "https://pay.yansongda.cn",
+                "issues": "https://github.com/yansongda/pay/issues",
+                "source": "https://github.com/yansongda/pay"
+            },
+            "time": "2023-02-26T11:52:56+00:00"
+        },
+        {
+            "name": "yansongda/supports",
+            "version": "v3.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yansongda/supports.git",
+                "reference": "c3f736efe169696cef94730976e604a61c345b5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yansongda/supports/zipball/c3f736efe169696cef94730976e604a61c345b5c",
+                "reference": "c3f736efe169696cef94730976e604a61c345b5c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "mockery/mockery": "^1.4",
+                "monolog/monolog": "^2.0",
+                "phpstan/phpstan": "^1.1.0",
+                "phpunit/phpunit": "^9.0",
+                "symfony/console": "^5.1"
+            },
+            "suggest": {
+                "monolog/monolog": "Use logger",
+                "symfony/console": "Use stdout logger"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Functions.php"
+                ],
+                "psr-4": {
+                    "Yansongda\\Supports\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "yansongda",
+                    "email": "me@yansongda.cn"
+                }
+            ],
+            "description": "common components",
+            "keywords": [
+                "array",
+                "collection",
+                "config",
+                "support"
+            ],
+            "support": {
+                "issues": "https://github.com/yansongda/supports/issues",
+                "source": "https://github.com/yansongda/supports"
+            },
+            "time": "2022-03-28T10:25:04+00:00"
         }
     ],
     "packages-dev": [
