@@ -34,6 +34,11 @@ $api->version('v1', $params, function ($api) {
     // 商品列表
     $api->get('goods', [GoodsController::class, 'index'])->name('goods.index');
 
+    /**
+     * 回调
+     */
+    // 支付宝支付成功之后的回调
+    $api->any('pay/notify/aliyun', [PayController::class, 'notifyAliyun'])->name('pay.notifyAliyun');
 
     // 需要登录的路由
     $api->group(['middleware' => 'api.auth'], function ($api) {
