@@ -18,13 +18,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->comment('买家id');
             $table->string('order_no')->unique()->comment('订单单号');
             $table->decimal('amount', 10, 2)->comment('总金额');
-            $table->tinyInteger('status')->default(1)->comment('订单状态: 1 下单 2 支付 3 发货 4 收货(结单) 5 过期 6 退换 7 退货');
+            $table->tinyInteger('status')->default(1)->comment('订单状态: 1 下单 2 支付 3 发货 4 收货(结单) 5 过期 6 退换 7 退货 10 支付异常(例如：金额不相同)');
             $table->integer('address_id')->comment('收货地址id');
             $table->string('express_type')->nullable()->comment('快递类型: SF YT YD');
             $table->string('express_no')->nullable()->comment('快递单号');
             $table->timestamp('pay_time')->nullable()->comment('支付时间');
-            $table->string('pay_type')->nullable()->comment('支付类型：aliyun,wechat');
-            // $table->tinyInteger('pay_type')->nullable()->comment('支付类型：1 支付宝 2 微信');
+            $table->string('pay_type')->nullable()->comment('支付类型：支付宝 微信');
             $table->string('trade_no')->nullable()->comment('支付单号');
             $table->timestamps();
 

@@ -38,7 +38,7 @@ $api->version('v1', $params, function ($api) {
      * 回调
      */
     // 支付宝支付成功之后的回调
-    $api->any('pay/notify/aliyun', [PayController::class, 'notifyAliyun'])->name('pay.notifyAliyun');
+    $api->any('pay/notify/alipay', [PayController::class, 'notifyAlipay'])->name('pay.notifyAlipay');
 
     // 需要登录的路由
     $api->group(['middleware' => 'api.auth'], function ($api) {

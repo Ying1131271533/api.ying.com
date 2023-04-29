@@ -19,7 +19,7 @@ class PayController extends BaseController
         $validated = $request->validated();
 
         // 订单状态是否为 1
-        if($order->status != 1) {
+        if ($order->status != 1) {
             // $errorMsg = '订单异常';
             // switch ($order->status) {
             //     case 2:
@@ -46,7 +46,7 @@ class PayController extends BaseController
         }
 
         // 支付宝
-        if ($validated['type'] == 'aliyun') {
+        if ($validated['type'] == 'alipay') {
             $order = [
                 'out_trade_no' => $order->order_no,
                 'total_amount' => $order->amount,
@@ -74,11 +74,11 @@ class PayController extends BaseController
     /**
      * 支付宝支付成功之后的异步回调
      */
-    public function notifyAliyun(Request $request)
+    public function notifyAlipay(Request $request)
     {
         $alipay = Pay::alipay();
 
-        try{
+        try {
             $data = $alipay->callback(); // 是的，验签就这么简单！
 
             // 请自行对 trade_status 进行判断及其它逻辑进行判断，在支付宝的业务通知中，只有交易通知状态为 TRADE_SUCCESS 或 TRADE_FINISHED 时，支付宝才会认定为买家付款成功。
@@ -87,7 +87,28 @@ class PayController extends BaseController
             // 3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email）；
             // 4、验证app_id是否为该商户本身。
             // 5、其它业务逻辑情况
-            Log::info($data);
+
+
+
+
+            // 判断支付状态
+            if ($data['trade_status'] == 'TRADE_SUCCESS' || $data['trade_status'] == 'TRADE_FINISHED') {
+                // 查询订单
+                $order = Order::where('order_no', $data['out_trade_no'])->first();
+
+                // 老师说还可以验证支付的金额是否匹配
+                // if($data['total_amount'] !== (string)$order['amount']) { }
+
+                // 更新订单数据
+                $order->updte([
+                    'status'   => $data['total_amount'] === (string)$order['amount'] ? 2 : 10,
+                    'pay_time' => $data['gmt_payment'],
+                    'pay_type' => '支付宝',
+                    'trade_no' => $data['trade_no'],
+                ]);
+            }
+
+            // 保存支付信息记录
             Log::debug('Alipay notify', $data->all());
         } catch (\Exception $e) {
             // $e->getMessage();

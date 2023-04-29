@@ -14,7 +14,7 @@ class PayRequest extends BaseRequest
     public function rules()
     {
         return [
-            'type' => 'required|in:aliyun,wechat',
+            'type' => 'required|in:alipay,wechat',
         ];
     }
 
@@ -27,7 +27,7 @@ class PayRequest extends BaseRequest
     {
         return [
             'type.required' => '支付类型不能为空',
-            'type.in'       => '支付类型 只能是 aliyun,wechat',
+            'type.in'       => '支付类型 只能是 alipay,wechat',
         ];
     }
 }

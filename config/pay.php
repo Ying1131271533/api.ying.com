@@ -20,7 +20,7 @@ return [
             // 同步通知地址 支付成功后跳到我们项目的哪个地址
             'return_url'              => '',
             // 异步通知地址 支付宝请求我们项目的api，告诉我们支付成功
-            'notify_url'              => '',
+            'notify_url'              => 'https://d51f-116-21-93-56.ngrok-free.app/api/pay/notify/aliyun',
             // 选填-服务商模式下的服务商 id，当 mode 为 Pay::MODE_SERVICE 时使用该参数
             'service_provider_id'     => '',
             // 可选为：正常 MODE_NORMAL 沙箱 MODE_SANDBOX 商务 MODE_SERVICE
