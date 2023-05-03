@@ -2,33 +2,49 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Facades\Express;
 use App\Facades\UtilService;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Api\OrderRequest;
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Good;
 use App\Models\Order;
-use App\Models\User;
 use App\Transformers\OrderTransformer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redis;
 
 class OrderController extends BaseController
 {
+    /**
+     * 列表
+     */
+    public function index(Request $request)
+    {
+        $status = $request->query('status');
+        $goods_title = $request->query('goods_title');
+
+        $orders = Order::where('user_id', auth('api')->id())
+        ->when($status, function($query) use ($status) {
+            $query->where('status', $status);
+        })
+        ->when($goods_title, function($query) use ($goods_title) {
+            // 因为定义了远程一对多，所以这里能这样用
+            $query->whereHas('goods', function ($query) use ($goods_title) {
+                $query->where('title', 'like', "%{$goods_title}%");
+            });
+        })
+        ->paginate(3);
+        return $this->response->paginator($orders, new OrderTransformer);
+    }
+
     /**
      * 订单预览页
      */
     public function preview()
     {
         // 地址数据
-        // TODO 暂时模拟用户的地址数据
-        $address = [
-            ['id' => 1, 'name' => 'Tom', 'address' => '北京xxx', 'phone' => '1511949xxxx'],
-            ['id' => 2, 'name' => 'Akali', 'address' => '北京xxx', 'phone' => '1511949xxxx'],
-            ['id' => 3, 'name' => 'Jinx', 'address' => '北京xxx', 'phone' => '1511949xxxx'],
-        ];
+        $address = Address::where('user_id', auth('api')->id())->orderBy('is_default', 'desc')->get();
 
         // 购物车数据
         $carts = Cart::where('user_id', auth('api')->id())
@@ -53,8 +69,8 @@ class OrderController extends BaseController
         // $order = Order::find(1);
         // $goods = $order->goods;
         // return $goods;
-        $goods = User::with('cartGoods')->find(1);
-        return $goods;
+        // $goods = User::with('cartGoods')->find(1);
+        // return $goods;
 
         $validated = $request->validated();
 
@@ -132,5 +148,21 @@ class OrderController extends BaseController
     public function show(Order $order)
     {
         return $this->response->item($order, new OrderTransformer);
+    }
+
+    /**
+     * 物流查询
+     */
+    public function express(Order $order)
+    {
+        if($order->status != 3) {
+            return $this->response->errorBadRequest('订单状态异常！');
+        }
+
+        $resultData = Express::track($order->express_type, $order->express_no);
+        if(isset($resultData['Success']) && $resultData['Success'] === false) {
+            return $this->response->errorBadRequest($resultData['ResonseData']);
+        }
+        return $this->response->array($resultData);
     }
 }

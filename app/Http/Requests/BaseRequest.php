@@ -55,7 +55,7 @@ class BaseRequest extends FormRequest
             'address'      => '地址',
             'address_id'   => '地址',
             'citie'        => '地区',
-            'citie_id'     => '地区',
+            'citie_code'        => '地区',
         ];
     }
 }

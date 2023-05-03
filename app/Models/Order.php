@@ -42,12 +42,12 @@ class Order extends Model
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    protected function payType(): Attribute
-    {
-        return new Attribute(
-            get: fn ($value) => pay_type_name($value),
-        );
-    }
+    // protected function payType(): Attribute
+    // {
+    //     return new Attribute(
+    //         get: fn ($value) => pay_type_name($value),
+    //     );
+    // }
 
     /**
      * 获取这个订单所属的用户

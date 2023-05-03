@@ -17,11 +17,11 @@ class AddressRequest extends BaseRequest
     {
         return [
             'name'     => 'required',
-            'citie_id' => ['required', function ($attribute, $value, $fail) {
-                $citie = Citie::find($value);
+            'citie_code' => ['required', function ($attribute, $value, $fail) {
+                $citie = Citie::where('code', $value)->first();
                 if (empty($citie)) $fail('地区不存在');
                 // if (!in_array($citie->level, [3, 4])) $fail('区域 必须是县级或乡镇');
-                if ($citie->level != 3) $fail('区域 必须是县级或乡镇');
+                if ($citie->level != 4) $fail('区域 必须是县级或乡镇');
             }],
             'address'  => 'required',
             'phone'    => 'required|regex:/^1[3-9]\d{9}$/',

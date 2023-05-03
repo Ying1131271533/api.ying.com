@@ -13,13 +13,13 @@ class AddressTransformer extends TransformerAbstract
             'id'          => $address->id,
             'user_id'     => $address->user_id,
             'name'        => $address->name,
-            'citie_code'    => $address->citie_code,
+            'code'        => $address->citie_code,
             'cities_name' => cities_name($address->citie_code),
             'address'     => $address->address,
             'phone'       => $address->phone,
             'is_default'  => $address->is_default,
-            'created_at'  => $address->created_at->toDateTimeString(),
-            'updated_at'  => $address->updated_at->toDateTimeString(),
+            'created_at'  => $address->created_at,
+            'updated_at'  => $address->updated_at,
         ];
     }
 }

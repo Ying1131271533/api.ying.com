@@ -17,8 +17,8 @@ class UserTransformer extends TransformerAbstract
             'avatar'     => $user->avatar,
             'avatar_url' => oss_url($user->avatar),
             'is_locked'  => $user->is_locked,
-            'created_at' => $user->created_at->toDateTimeString(),
-            'updated_at' => $user->updated_at->toDateTimeString(),
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
         ];
     }
 }

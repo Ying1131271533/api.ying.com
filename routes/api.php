@@ -73,12 +73,16 @@ $api->version('v1', $params, function ($api) {
         /**
          * 订单
          */
-        // 订单预览页
+        // 预览页
         $api->get('orders/preview', [OrderController::class, 'preview'])->name('order.preview');
-        // 提交订单
+        // 提交
         $api->post('orders', [OrderController::class, 'store'])->name('order.store');
-        // 订单详情页
+        // 详情页
         $api->get('orders/{order}', [OrderController::class, 'show'])->name('order.show');
+        // 列表
+        $api->get('orders', [OrderController::class, 'index'])->name('order.index');
+        // 物流查询
+        $api->get('orders/{order}/express', [OrderController::class, 'express'])->name('order.express');
 
         /**
          * 支付
@@ -92,7 +96,7 @@ $api->version('v1', $params, function ($api) {
         // 城市数据
         $api->get('cities', [CitieController::class, 'index'])->name('cities.index');
         // 默认收货地址
-        $api->patch('address/{citie}/default', [AddressController::class, 'default'])->name('address.default');
+        $api->patch('address/{address}/default', [AddressController::class, 'default'])->name('address.default');
         // 收货地址的资源路由
         $api->resource('address', AddressController::class);
     });

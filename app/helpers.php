@@ -388,7 +388,13 @@ if (!function_exists('cities_name')) {
     function cities_name($citie_code)
     {
         $citie = Citie::where('code', $citie_code)->with('parent.parent.parent')->first();
-        return $citie;
+        $array = [
+            $citie->parent->parent->parent->name ?? '',
+            $citie->parent->parent->name ?? '',
+            $citie->parent->name ?? '',
+            $citie->name ?? '',
+        ];
+        return trim(implode(' ', $array));
     }
 }
 

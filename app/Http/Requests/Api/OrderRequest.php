@@ -14,7 +14,20 @@ class OrderRequest extends BaseRequest
     public function rules()
     {
         return [
-            'address_id' => 'required', // TODO 地址要存在才行 exists:address,id
+            'address_id' => 'required|exists:addresses,id',
+        ];
+    }
+
+    /**
+     * 获取已定义验证规则的错误消息。
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'address_id.required' => '收货地址不能为空',
+            'address_id.exists'   => '收货地址不存在',
         ];
     }
 }

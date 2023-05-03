@@ -22,7 +22,7 @@ class OrderTransformer extends TransformerAbstract
             'express_type' => $order->express_type,
             'express_no'   => $order->express_no,
             'pay_time'     => $order->pay_time,
-            'express_no'   => $order->pay_type,
+            'pay_type'     => $order->pay_type,
             'trade_no'     => $order->trade_no,
             'created_at'   => $order->created_at,
             'updated_at'   => $order->updated_at,
