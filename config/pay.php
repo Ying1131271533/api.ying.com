@@ -17,8 +17,8 @@ return [
             'alipay_public_cert_path' => env('ALIPAY_PUBLIC_CERT_PATH'),
             // 必填-支付宝根证书 路径
             'alipay_root_cert_path'   => env('ALIPAY_ROOT_CERT_PATH'),
-            // 同步通知地址 支付成功后跳到我们项目的哪个地址
-            'return_url'              => '',
+            // 同步通知地址 支付成功后跳到我们项目的哪个地址 - 应该是前端给的地址
+            'return_url'              => 'https://d51f-116-21-93-56.ngrok-free.app/api/pay/return/alipay',
             // 异步通知地址 支付宝请求我们项目的api，告诉我们支付成功
             'notify_url'              => 'https://d51f-116-21-93-56.ngrok-free.app/api/pay/notify/aliyun',
             // 选填-服务商模式下的服务商 id，当 mode 为 Pay::MODE_SERVICE 时使用该参数
@@ -30,15 +30,15 @@ return [
     'wechat' => [
         'default' => [
             // 必填-商户号，服务商模式下为服务商商户号
-            'mch_id'                  => '',
+            'mch_id'                  => env('WECHAT_MCH_ID'),
             // 必填-商户秘钥
-            'mch_secret_key'          => '',
+            'mch_secret_key'          => env('WECHAT_MCH_SECRET_KEY'),
             // 必填-商户私钥 字符串或路径
-            'mch_secret_cert'         => '',
+            'mch_secret_cert'         => env('WECHAT_MCH_SECRET_CERT'),
             // 必填-商户公钥证书路径
-            'mch_public_cert_path'    => '',
-            // 必填
-            'notify_url'              => '',
+            'mch_public_cert_path'    => env('WECHAT_MCH_PUBLIC_CERT_PATH'),
+            // 必填-异步通知
+            'notify_url'              => 'https://d51f-116-21-93-56.ngrok-free.app/api/pay/notify/wechat',
             // 选填-公众号 的 app_id
             'mp_app_id'               => '',
             // 选填-小程序 的 app_id
@@ -59,7 +59,7 @@ return [
             'sub_mch_id'              => '',
             // 选填-微信公钥证书路径, optional，强烈建议 php-fpm 模式下配置此参数
             'wechat_public_cert_path' => [
-                '45F59D4DABF31918AFCEC556D5D2C6E376675D57' => __DIR__ . '/Cert/wechatPublicKey.crt',
+                '45F59D4DABF31918AFCEC556D5D2C6E376675D57' => env('WECHAT_PUBLIC_CERT_PATH'),
             ],
             // 选填-默认为正常模式。可选为： MODE_NORMAL, MODE_SERVICE
             'mode' => Pay::MODE_NORMAL,

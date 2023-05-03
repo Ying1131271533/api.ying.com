@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Api\PayRequest;
 use App\Models\Order;
+use App\Transformers\OrderTransformer;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Yansongda\LaravelPay\Facades\Pay;
@@ -45,12 +47,14 @@ class PayController extends BaseController
             return $this->response->errorBadRequest('订单状态异常，请重新下单！');
         }
 
+        $title = $order->goods()->first()->title . ' 等 ' . $order->goods()->count() . '件商品';
+
         // 支付宝
         if ($validated['type'] == 'alipay') {
             $order = [
                 'out_trade_no' => $order->order_no,
                 'total_amount' => $order->amount,
-                'subject'      => $order->goods()->first()->title . ' 等 ' . $order->goods()->count() . '件商品',
+                'subject'      => $title,
             ];
             // 电脑支付
             // return Pay::alipay()->web($order);
@@ -61,13 +65,14 @@ class PayController extends BaseController
         // 微信
         if ($validated['type'] == 'wechat') {
             $order = [
-                'out_trade_no' => time(),
-                'body'         => 'subject-测试',
-                'total_fee'    => '1',
-                'openid'       => 'onkVf1FjWS5SBIixxxxxxxxx',
+                'out_trade_no' => $order->order_no,
+                'description'  => $title,
+                'amount' => [
+                    'total' => $order->amount * 100,
+                ],
             ];
-
-            $result = Pay::wechat()->mp($order);
+            // 扫码支付
+            return Pay::wechat()->scan($order);
         }
     }
 
@@ -115,6 +120,62 @@ class PayController extends BaseController
         }
 
         return $alipay->success();
+
+    }
+
+    /**
+     * 支付宝支付成功后的同步回调
+     *
+     */
+    public function returnAlipay(Request $request)
+    {
+        $data = Pay::alipay()->callback(); // 是的，验签就这么简单！
+
+        // 订单号：$data->out_trade_no
+        // 支付宝交易号：$data->trade_no
+        // 订单总金额：$data->total_amount
+
+        // 找到订单
+        $order = Order::where('order_no', $data['out_trade_no'])->first();
+
+        $this->response->item($order, new OrderTransformer);
+    }
+
+    /**
+     * 微信支付成功之后的异步回调
+     */
+    public function notifyWechat(Request $request)
+    {
+        $wechat = Pay::wechat();
+
+        try {
+            $data = $wechat->callback(); // 是的，验签就这么简单！
+            // Log::info($data);
+
+            // 判断支付状态
+            if ($data->return_code == 'SUCCESS') {
+                // 查询订单
+                $order = Order::where('order_no', $data->out_trade_no)->first();
+
+                // 老师说还可以验证支付的金额是否匹配
+                // if($data->total_amount !== (string)$order->amount) { }
+
+                // 更新订单数据
+                $order->updte([
+                    'status'   => $data->amount->total === (string)$order->amount ? 2 : 10,
+                    'pay_time' => $data->success_time,
+                    'pay_type' => '微信',
+                    'trade_no' => $data->transaction_id,
+                ]);
+            }
+
+            // 保存支付信息记录
+            Log::debug('wechat notify', $data->all());
+        } catch (\Exception $e) {
+            // $e->getMessage();
+        }
+
+        return $wechat->success();
 
     }
 }

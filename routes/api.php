@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CitieController;
 use App\Http\Controllers\Api\GoodsController;
 use App\Http\Controllers\Api\IndexController;
 use App\Http\Controllers\Api\OrderController;
@@ -37,8 +39,13 @@ $api->version('v1', $params, function ($api) {
     /**
      * 回调
      */
-    // 支付宝支付成功之后的回调
+    // 支付宝支付成功之后异步的回调
     $api->any('pay/notify/alipay', [PayController::class, 'notifyAlipay'])->name('pay.notifyAlipay');
+    // 支付宝支付成功之后异步的回调
+    $api->any('pay/return/alipay', [PayController::class, 'returnAlipay'])->name('pay.returnAlipay');
+
+    // 微信支付成功之后异步的回调
+    $api->any('pay/notify/wechat', [PayController::class, 'notifyWechat'])->name('pay.notifyWechat');
 
     // 需要登录的路由
     $api->group(['middleware' => 'api.auth'], function ($api) {
@@ -76,6 +83,17 @@ $api->version('v1', $params, function ($api) {
         /**
          * 支付
          */
+        // 获取支付信息
         $api->get('orders/{order}/pay', [PayController::class, 'pay'])->name('order.pay');
+
+        /**
+         * 地址
+         */
+        // 城市数据
+        $api->get('cities', [CitieController::class, 'index'])->name('cities.index');
+        // 默认收货地址
+        $api->patch('address/{citie}/default', [AddressController::class, 'default'])->name('address.default');
+        // 收货地址的资源路由
+        $api->resource('address', AddressController::class);
     });
 });

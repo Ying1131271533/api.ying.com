@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Citie;
 use Illuminate\Support\Facades\Cache;
 
 if (!function_exists('success')) {
@@ -368,5 +369,26 @@ if (!function_exists('make_code')) {
     }
 }
 
+if (!function_exists('cities_cache')) {
+    /**
+     * 获取所有城市
+     */
+    function cities_cache($parent_code = '000000')
+    {
+        return Cache::store('redis')->rememberForever('cities:'.$parent_code, function () use ($parent_code) {
+            return Citie::where('parent_code', $parent_code)->get()->keyBy('code')->toArray();
+        });
+    }
+}
 
+if (!function_exists('cities_name')) {
+    /**
+     * 通过4级code，查询完整的省市县信息
+     */
+    function cities_name($citie_code)
+    {
+        $citie = Citie::where('code', $citie_code)->with('parent.parent.parent')->first();
+        return $citie;
+    }
+}
 
