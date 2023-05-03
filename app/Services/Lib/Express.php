@@ -89,6 +89,7 @@ class Express
     protected function setType($type)
     {
         $this->type = $type;
+        return $this;
     }
 
     /**
