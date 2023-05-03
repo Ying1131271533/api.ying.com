@@ -83,6 +83,8 @@ $api->version('v1', $params, function ($api) {
         $api->get('orders', [OrderController::class, 'index'])->name('order.index');
         // 物流查询
         $api->get('orders/{order}/express', [OrderController::class, 'express'])->name('order.express');
+        // 确认收货
+        $api->patch('orders/{order}/confirm', [OrderController::class, 'confirm'])->name('order.confirm');
 
         /**
          * 支付

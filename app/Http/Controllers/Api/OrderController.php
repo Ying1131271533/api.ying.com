@@ -166,4 +166,18 @@ class OrderController extends BaseController
         }
         return $this->response->array($resultData);
     }
+
+    /**
+     * 确认收货
+     */
+    public function confirm(Order $order)
+    {
+        if($order->status != 3) {
+            return $this->response->errorBadRequest('订单状态异常！');
+        }
+
+        $order->status = 4;
+        $order->save();
+        return $this->response->noContent();
+    }
 }
