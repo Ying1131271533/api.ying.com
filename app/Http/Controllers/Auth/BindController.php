@@ -31,6 +31,8 @@ class BindController extends BaseController
         // 发送验证码到邮箱
         // Mail::to($validated['email'])->send(new SendCode($validated['email']));
         Mail::to($validated['email'])->queue(new SendCode($validated['email']));
+        // 延迟
+        // Mail::to($validated['email'])->later(now()->addMinutes(1), new SendCode($validated['email']));
 
         return $this->response->noContent();
     }

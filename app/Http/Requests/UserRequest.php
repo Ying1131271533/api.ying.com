@@ -63,7 +63,7 @@ class UserRequest extends BaseRequest
                 break;
             case 'auth.emailCode':
                 return [
-                    'email' => 'required|email|unique:users,email',
+                    'email' => 'required|email',
                 ];
                 break;
             case 'auth.updateEmail':
