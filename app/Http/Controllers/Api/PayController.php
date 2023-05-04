@@ -124,7 +124,7 @@ class PayController extends BaseController
     }
 
     /**
-     * 支付宝支付成功后的同步回调
+     * 支付宝支付成功后的同步回调 - 老师不做这里
      *
      */
     public function returnAlipay(Request $request)

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// 上线后，需要注释
+// Route::get('/', function () {
+//     return view('welcome');
+// });

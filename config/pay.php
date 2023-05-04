@@ -17,8 +17,8 @@ return [
             'alipay_public_cert_path' => env('ALIPAY_PUBLIC_CERT_PATH'),
             // 必填-支付宝根证书 路径
             'alipay_root_cert_path'   => env('ALIPAY_ROOT_CERT_PATH'),
-            // 同步通知地址 支付成功后跳到我们项目的哪个地址 - 应该是前端给的地址
-            'return_url'              => 'https://d51f-116-21-93-56.ngrok-free.app/api/pay/return/alipay',
+            // 同步通知地址 支付成功后跳到我们项目的哪个地址 老师没用这个
+            'return_url'              => '',
             // 异步通知地址 支付宝请求我们项目的api，告诉我们支付成功
             'notify_url'              => 'https://d51f-116-21-93-56.ngrok-free.app/api/pay/notify/aliyun',
             // 选填-服务商模式下的服务商 id，当 mode 为 Pay::MODE_SERVICE 时使用该参数

@@ -68,7 +68,6 @@ class SendCodeToUser implements ShouldQueue
             ]);
         } catch (\Exception $e) {
             Log::error('短信发送失败-'.$event->phone, $e->getExceptions());
-            return $e->getExceptions();
             // 打印错误信息
             // dd($e->getExceptions());
         }

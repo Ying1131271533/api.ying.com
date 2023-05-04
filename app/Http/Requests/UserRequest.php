@@ -29,8 +29,8 @@ class UserRequest extends BaseRequest
             'old_password.current_password' => '旧密码验证失败',
             'email.exists' => '邮箱未注册',
             'email.unique' => '邮箱已被使用',
-            'phon.exists' => '手机未注册',
-            'phon.unique' => '手机已被使用',
+            'phone.exists' => '手机未注册',
+            'phone.unique' => '手机已被使用',
         ];
     }
 
@@ -92,6 +92,16 @@ class UserRequest extends BaseRequest
                 ];
                 break;
             case 'auth.resetPasswordByEmail':
+                return [
+                    'password' => 'required|min:6|max:50|confirmed', // 必须有 password_confirmation 字段
+                ];
+                break;
+            case 'auth.resetPassword.smsCode':
+                return [
+                    'phone' => 'required|regex:/^1[3-9]\d{9}$/|exists:users',
+                ];
+                break;
+            case 'auth.resetPasswordBySms':
                 return [
                     'password' => 'required|min:6|max:50|confirmed', // 必须有 password_confirmation 字段
                 ];
