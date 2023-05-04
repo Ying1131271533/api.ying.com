@@ -19,7 +19,7 @@ class CheckPhoneCode
     public function handle(Request $request, Closure $next)
     {
         $request->validate([
-            'phone' => 'required|regex:/^1[3-9]\d{9}$/|unique:users,phone',
+            'phone' => 'required|regex:/^1[3-9]\d{9}$/',
             'code'  => 'required|digits:4',
         ], [
             'phone.required' => '电话不能为空',
@@ -36,9 +36,6 @@ class CheckPhoneCode
         if (Cache::store('redis')->get('phone_code:' . $phone) != $code) {
             return abort(400, '验证码或手机号错误！');
         }
-
-        // 删除验证码缓存
-        Cache::store('redis')->delete('phone_code:' . $phone);
 
         return $next($request);
     }

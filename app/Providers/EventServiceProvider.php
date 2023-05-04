@@ -31,6 +31,10 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\SendCodeForPreconditions::class, // 发送验证码的前提条件
             \App\Listeners\SendCodeToUser::class, // 发送短信验证码
         ],
+        \App\Events\SendMailCode::class => [
+            \App\Listeners\SendMailCodeForPreconditions::class, // 发送邮件验证码的前提条件
+            \App\Listeners\SendMailCodeToUser::class, // 发送邮件验证码
+        ],
     ];
 
     /**

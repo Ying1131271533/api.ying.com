@@ -38,7 +38,7 @@ class Order extends Model
     // ];
 
     /**
-     * 获取支付类型 - 这种只能访问表存在的字段
+     * 获取支付类型 - 只能访问表存在的字段，不存在就使用 protected $appends 在里面追加字段
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */

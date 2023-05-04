@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->tinyInteger('star')->after('rate')->default(0)->comment('星级：0-5');
+            $table->tinyInteger('star')->after('rate')->default(5)->comment('星级：0-5');
         });
     }
 

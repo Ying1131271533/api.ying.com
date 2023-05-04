@@ -32,7 +32,7 @@ class BaseRequest extends FormRequest
             'level'        => '级别',
             'user_id'      => '用户',
             'category_id'  => '分类',
-            'goods_id'     => '商品',
+            'goods_id'     => '商品id',
             'description'  => '描述',
             'price'        => '价格',
             'stock'        => '库存',
@@ -53,9 +53,12 @@ class BaseRequest extends FormRequest
             'number'       => '数量',
             'account'      => '账号',
             'address'      => '地址',
-            'address_id'   => '地址',
+            'address_id'   => '地址id',
             'citie'        => '地区',
-            'citie_code'        => '地区',
+            'citie_code'   => '地区代码',
+            'content'      => '内容',
+            'rate'         => '评价等级',
+            'star'         => '评价星级',
         ];
     }
 }

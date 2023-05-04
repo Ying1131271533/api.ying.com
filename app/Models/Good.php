@@ -11,8 +11,7 @@ class Good extends Model
     use HasFactory;
 
     /**
-     * 不可以批量赋值的属性。
-     * 给空数组 既是所有属性都可以赋值
+     * 不可以批量赋值的属性。 给空数组 那就是所有属性都可以赋值
      *
      * @var array
      */

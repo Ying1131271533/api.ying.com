@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SendSms
+class SendMailCode
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,7 +19,7 @@ class SendSms
      *
      * @return void
      */
-    public function __construct(public $phone, public $code)
+    public function __construct(public $email, public $code)
     {
         //
     }

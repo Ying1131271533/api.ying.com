@@ -67,5 +67,7 @@ class Kernel extends HttpKernel
         'check.permission' => \App\Http\Middleware\CheckPermission::class,
         'check.email.code' => \App\Http\Middleware\CheckEmailCode::class,
         'check.phone.code' => \App\Http\Middleware\CheckPhoneCode::class,
+        'delete.email.code.cahce' => \App\Http\Middleware\DeleteEmailCodeCache::class,
+        'delete.phone.code.cahce' => \App\Http\Middleware\DeleteSmsCodeCache::class,
     ];
 }

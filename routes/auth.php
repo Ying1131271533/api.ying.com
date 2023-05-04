@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\BindController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\OssController;
 use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
 
 $api = app('Dingo\Api\Routing\Router');
@@ -16,13 +17,22 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
         // 用户登录
         $api->post('login', [LoginController::class, 'login'])->name('auth.login');
 
+        // 找回密码 通过邮箱发送验证码
+        $api->post('reset/password/email/code', [PasswordResetController::class, 'emailCode'])->name('auth.resetPassword.emailCode');
+        // 提交邮箱和验证码，修改密码
+        $api->patch('reset/password/email', [PasswordResetController::class, 'resetPasswordByEmail'])->name('auth.resetPasswordByEmail');
+
+        // 找回密码 通过手机发送验证码
+        $api->post('reset/password/sms/code', [PasswordResetController::class, 'smsCode'])->name('auth.resetPassword.smsCode');
+        // 提交手机和验证码，修改密码
+        $api->patch('reset/password/sms', [PasswordResetController::class, 'resetPasswordBySms'])->name('auth.resetPasswordBySms');
+
         // 需要登录的路由
         $api->group(['middleware' => 'api.auth'], function ($api) {
             // 退出登录
             $api->post('logout', [LoginController::class, 'logout'])->name('auth.logout');
             // 刷新token
             $api->get('refresh', [LoginController::class, 'refresh'])->name('auth.refresh');
-
             // 阿里云OSS Token
             $api->get('oss-token', [OssController::class, 'token'])->name('auth.oss-token');
             // 修改密码

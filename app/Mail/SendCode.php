@@ -19,7 +19,7 @@ class SendCode extends Mailable
      *
      * @return void
      */
-    public function __construct(protected $email)
+    public function __construct(protected $email, protected $code)
     {
         //
     }
@@ -43,16 +43,14 @@ class SendCode extends Mailable
      */
     public function content()
     {
-        // 生成验证码
-        $code = make_code(4);
         // 缓存邮箱对应的验证码，过期时间15分钟
         // Cache::store('redis')->put($this->to[0]['address'], $code);
-        Cache::store('redis')->put('email_code:' . $this->email, $code, now()->addMinute(15));
+        Cache::store('redis')->put('email_code:' . $this->email, $this->code, now()->addMinute(15));
 
         return new Content(
             view:'emails.send-code',
             with:[
-                'code' => $code,
+                'code' => $this->code,
             ]
         );
     }

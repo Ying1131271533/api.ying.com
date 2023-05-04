@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CitieController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\GoodsController;
 use App\Http\Controllers\Api\IndexController;
 use App\Http\Controllers\Api\OrderController;
@@ -85,6 +86,8 @@ $api->version('v1', $params, function ($api) {
         $api->get('orders/{order}/express', [OrderController::class, 'express'])->name('order.express');
         // 确认收货
         $api->patch('orders/{order}/confirm', [OrderController::class, 'confirm'])->name('order.confirm');
+        // 评价
+        $api->post('comments/{order}', [CommentController::class, 'store'])->name('comments.store');
 
         /**
          * 支付

@@ -86,7 +86,7 @@ $api->version('v1', $params, function ($api) {
             $api->patch('slides/{slide}/status', [SlideController::class, 'status'])->name('slides.status');
             // 排序
             $api->patch('slides/{slide}/sort', [SlideController::class, 'sort'])->name('slides.sort');
-            // 管理资源路由
+            // 资源路由
             $api->resource('slides', SlideController::class);
 
             /**

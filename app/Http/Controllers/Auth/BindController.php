@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\SendMailCode;
 use App\Events\SendSms;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\UserRequest;
@@ -28,11 +29,10 @@ class BindController extends BaseController
     {
         $validated = $request->validated();
 
-        // 发送验证码到邮箱
-        // Mail::to($validated['email'])->send(new SendCode($validated['email']));
-        Mail::to($validated['email'])->queue(new SendCode($validated['email']));
-        // 延迟
-        // Mail::to($validated['email'])->later(now()->addMinutes(1), new SendCode($validated['email']));
+        // 生成验证码
+        $code = make_code(4);
+       // 发送验证码到邮箱
+       SendMailCode::dispatch($validated['email'], $code);
 
         return $this->response->noContent();
     }
@@ -43,7 +43,7 @@ class BindController extends BaseController
     public function updateEmail(Request $request)
     {
         // 更新邮箱
-        $user        = auth('api')->user();
+        $user = auth('api')->user();
         $user->email = $request->input('email');
         $user->save();
 
@@ -79,6 +79,10 @@ class BindController extends BaseController
         $user = auth('api')->user();
         $user->phone = $request->input('phone');
         $user->save();
+
+        // 删除验证码缓存
+        Cache::store('redis')->delete('phone_code:' . $request->input('phone'));
+
         return $this->response->noContent();
     }
 }

@@ -13,8 +13,10 @@ class CommentTransformer extends TransformerAbstract
         $this->setAvailableIncludes(['goods', 'user']);
 
         $pics_url = [];
-        foreach ($comment->pics as $pic) {
-            $pics_url[] = oss_url($pic);
+        if(is_array($comment->pics)) {
+            foreach ($comment->pics as $pic) {
+                $pics_url[] = oss_url($pic);
+            }
         }
 
         return [

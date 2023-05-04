@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,21 +11,11 @@ class Comment extends Model
     use HasFactory;
 
     /**
-     * 可批量赋值的属性。
+     *  不可以批量赋值的属性
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'goods_id',
-        'rate',
-        'star',
-        'content',
-        'reply',
-        'pics',
-        'created_at',
-        'updated_at',
-    ];
+    protected $guarded = [];
 
     /**
      * 类型转换
@@ -53,7 +44,7 @@ class Comment extends Model
     public function getPicsUrlAttribute()
     {
         // 使用集合处理每一项元素，返回处理后新的集合
-        return collect($this->pics)->map(function($item, $key){
+        return collect($this->pics)->map(function($item, $key) {
             return oss_url($item);
         });
     }

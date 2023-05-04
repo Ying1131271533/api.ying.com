@@ -18,12 +18,11 @@ class CheckEmailCode
     public function handle(Request $request, Closure $next)
     {
         $request->validate([
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
             'code'  => 'required|digits:4',
         ], [
             'email.required' => '邮箱不能为空',
             'email.email'    => '邮箱格式不正确',
-            'email.unique'   => '邮箱已被使用',
             'code.required'  => '验证码不能为空',
             'code.digits'    => '验证码必须是4位数字',
         ]);
@@ -35,9 +34,6 @@ class CheckEmailCode
         if (Cache::store('redis')->get('email_code:' . $email) != $code) {
             return abort(400, '验证码或邮箱错误！');
         }
-
-        // 删除验证码缓存
-        Cache::store('redis')->delete('email_code:' . $email);
 
         return $next($request);
     }
