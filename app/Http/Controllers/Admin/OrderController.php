@@ -23,6 +23,8 @@ class OrderController extends BaseController
         $order_no = $request->query('order_no');
         $trade_no = $request->query('trade_no');
         $status = $request->query('status');
+        $goods_title = $request->query('goods_title');
+        $limit = $request->query('limit', 10);
 
         $orders = Order::when($order_no, function($query) use ($order_no) {
             $query->where('order_no', $order_no);
@@ -33,7 +35,13 @@ class OrderController extends BaseController
         ->when($status, function($query) use ($status) {
             $query->where('status', $status);
         })
-        ->paginate(1);
+        ->when($goods_title, function($query) use ($goods_title) {
+            $query->whereHas('goods', function ($query) use ($goods_title){
+                $query->where('title', 'like', "%{$goods_title}%");
+            });
+        })
+        ->when()
+        ->paginate($limit);
         return $this->response->paginator($orders, new OrderTransformer);
     }
 
