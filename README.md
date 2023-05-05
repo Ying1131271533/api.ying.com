@@ -1,3 +1,8 @@
+
+注意：如果执行下面的命令提示：already exists (已经存在)  那就不用管了，下一步就行
+
+安装扩展
+
 ```
 $ composer install
 ```
@@ -39,8 +44,8 @@ $ php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProv
 
 ```
 $ php artisan migrate --seed
+$ php artisan migrate:refresh --seed
 ```
-
 
 
 
