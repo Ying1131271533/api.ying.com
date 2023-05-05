@@ -2,12 +2,11 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
 use App\Models\Category;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class CategoryService extends BaseService
+class CategoryService
 {
     public static function saveCategory($data, $model = null)
     {
