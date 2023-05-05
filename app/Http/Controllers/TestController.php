@@ -10,7 +10,8 @@ class TestController extends BaseController
 {
     public function index(Request $request)
     {
-        Redis::set('akali', 100);return 1;
+        return ['name' => '阿卡丽'];
+        // Redis::set('akali', 100);return 1;
         // 实例化redisLock
         $redisLock = new RedisLock();
         if ($redisLock->lockByLua()) {
