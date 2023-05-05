@@ -62,11 +62,22 @@ class Express
     }
 
     // 格式化响应参数
-    protected function formatResponseData ($response) {
+    protected function formatResponseData ($response)
+    {
+        $response = json_decode($response, true);
+
+        // Api服务器内部报错
         if($response['Success'] == false) {
-            return $response;
+            return $response['ResponseData'];
         }
-        return json_decode($response['ResponseData'], true);
+
+        // 请求成功，但是无请求到数据，请求参数有问题
+        $response2 = json_decode($response['ResponseData'], true);
+        if($response2['Success'] == false) {
+            return $response2['Reason'];
+        }
+
+        return $response2;
     }
 
     /**

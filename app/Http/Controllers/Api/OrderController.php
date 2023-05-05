@@ -161,8 +161,8 @@ class OrderController extends BaseController
 
         $resultData = Express::track($order->express_type, $order->express_no);
         // $resultData = Express::setType('track')->track($order->express_type, $order->express_no);
-        if(isset($resultData['Success']) && $resultData['Success'] === false) {
-            return $this->response->errorBadRequest($resultData['ResonseData']);
+        if(!is_array($resultData)) {
+            return $this->response->errorBadRequest($resultData);
         }
         return $this->response->array($resultData);
     }
@@ -176,8 +176,27 @@ class OrderController extends BaseController
             return $this->response->errorBadRequest('订单状态异常！');
         }
 
-        $order->status = 4;
-        $order->save();
+        try {
+            DB::beginTransaction();
+
+            $order->status = 4;
+            $order->save();
+
+            // 获取订单所有的商品详情
+            $orderDetails = $order->details;
+
+            // 增加订单下所有商品的销量
+            foreach ($orderDetails as $detail) {
+                // 更新商品销量
+                Good::where('id', $detail->goods_id)->increment('sales', $detail->number);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
         return $this->response->noContent();
     }
 }

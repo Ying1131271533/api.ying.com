@@ -94,6 +94,8 @@ $api->version('v1', $params, function ($api) {
          */
         // 获取支付信息
         $api->get('orders/{order}/pay', [PayController::class, 'pay'])->name('order.pay');
+        // 轮询查询支付状态
+        $api->get('orders/{order}/status', [PayController::class, 'payStatus'])->name('order.payStatus');
 
         /**
          * 地址

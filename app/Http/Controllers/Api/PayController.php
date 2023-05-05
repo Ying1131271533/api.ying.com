@@ -178,4 +178,15 @@ class PayController extends BaseController
         return $wechat->success();
 
     }
+
+    /**
+     * 轮询查询订单状态，看是否支付完成
+     * 注意：真实项目中，要使用广播系统现实会更好，也就是通过长连接的方式，通知客户端支付完成
+     * 所以这种方式的话，就是前端同时获取支付码和订单状态的接口
+     * 支付码访问一次就行，订单状态可以每一秒访问一次，轮询获取
+     */
+    public function payStatus(Order $order)
+    {
+        return $order->status;
+    }
 }
