@@ -67,7 +67,7 @@ class GoodsController extends BaseController
             ->simplePaginate(20)
             // 维持搜索条件
             ->appends([
-                'id'             => $ids,
+                // 'id'             => $ids,
                 'title'          => $title,
                 'category_id'    => $category_id,
                 'sales'          => $sales,
