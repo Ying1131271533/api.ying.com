@@ -24,9 +24,9 @@ return new class extends Migration
             // $table->index('order_id');
             // $table->index('goods_id');
 
-            // 复合索引
+            // 复合索引 有了主键就不需要这里了
             // 这里会生成 'order_id,goods_id' 和 'goods_id' 两个索引
-            $table->index(['order_id', 'goods_id']);
+            // $table->index(['order_id', 'goods_id']);
 
             // 外键约束
             $table->foreign('order_id')->references('id')->on('orders');

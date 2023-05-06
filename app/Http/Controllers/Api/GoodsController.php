@@ -7,6 +7,7 @@ use App\Models\Good;
 use App\Transformers\GoodsTransformer;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GoodsController extends BaseController
 {
@@ -96,13 +97,12 @@ class GoodsController extends BaseController
     public function show($id)
     {
         // 详情
-        $goods = Good::where('id', $id)
+        $goods = Good::query()->where('id', $id)
             ->with(['comments', 'comments.user' => function ($query) {
                 $query->select('id', 'name', 'avatar');
             }])
-            ->first($id)
+            ->first()
             ->append('pics_url');
-        // $goods = Good::where('id', $id)->first();
 
         // 相似的商品
         // 1 根据用户在那个商品上停留的时间 来给用户做只能推荐商品
