@@ -38,6 +38,11 @@ class CategorySeeder extends Seeder
                                 'group' => 'goods',
                                 'level' => 3,
                             ],
+                            [
+                                'name'  => '苹果',
+                                'group' => 'goods',
+                                'level' => 3,
+                            ],
                         ],
                     ],
                     [

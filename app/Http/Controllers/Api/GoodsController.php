@@ -17,7 +17,6 @@ class GoodsController extends BaseController
     {
         // 分类数据
         $catgorys = cache_categorys();
-
         // 要注意每个搜索条件或者排序条件的先后顺序
 
         // 搜索条件
@@ -33,10 +32,13 @@ class GoodsController extends BaseController
         $price          = $request->query('price');
         $comments_count = $request->query('comments_count');
 
+        // 竟然可以用id数组维持搜索条件
+        $ids = [1, 2];
+        // 如果是TP框架，把全文检索出来的id数组放到接口数据里面，传递给前端
+        // 前端再用id[]=1&id[]=2，这个种方式传回来
+
         // 商品的分页数据
         $goods = Good::select('id', 'title', 'cover', 'price', 'category_id', 'stock', 'sales')
-            ->withCount('comments')
-
         // 第一种方式
         // ->where($where)
         // 第二种方式
@@ -58,10 +60,13 @@ class GoodsController extends BaseController
             ->when($comments_count == 1, function ($query) {
                 $query->orderBy('comments_count', 'desc');
             })
+            ->whereIn('id', $ids)
+            ->withCount('comments')
             ->orderBy('updated_at', 'desc')
             ->simplePaginate(20)
             // 维持搜索条件
             ->appends([
+                'id'             => $ids,
                 'title'          => $title,
                 'category_id'    => $category_id,
                 'sales'          => $sales,

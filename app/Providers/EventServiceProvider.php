@@ -35,6 +35,9 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\SendMailCodeForPreconditions::class, // 发送邮件验证码的前提条件
             \App\Listeners\SendMailCodeToUser::class, // 发送邮件验证码
         ],
+        \App\Events\OrderSubmit::class => [
+            \App\Listeners\OrderSubmitInTenMinutes::class, // 用户下单后，检测十分钟内是否已经支付，否则订单状态修改为 过期
+        ],
     ];
 
     /**

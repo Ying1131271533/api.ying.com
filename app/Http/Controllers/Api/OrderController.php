@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\OrderSubmit;
 use App\Facades\Express;
 use App\Facades\UtilService;
 use App\Http\Controllers\BaseController;
@@ -21,20 +22,20 @@ class OrderController extends BaseController
      */
     public function index(Request $request)
     {
-        $status = $request->query('status');
+        $status      = $request->query('status');
         $goods_title = $request->query('goods_title');
 
         $orders = Order::where('user_id', auth('api')->id())
-        ->when($status, function($query) use ($status) {
-            $query->where('status', $status);
-        })
-        ->when($goods_title, function($query) use ($goods_title) {
-            // 因为定义了远程一对多，所以这里能这样用
-            $query->whereHas('goods', function ($query) use ($goods_title) {
-                $query->where('title', 'like', "%{$goods_title}%");
-            });
-        })
-        ->paginate(3);
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->when($goods_title, function ($query) use ($goods_title) {
+                // 因为定义了远程一对多，所以这里能这样用
+                $query->whereHas('goods', function ($query) use ($goods_title) {
+                    $query->where('title', 'like', "%{$goods_title}%");
+                });
+            })
+            ->paginate(3);
         return $this->response->paginator($orders, new OrderTransformer);
     }
 
@@ -86,7 +87,7 @@ class OrderController extends BaseController
 
         // 查询构造器获取购物车数据
         $carts = $cartsQuery->get();
-        if (empty($carts)) {
+        if ($carts->isEmpty()) {
             return $this->response->errorBadRequest('未选择商品！');
         }
 
@@ -117,6 +118,7 @@ class OrderController extends BaseController
                 'user_id'    => $user_id,
                 'order_no'   => $order_no,
                 'address_id' => $validated['address_id'],
+                // 'address'    => cities_name(Address::where('id', $$validated['address_id'])->value('code')),
                 'amount'     => $amount,
             ]);
 
@@ -131,10 +133,13 @@ class OrderController extends BaseController
                 Good::where('id', $cart->goods_id)->decrement('stock', $cart->number);
             }
 
+            // 用户下单后，十分钟内是否支付
+            OrderSubmit::dispatch($order);
+
             // 提交事务
             DB::commit();
             return $this->response->created();
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             // 回滚事务
             DB::rollBack();
             throw $e;
@@ -155,13 +160,13 @@ class OrderController extends BaseController
      */
     public function express(Order $order)
     {
-        if($order->status != 3) {
+        if ($order->status != 3) {
             return $this->response->errorBadRequest('订单状态异常！');
         }
 
         $resultData = Express::track($order->express_type, $order->express_no);
         // $resultData = Express::setType('track')->track($order->express_type, $order->express_no);
-        if(!is_array($resultData)) {
+        if (!is_array($resultData)) {
             return $this->response->errorBadRequest($resultData);
         }
         return $this->response->array($resultData);
@@ -172,7 +177,7 @@ class OrderController extends BaseController
      */
     public function confirm(Order $order)
     {
-        if($order->status != 3) {
+        if ($order->status != 3) {
             return $this->response->errorBadRequest('订单状态异常！');
         }
 

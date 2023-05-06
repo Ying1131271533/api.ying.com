@@ -9,6 +9,7 @@ use App\Models\Cart;
 use App\Models\Good;
 use App\Transformers\CartTransformer;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Catch_;
 
 class CartController extends BaseController
 {
@@ -36,6 +37,9 @@ class CartController extends BaseController
         // 获取购物车商品数量
         $number = isset($validated['number']) ? $validated['number'] : 1;
 
+        // 获取购物车模型
+        $cart = new Cart();
+
         // 查询购物车是否已存在相同的商品
         $existCart = Cart::where('user_id', auth('api')->id())
         ->where('goods_id', $validated['goods_id'])
@@ -52,8 +56,8 @@ class CartController extends BaseController
         if($goods->stock < $validated['number']) return $this->response->errorBadRequest('数量不能大于库存！');
 
         // 保存数据
-        $cart = Cart::create($validated);
-        if(!$cart) return $this->response->errorInternal('保存失败！');
+        $result = $cart->fill($validated)->save();
+        if(!$result) return $this->response->errorInternal('保存失败！');
 
         return $this->response->created();
     }
