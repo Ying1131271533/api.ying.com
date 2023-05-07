@@ -7,6 +7,7 @@ use App\Facades\Express;
 use App\Facades\UtilService;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Api\OrderRequest;
+use App\Jobs\OrderSubmit as JobsOrderSubmit;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Good;
@@ -133,11 +134,16 @@ class OrderController extends BaseController
                 Good::where('id', $cart->goods_id)->decrement('stock', $cart->number);
             }
 
-            // 用户下单后，十分钟内是否支付
-            OrderSubmit::dispatch($order);
-
             // 提交事务
             DB::commit();
+
+            // 用户下单后，十分钟内是否支付 - 普通队列
+            // Laravel 会等到所有打开的数据库事务都已提交，然后才会开始分发任务
+            // 已经在queue.php配置了，这里可以不用afterCommit()
+            JobsOrderSubmit::dispatch($order)->delay(now()->addMinutes(1))->afterCommit();
+            // 用户下单后，十分钟内是否支付 - 事件队列
+            // OrderSubmit::dispatch($order);
+
             return $this->response->created();
         } catch (\Exception $e) {
             // 回滚事务

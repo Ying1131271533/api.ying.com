@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 // 上线后，需要注释
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('swoole/test', function () {
+    return view('swoole.test');
+});
