@@ -23,9 +23,11 @@ class EnableCrossRequestMiddleware
         // dd($origin);
         // 允许访问
         $allow_origin = [
-            'http://api.akali.ltd',
-            'http://www.ying.com', // 前缀为：www 的才有用？
+            'http://www.ying.com',
+            // 浏览器访问时，前缀为: api 的不行
+            // postman设置头部信息 Origin 为: http://api.ying.com 可以访问
             'http://api.ying.com',
+            'http://m.ying.com',
             'http://www.wse.com',
         ];
 
