@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\GoodsController;
 use App\Http\Controllers\Api\IndexController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PayController;
+use App\Http\Controllers\Api\SwooleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\TestController;
 
@@ -108,5 +109,10 @@ $api->version('v1', $params, function ($api) {
         $api->patch('address/{address}/default', [AddressController::class, 'default'])->name('address.default');
         // 收货地址的资源路由
         $api->resource('address', AddressController::class);
+
+        /**
+         * swoole
+         */
+        $api->get('swoole/test', [SwooleController::class, 'test'])->name('swoole.test');
     });
 });
