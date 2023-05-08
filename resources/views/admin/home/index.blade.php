@@ -95,9 +95,9 @@
             // 获取用户信息
             var admin = getAdmin();
             console.log(admin);
-            $('#admin_name').text(admin.username);
+            $('#admin_name').text(admin.name);
             function admin_info() {
-                xadmin.open('个人信息', '/user/info/' + admin.id);
+                xadmin.open('个人信息', '/user/info');
             }
         </script>
     </div>
@@ -129,6 +129,12 @@
                             <a onclick="xadmin.add_tab('规格列表', '/goods_spec', true)">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>规格列表</cite>
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('类型列表', '/goods_type', true)">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>类型列表</cite>
                             </a>
                         </li>
                     </ul>

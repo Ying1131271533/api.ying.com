@@ -47,11 +47,18 @@
   <script type="text/javascript" charset="utf-8">
 
     // 获取token
-    let token = getApiToken();
+    let token = getToken();
 
     layui.config({
       base: '/static/common/lib/dist/sliderVerify/'
     }).use(['sliderVerify', 'jquery', 'form'], function () {
+
+    // 是否已登录过
+    if (token) {
+        layer.msg('已登录，无需重复登录', { time: 700 }, function () {
+            $(window).attr('location', "{{ route('admin.home.index') }}");
+        });
+    }
 
       // 滑块验证
       var sliderVerify = layui.sliderVerify,
@@ -63,14 +70,6 @@
           // layer.msg("滑块验证通过");
         }
       })
-
-      // 是否已登录过
-      if (!empty(token)) {
-        alert(toekn)
-          layer.msg('已登录，无需重复登录', { time: 700 }, function () {
-              $(window).attr('location', "{{ route('admin.home.index') }}");
-          });
-      }
 
       //监听提交
       form.on('submit(login)', function (data) {

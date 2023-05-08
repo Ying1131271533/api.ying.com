@@ -12,7 +12,8 @@ let api_domain = 'http://api.ying.com'
     $.ajaxSetup({
         async: false,
         beforeSend: function (request) {
-            request.setRequestHeader("access-token", token);
+            request.setRequestHeader("Accept", 'application/x.ying.v1+json');
+            request.setRequestHeader("Authorization", 'Bearer ' + getApiToken());
         },
     });
 }); */
@@ -145,6 +146,16 @@ function isApiLogin() {
                     $(window).attr('location', "http://api.ying.com/admin/auth/login");
                 });
             }
+        },
+        error:function(res) {
+            console.log(res.responseJSON);
+            if(res.responseJSON.status_code == 401) {
+                layer.msg(res.responseJSON.message, { time: 500 }, function () {
+                    $.removeCookie('admin_login_token', { path: '/' });
+                    // $.removeCookie('api_login_token', {api_domain: document.api_domain, path: '/'});
+                    $(window).attr('location', "http://api.ying.com/admin/auth/login");
+                });
+            }
         }
     });
 }
@@ -153,18 +164,22 @@ function isApiLogin() {
 // 管理员是否已登录
 function isAdminLogin() {
     $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/x-www-form-urlencoded",
-        url: api_domain + '/admin/is_login',
+        url: api_domain + '/api/user',
         beforeSend: function (request) {
             request.setRequestHeader("Accept", 'application/x.ying.v1+json');
             request.setRequestHeader("Authorization", 'Bearer ' + getToken());
         },
         success: function (res) {
-            if (res.code === config('goto')) {
-                layer.msg(res.msg, { time: 500 }, function () {
+
+        },
+        error:function(res) {
+            console.log(res.responseJSON);
+            if(res.responseJSON.status_code == 401) {
+                layer.msg(res.responseJSON.message, { time: 500 }, function () {
                     $.removeCookie('admin_login_token', { path: '/' });
-                    // $.removeCookie('api_login_token', {api_domain: document.api_domain, path: '/'});
+                    // $.removeCookie('admin_login_token', {api_domain: document.api_domain, path: '/'});
                     $(window).attr('location', "http://api.ying.com/admin/auth/login");
                 });
             }
@@ -217,19 +232,23 @@ function getUser() {
             request.setRequestHeader("Authorization", 'Bearer ' + getApiToken());
         },
         success: function (res) {
-            if (res.code === config('goto')) {
-                layer.msg('登录凭证失效！', {}, function () {
+            console.log(res);
+            user = res;
+        },
+        error:function(res) {
+            console.log(res.responseJSON);
+            if(res.responseJSON.status_code == 401) {
+                layer.msg(res.responseJSON.message, { time: 500 }, function () {
                     $.removeCookie('api_login_token', { path: '/' });
+                    // $.removeCookie('api_login_token', {api_domain: document.api_domain, path: '/'});
                     $(window).attr('location', "http://api.ying.com/admin/auth/login");
                 });
             }
 
-            if (res.code === config('failed')) {
+            if (res.responseJSON.status_code === 400) {
                 layer.msg(res.msg);
                 return false;
             }
-            // console.log(res.data);
-            user = res.data;
         }
     });
     // 返回用户信息，必须要在ajax外面返回值
@@ -250,19 +269,23 @@ function getAdmin() {
             request.setRequestHeader("Authorization", 'Bearer ' + getToken());
         },
         success: function (res) {
-            if (res.code === config('goto')) {
-                layer.msg('登录凭证失效！', {}, function () {
+            // console.log(res);
+            admin = res;
+        },
+        error:function(res) {
+            console.log(res.responseJSON);
+            if(res.responseJSON.status_code == 401) {
+                layer.msg(res.responseJSON.message, { time: 500 }, function () {
                     $.removeCookie('admin_login_token', { path: '/' });
-                    $(window).attr('location', '/view/login');
+                    // $.removeCookie('admin_login_token', {api_domain: document.api_domain, path: '/'});
+                    $(window).attr('location', "http://api.ying.com/admin/auth/login");
                 });
             }
 
-            if (res.code === config('failed')) {
+            if (res.responseJSON.status_code == 400) {
                 layer.msg(res.msg);
                 return false;
             }
-            // console.log(res.data);
-            admin = res.data;
         }
     });
     // 返回用户信息，必须要在ajax外面返回值

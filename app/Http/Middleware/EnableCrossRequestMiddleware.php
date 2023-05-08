@@ -24,7 +24,7 @@ class EnableCrossRequestMiddleware
         // 允许访问
         $allow_origin = [
             'http://api.akali.ltd',
-            'http://www.ying.com',
+            'http://www.ying.com', // 前缀为：www 的才有用？
             'http://api.ying.com',
             'http://www.wse.com',
         ];
