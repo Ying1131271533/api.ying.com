@@ -60,6 +60,8 @@ $api->version('v1', $params, function ($api) {
         $api->patch('user', [UserController::class, 'updateUserInfo'])->name('user.updateInfo');
         // 更新用户头像
         $api->patch('user/avatar', [UserController::class, 'updateUserAvatar'])->name('user.updateAvatar');
+        // 根据用户id获取用户
+        $api->get('user/get-user-by-id/{user}', [UserController::class, 'getUserById'])->name('user.getUserById');
 
         /**
          * 购物车

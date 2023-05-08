@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\UserRequest;
+use App\Models\User;
 use App\Transformers\UserTransformer;
 
 class UserController extends BaseController
@@ -37,4 +38,12 @@ class UserController extends BaseController
         $user->fill($validated)->save();
         return $this->response->noContent();
     }
+    /**
+     * 用户个人信息详情
+     */
+    public function getUserById(User $user)
+    {
+        return $this->response->item($user, new UserTransformer);
+    }
+
 }
