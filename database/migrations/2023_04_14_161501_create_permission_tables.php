@@ -27,11 +27,14 @@ class CreatePermissionTables extends Migration
 
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->bigIncrements('id'); // permission id
+            $table->unsignedBigInteger('parent_id'); // 父级id
+            $table->tinyInteger('level'); // 等级
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('cn_name');    // 中文名称
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
 
+            $table->index('parent_id');
             $table->unique(['name', 'guard_name']);
         });
 
