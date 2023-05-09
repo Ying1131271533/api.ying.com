@@ -16,7 +16,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $params = [
     'middleware' => [
-        'cross.domain', // 允许哪些域名访问
+        // 'cross.domain', // 允许哪些域名访问
         'api.throttle',
         'bindings', // 支持模型注入
         'serializer:default_array', // 去掉 transformer 的包裹层
