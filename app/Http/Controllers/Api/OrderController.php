@@ -85,7 +85,6 @@ class OrderController extends BaseController
         $cartsQuery = Cart::where('user_id', $user_id)
             ->where('is_checked', 1)
             ->with('goods:id,title,price,stock,user_id');
-            // ->with('goods.users:id');
 
 
         // 查询构造器获取购物车数据
@@ -98,7 +97,7 @@ class OrderController extends BaseController
         $orderGoodsData = [];
 
         // 计算总金额
-        foreach ($carts as $key => $cart) {
+        foreach ($carts as $cart) {
             // 是否存在库存不足的商品
             if ($cart->goods->stock < $cart->number) {
                 return $this->response->errorBadRequest('商品：' . $cart->goods->title . ' 库存不足，请重新选择商品！');
@@ -113,43 +112,25 @@ class OrderController extends BaseController
             $amount += $cart->goods->price * $cart->number;
         }
 
-        // 订单数据
-        $orderData = [];
-        $orderGoodsData2 = $orderGoodsData;
-        foreach($orderGoodsData as $key => $value) {
-            $orderData[$value['user_id']]['amount'] = 0;
-            foreach($orderGoodsData2 as $k => $val) {
-                if($value['user_id'] == $val['user_id']) {
-                    $orderData[$value['user_id']]['goods'][] = $val;
-                    // 删除已经进入订单数据的商品
-                    unset($orderGoodsData2[$k]);
-                }
-                $orderData[$value['user_id']]['amount'] += $val['price'];
-            }
-        }
-
 
         // 开启事务
         DB::beginTransaction();
 
         try {
 
-            // 根据创建商品的用户id来创建订单，因为不同的商家，不可能在同一个订单里面发货
-            foreach($orderData as $key => $goods) {
-                // 生成订单号
-                $order_no = UtilService::generateReceiptCode();
-                // 生成订单
-                $order = Order::create([
-                    'user_id'    => $user_id,
-                    'order_no'   => $order_no,
-                    'address_id' => $validated['address_id'],
-                    'address'    => cities_name(Address::where('id', $$validated['address_id'])->value('code')),
-                    'amount'     => $goods['amount'],
-                ]);
+            // 生成订单号
+            $order_no = UtilService::generateReceiptCode();
+            // 生成订单
+            $order = Order::create([
+                'user_id'    => $user_id,
+                'order_no'   => $order_no,
+                'address_id' => $validated['address_id'],
+                'address'    => cities_name(Address::where('id', $$validated['address_id'])->value('code')),
+                'amount'     => $amount,
+            ]);
 
-                // 生成订单商品
-                $order->orderGoods()->createMany($goods['goods']);
-            }
+            // 生成订单商品
+            $order->orderGoods()->createMany($orderGoodsData);
 
 
 
