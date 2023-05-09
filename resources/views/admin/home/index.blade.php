@@ -6,7 +6,8 @@
     <title>后台登录-X-admin2.2</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8, target-densitydpi=low-dpi" />
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8, target-densitydpi=low-dpi" />
 
     <link rel="shortcut icon" href="/favicon.ico">
 
@@ -96,6 +97,7 @@
             var admin = getAdmin();
             console.log(admin);
             $('#admin_name').text(admin.name);
+
             function admin_info() {
                 xadmin.open('个人信息', '/user/info');
             }
@@ -161,7 +163,8 @@
             </div>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
-                    <iframe src="{{ route('admin.home.welcome') }}" frameborder="0" scrolling="yes" class="x-iframe" id="x-iframe"></iframe>
+                    <iframe src="{{ route('admin.home.welcome') }}" frameborder="0" scrolling="yes" class="x-iframe"
+                        id="x-iframe"></iframe>
                 </div>
             </div>
             <div id="tab_show"></div>
@@ -174,9 +177,9 @@
 
     <script>
         // 打开其它页面时，关闭之前的页面窗口
-        layui.use(['jquery'], function () {
+        layui.use(['jquery'], function() {
             var $ = layui.jquery
-            $('.sub-menu li a').click(function () {
+            $('.sub-menu li a').click(function() {
                 var len = $('.layui-tab-title li').length;
                 if (len > 2) {
                     $('.layui-tab-title li i:eq(2)').trigger('click');
@@ -188,34 +191,38 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/x-www-form-urlencoded",
-                url: '/admin/logout',
-                beforeSend: function (request) {
-                    request.setRequestHeader("access-token", getToken());
+                url: '/api/auth/logout',
+                beforeSend: function(request) {
+                    request.setRequestHeader("Accept", 'application/x.ying.v1+json');
+                    request.setRequestHeader("Authorization", 'Bearer ' + getToken());
                 },
-                success: function (res) {
-                    if (res.code === config('failed')) {
-                        layer.msg(res.msg);
-                        return false;
-                    }
-
-                    if (res.code === config('success') || res.code === config('goto')) {
-                        layer.msg(res.msg, { time: 500 }, function () {
-                            $.removeCookie('admin_login_token', { path: '/' });
-                            $(window).attr('location', '/view/login');
+                success: function(res) {
+                    layer.msg(res.msg, {
+                        time: 500
+                    }, function() {
+                        $.removeCookie('admin_login_token', {
+                            path: '/'
                         });
-                    }
+                        $(window).attr('location', '/api/auth/login');
+                    });
+                },
+                error: function (res) {
+                    layer.msg(res.responseJSON.message);
                 }
             });
         }
     </script>
 
-    <script>//百度统计可去掉
-        var _hmt = _hmt || []; (function () {
+    <script>
+        //百度统计可去掉
+        var _hmt = _hmt || [];
+        (function() {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
-        })();</script>
+        })();
+    </script>
 </body>
 
 </html>
