@@ -16,16 +16,17 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->comment('买家id');
-            $table->string('order_no')->unique()->comment('订单单号');
-            $table->decimal('amount', 10, 2)->comment('总金额');
+            $table->unsignedBigInteger('order_no')->unique()->comment('订单单号');
+            $table->unsignedDecimal('amount', 10, 2)->comment('总金额');
             $table->tinyInteger('status')->default(1)->comment('订单状态: 1 下单 2 支付 3 发货 4 收货 5 过期(未支付) 6 退款 7 退换 8 已评价 10 支付异常(支付金额对不上等)');
-            $table->integer('address_id')->comment('收货地址id');
-            // $table->string('address')->comment('完整收货地址');
-            $table->string('express_type')->nullable()->comment('快递类型: SF YT YD');
-            $table->string('express_no')->nullable()->comment('快递单号');
+            $table->char('name', 20)->comment('收货人');
+            $table->char('phone', 11)->comment('电话');
+            $table->char('address', 60)->comment('完整收货地址');
+            $table->char('express_type', 5)->nullable()->comment('快递类型: SF YT YD');
+            $table->char('express_no', 20)->nullable()->comment('快递单号');
             $table->timestamp('pay_time')->nullable()->comment('支付时间');
-            $table->string('pay_type')->nullable()->comment('支付类型：支付宝 微信');
-            $table->string('trade_no')->nullable()->comment('支付单号');
+            $table->char('pay_type', 10)->nullable()->comment('支付类型：支付宝 微信');
+            $table->char('trade_no', 40)->nullable()->comment('支付单号');
             $table->timestamps();
 
             // 单个索引

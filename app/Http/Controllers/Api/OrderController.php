@@ -12,6 +12,7 @@ use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Good;
 use App\Models\Order;
+use App\Models\User;
 use App\Transformers\OrderTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -78,13 +79,14 @@ class OrderController extends BaseController
 
         // 处理订单数据
         $user_id  = auth('api')->id();
-        $order_no = UtilService::generateReceiptCode(); // 生成订单号
         $amount   = 0;
 
         // 获取选中的购物车 - 查询构造器
         $cartsQuery = Cart::where('user_id', $user_id)
             ->where('is_checked', 1)
-            ->with('goods:id,title,price,stock');
+            ->with('goods:id,title,price,stock,user_id');
+            // ->with('goods.users:id');
+
 
         // 查询构造器获取购物车数据
         $carts = $cartsQuery->get();
@@ -93,7 +95,7 @@ class OrderController extends BaseController
         }
 
         // 要保存的订单详情的数据
-        $orderDetailData = [];
+        $orderGoodsData = [];
 
         // 计算总金额
         foreach ($carts as $key => $cart) {
@@ -101,30 +103,55 @@ class OrderController extends BaseController
             if ($cart->goods->stock < $cart->number) {
                 return $this->response->errorBadRequest('商品：' . $cart->goods->title . ' 库存不足，请重新选择商品！');
             }
-            $orderDetailData[] = [
+            $orderGoodsData[] = [
                 'goods_id' => $cart->goods->id,
                 'price'    => $cart->goods->price,
                 'number'   => $cart->number,
+                'user_id'   => $cart->goods->user_id,
             ];
             // 总金额
             $amount += $cart->goods->price * $cart->number;
         }
 
+        // 订单数据
+        $orderData = [];
+        $orderGoodsData2 = $orderGoodsData;
+        foreach($orderGoodsData as $key => $value) {
+            $orderData[$value['user_id']]['amount'] = 0;
+            foreach($orderGoodsData2 as $k => $val) {
+                if($value['user_id'] == $val['user_id']) {
+                    $orderData[$value['user_id']]['goods'][] = $val;
+                    // 删除已经进入订单数据的商品
+                    unset($orderGoodsData2[$k]);
+                }
+                $orderData[$value['user_id']]['amount'] += $val['price'];
+            }
+        }
+
+
         // 开启事务
         DB::beginTransaction();
 
         try {
-            // 生成订单
-            $order = Order::create([
-                'user_id'    => $user_id,
-                'order_no'   => $order_no,
-                'address_id' => $validated['address_id'],
-                // 'address'    => cities_name(Address::where('id', $$validated['address_id'])->value('code')),
-                'amount'     => $amount,
-            ]);
 
-            // 生成订单详情
-            $order->details()->createMany($orderDetailData);
+            // 根据创建商品的用户id来创建订单，因为不同的商家，不可能在同一个订单里面发货
+            foreach($orderGoods as $key => $goods) {
+                // 生成订单号
+                $order_no = UtilService::generateReceiptCode();
+                // 生成订单
+                $order = Order::create([
+                    'user_id'    => $user_id,
+                    'order_no'   => $order_no,
+                    'address_id' => $validated['address_id'],
+                    'address'    => cities_name(Address::where('id', $$validated['address_id'])->value('code')),
+                    'amount'     => $goods['amount'],
+                ]);
+
+                // 生成订单商品
+                $order->orderGoods()->createMany($goods['goods']);
+            }
+
+
 
             // 查询构造器删除选中的购物车数据
             $cartsQuery->delete();

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Cart extends Model
 {
@@ -35,5 +36,20 @@ class Cart extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * 订单远程一对多，关联的商品的创建用户
+     */
+    public function goodsUsers(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            User::class, // 要远程访问的最终模型
+            Goods::class, // 中间模型
+            'goods_id', // 中间模型和本模型关联的外键
+            'id', // 最终关联模型的本地键
+            'id', // 本模型和中间模型关联的本地键
+            'user_id' // 中间表和最终模型关联的一个外键
+        );
     }
 }
