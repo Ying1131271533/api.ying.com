@@ -17,7 +17,6 @@ return new class extends Migration
             $table->bigIncrements('id'); // 自增主键
             $table->unsignedBigInteger('user_id')->comment('创建商品的用户id');
             $table->unsignedBigInteger('category_id')->comment('分类id');
-            $table->unsignedBigInteger('brand_id')->comment('品牌id');
             $table->string('title')->unique()->comment('标题');
             $table->string('cover', 100)->comment('封面图');
             $table->string('description', 255)->comment('描述');
@@ -33,7 +32,6 @@ return new class extends Migration
             // 单个索引
             $table->index('user_id');
             $table->index('category_id');
-            $table->index('brand_id');
 
             $table->index('title');
             $table->index('is_on');
@@ -46,7 +44,6 @@ return new class extends Migration
             // 外键约束
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('brand_id')->references('id')->on('brands');
 
             // 主键
             // $table->primary(['id', 'user_id', 'category_id']);
