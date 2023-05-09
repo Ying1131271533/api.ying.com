@@ -135,7 +135,7 @@ class OrderController extends BaseController
         try {
 
             // 根据创建商品的用户id来创建订单，因为不同的商家，不可能在同一个订单里面发货
-            foreach($orderGoods as $key => $goods) {
+            foreach($orderData as $key => $goods) {
                 // 生成订单号
                 $order_no = UtilService::generateReceiptCode();
                 // 生成订单
