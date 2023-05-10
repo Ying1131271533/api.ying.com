@@ -28,10 +28,13 @@ class PermissionSeeder extends Seeder
                 'name' => 'auth', 'cn_name' => '授权管理', 'guard_name' => 'admin',
                 'level' => 1, 'show' => 0,
                 'children'   => [
-                    ['name' => 'auth.logout', 'cn_name' => '退出登录', 'guard_name' => 'admin', 'level' => 2, 'show' => 0],
-                    ['name' => 'auth.refresh', 'cn_name' => '刷新token', 'guard_name' => 'admin', 'level' => 2, 'show' => 0],
-                    ['name' => 'auth.oss-token', 'cn_name' => '阿里云OSSToken', 'guard_name' => 'admin', 'level' => 2, 'show' => 0],
-                    ['name' => 'admin.test', 'cn_name' => '测试', 'guard_name' => 'admin', 'level' => 2, 'show' => 0],
+                    'name' => 'auth', 'cn_name' => '认证', 'guard_name' => 'admin', 'level' => 2, 'show' => 0,
+                    'children' => [
+                        ['name' => 'auth.logout', 'cn_name' => '退出登录', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                        ['name' => 'auth.refresh', 'cn_name' => '刷新token', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                        ['name' => 'auth.oss-token', 'cn_name' => '阿里云OSSToken', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                        ['name' => 'admin.test', 'cn_name' => '测试', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                    ]
                 ],
             ],
 
