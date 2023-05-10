@@ -22,11 +22,12 @@ return new class extends Migration
             $table->char('name', 20)->comment('收货人');
             $table->char('phone', 11)->comment('电话');
             $table->char('address', 60)->comment('完整收货地址');
-            $table->char('express_type', 5)->nullable()->comment('快递类型: SF YT YD');
+            $table->char('express_type', 10)->nullable()->comment('快递类型: SF YT YD');
             $table->char('express_no', 20)->nullable()->comment('快递单号');
             $table->timestamp('pay_time')->nullable()->comment('支付时间');
-            $table->char('pay_type', 10)->nullable()->comment('支付类型：支付宝 微信');
+            $table->char('pay_type', 10)->nullable()->comment('支付类型：支付宝 微信 微信小程序');
             $table->char('trade_no', 40)->nullable()->comment('支付单号');
+            $table->tinyInteger('pay_status')->default(0)->comment('支付状态');
             $table->timestamps();
 
             // 单个索引

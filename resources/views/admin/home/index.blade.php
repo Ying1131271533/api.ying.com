@@ -6,10 +6,8 @@
     <title>后台登录-X-admin2.2</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8, target-densitydpi=low-dpi" />
-
-    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8, target-densitydpi=low-dpi" />
+    {{-- <link rel="shortcut icon" href="/favicon.ico"> --}}
 
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link href="{{ asset('static/admin/lib/xadmin/css/font.css') }}" rel="stylesheet">
@@ -53,23 +51,23 @@
                     <!-- 二级菜单 -->
                     <dd>
                         <a onclick="xadmin.open('最大化','http://www.baidu.com','','',true)">
-                            <i class="iconfont">&#xe6a2;</i>弹出最大化</a>
+                        <i class="iconfont">&#xe6a2;</i>弹出最大化</a>
                     </dd>
                     <dd>
                         <a onclick="xadmin.open('弹出自动宽高','http://www.baidu.com')">
-                            <i class="iconfont">&#xe6a8;</i>弹出自动宽高</a>
+                        <i class="iconfont">&#xe6a8;</i>弹出自动宽高</a>
                     </dd>
                     <dd>
                         <a onclick="xadmin.open('弹出指定宽高','http://www.baidu.com',500,300)">
-                            <i class="iconfont">&#xe6a8;</i>弹出指定宽高</a>
+                        <i class="iconfont">&#xe6a8;</i>弹出指定宽高</a>
                     </dd>
                     <dd>
                         <a onclick="xadmin.add_tab('在tab打开','member-list.html')">
-                            <i class="iconfont">&#xe6b8;</i>在tab打开</a>
+                        <i class="iconfont">&#xe6b8;</i>在tab打开</a>
                     </dd>
                     <dd>
                         <a onclick="xadmin.add_tab('在tab打开刷新','member-del.html',true)">
-                            <i class="iconfont">&#xe6b8;</i>在tab打开刷新</a>
+                        <i class="iconfont">&#xe6b8;</i>在tab打开刷新</a>
                     </dd>
                 </dl>
             </li>
@@ -116,6 +114,12 @@
                         <i class="iconfont nav_right">&#xe6a7;</i></a>
                     <ul class="sub-menu">
                         <li>
+                            <a onclick="xadmin.add_tab('品牌列表', '/brands', true)">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>商品分类</cite>
+                            </a>
+                        </li>
+                        <li>
                             <a onclick="xadmin.add_tab('商品列表', '/goods', true)">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>商品列表</cite>
@@ -137,6 +141,12 @@
                             <a onclick="xadmin.add_tab('类型列表', '/goods_type', true)">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>类型列表</cite>
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('品牌列表', '/brands', true)">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>品牌列表</cite>
                             </a>
                         </li>
                     </ul>

@@ -14,16 +14,21 @@ return new class extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            // $table->bigIncrements('id'); // 自增主键
-            $table->id();
+            $table->id(); // 自动递增
+            // $table->unsignedBigInteger('id', true); // 自动递增
             $table->unsignedBigInteger('parent_id')->default(0)->comment('父级id');
             $table->char('name', 25)->comment('分类名称');
+            $table->char('url', 100)->nullable()->comment('链接'); // 菜单那边可能要用到
             $table->tinyInteger('status')->default(1)->comment('状态：0 禁用 1 正常');
             $table->tinyInteger('level')->default(1)->comment('级别：1 2 3...');
+            $table->char('icon', 25)->nullable()->comment('图标');
             $table->timestamps();
 
             $table->index('name');
-            $table->index('parent_id');
+            // $table->index('parent_id');
+
+            // 主键 不能用...
+            // $table->primary(['id', 'parent_id']);
         });
     }
 

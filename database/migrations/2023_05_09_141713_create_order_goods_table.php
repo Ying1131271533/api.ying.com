@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('goods_id')->comment('商品id');
             $table->unsignedDecimal('market_price', 10, 2)->default(0)->comment('市场价格');
             $table->unsignedDecimal('shop_price', 10, 2)->default(0)->comment('购买价格');
-            $table->unsignedSmallInteger('number', 5)->comment('数量'); // 65535
+            $table->unsignedSmallInteger('number')->comment('数量'); // 65535
             $table->timestamps();
 
             // 单个索引

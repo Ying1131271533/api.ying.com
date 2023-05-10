@@ -46,6 +46,7 @@ class Order extends Model
     // {
     //     return new Attribute(
     //         get: fn ($value) => pay_type_name($value),
+    //         // get: fn ($value) => pay_type_name($this->pay_type),
     //     );
     // }
 

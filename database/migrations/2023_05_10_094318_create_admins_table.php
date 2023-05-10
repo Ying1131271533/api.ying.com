@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('comment_pics', function (Blueprint $table) {
-            $table->unsignedBigInteger('comment_id')->comment('评价表id');
-            $table->json('paths')->comment('评价图册');
+        Schema::table('admins', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
-
-            $table->primary('comment_id');
         });
     }
 
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comment_pics');
+        Schema::dropIfExists('admins');
     }
 };

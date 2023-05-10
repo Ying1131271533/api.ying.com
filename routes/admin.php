@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\GoodsController;
@@ -25,7 +26,15 @@ $api->version('v1', $params, function ($api) {
     $api->group(['prefix' => 'admin'], function ($api) {
 
         // 需要登录的路由
-        $api->group(['middleware' => 'api.auth'], function ($api) {
+        $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
+
+            /**
+             * 管理员管理
+             */
+            // 启用/禁用
+            $api->patch('admins/{admin}/lock', [AdminController::class, 'lock'])->name('admins.lock');
+            // 资源路由
+            $api->resource('admins', AdminController::class);
 
             /**
              * 用户管理
@@ -44,6 +53,16 @@ $api->version('v1', $params, function ($api) {
             $api->patch('categorys/{category}/status', [CategoryController::class, 'status'])->name('categorys.status');
             // 分类管理资源路由
             $api->resource('categorys', CategoryController::class, [
+                'except' => ['destroy']
+            ]);
+
+            /**
+             * 品牌管理
+             */
+            // 启用/禁用
+            $api->patch('brands/{brand}/status', [CategoryController::class, 'status'])->name('brands.status');
+            // 资源路由
+            $api->resource('brands', CategoryController::class, [
                 'except' => ['destroy']
             ]);
 

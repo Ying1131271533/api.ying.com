@@ -23,10 +23,10 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // 调用其它的数据填充
-        $this->call(MenuSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(PermissionSeeder::class);
-        $this->call(UserSeeder::class);
+        // $this->call(UserSeeder::class); // 使用下面的管理员管理权限
+        $this->call(AdminSeeder::class);
         $this->call(CitieSeeder::class);
     }
 }
