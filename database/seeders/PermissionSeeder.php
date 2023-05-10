@@ -26,7 +26,7 @@ class PermissionSeeder extends Seeder
         $permissions = [
             [
                 'name' => 'auth', 'cn_name' => '授权管理', 'guard_name' => 'admin',
-                'level' => 1, 'show' => 1,
+                'level' => 1, 'show' => 0,
                 'children'   => [
                     ['name' => 'auth.logout', 'cn_name' => '退出登录', 'guard_name' => 'admin', 'level' => 2, 'show' => 0],
                     ['name' => 'auth.refresh', 'cn_name' => '刷新token', 'guard_name' => 'admin', 'level' => 2, 'show' => 0],
