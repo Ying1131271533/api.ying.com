@@ -35,8 +35,9 @@ $api->version('v1', $params, function ($api) {
         // 需要登录的路由
         // 这里使用 auth.admin 将会显示 500 Route [login] not defined.
         // 在控制器里面使用中间件，才能正确显示 401 Unauthorized
-        $api->group(['middleware' => ['auth:admin']], function ($api) {
-        // $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
+        // 新情况：必须users和admins都有用户数据，中间这里才能用 api.auth ？
+        // $api->group(['middleware' => ['auth:admin']], function ($api) {
+        $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
             $api->get('test', [AdminController::class, 'test']);
             /**
              * 管理员管理
