@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Citie;
+use App\Models\Node;
 use Illuminate\Support\Facades\Cache;
 
 if (!function_exists('success')) {

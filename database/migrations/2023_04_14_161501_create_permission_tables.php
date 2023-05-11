@@ -35,7 +35,7 @@ class CreatePermissionTables extends Migration
             $table->tinyInteger('show')->default(0)->comment('是否显示在导航: 0 否 1 是'); // 是否显示在导航
             $table->unsignedSmallInteger('sort')->default(0)->comment('排序');
             $table->string('icon')->nullable()->comment('图标');    // 图标
-            $table->tinyInteger('status')->default(1)->comment('状态: 0 开启 1 关闭');
+            // $table->tinyInteger('status')->default(1)->comment('状态: 0 开启 1 关闭');
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
 

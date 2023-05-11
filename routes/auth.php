@@ -28,7 +28,7 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
         $api->patch('reset/password/sms', [PasswordResetController::class, 'resetPasswordBySms'])->name('auth.resetPasswordBySms');
 
         // 需要登录的路由
-        $api->group(['middleware' => 'api.auth'], function ($api) {
+        $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
             // 退出登录
             $api->post('logout', [LoginController::class, 'logout'])->name('auth.logout');
             // 刷新token

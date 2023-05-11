@@ -28,14 +28,48 @@ class PermissionSeeder extends Seeder
                 'name' => 'auth', 'cn_name' => '授权管理', 'guard_name' => 'admin',
                 'level' => 1, 'show' => 0,
                 'children'   => [
-                    'name' => 'auth', 'cn_name' => '认证', 'guard_name' => 'admin', 'level' => 2, 'show' => 0,
-                    'children' => [
-                        ['name' => 'auth.logout', 'cn_name' => '退出登录', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
-                        ['name' => 'auth.refresh', 'cn_name' => '刷新token', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
-                        ['name' => 'auth.oss-token', 'cn_name' => '阿里云OSSToken', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
-                        ['name' => 'admin.test', 'cn_name' => '测试', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
-                    ]
+                    [
+                        'name' => 'auth.list', 'cn_name' => '授权操作', 'guard_name' => 'admin', 'level' => 2, 'show' => 0,
+                        'children' => [
+                            ['name' => 'auth.logout', 'cn_name' => '退出登录', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'auth.refresh', 'cn_name' => '刷新token', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'auth.oss-token', 'cn_name' => '阿里云OSSToken', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'admin.test', 'cn_name' => '测试', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                        ]
+                    ],
                 ],
+            ],
+
+            [
+                'name' => 'admins', 'cn_name' => '管理员管理', 'guard_name' => 'admin',
+                'level' => 1, 'show' => 1,
+                'children' => [
+                    [
+                        'name' => 'admins.index', 'cn_name' => '管理员列表', 'guard_name' => 'admin', 'level' => 2, 'show' => 1,
+                        'children' => [
+                            ['name' => 'admins.lock', 'cn_name' => '管理员启用禁用', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'admins.show', 'cn_name' => '管理员详情', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'admins.store', 'cn_name' => '管理员添加', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'admins.update', 'cn_name' => '管理员更新', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'admins.destroy', 'cn_name' => '管理员删除', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                        ]
+                    ],
+                    [
+                        'name' => 'roles.index', 'cn_name' => '角色列表', 'guard_name' => 'admin', 'level' => 2, 'show' => 1,
+                        'children' => [
+                            ['name' => 'roles.show', 'cn_name' => '角色详情', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'roles.store', 'cn_name' => '角色添加', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'roles.update', 'cn_name' => '角色更新', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'roles.destroy', 'cn_name' => '角色删除', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                        ]
+                    ],
+                    [
+                        'name' => 'permissions.index', 'cn_name' => '权限节点列表', 'guard_name' => 'admin', 'level' => 2, 'show' => 1,
+                        'children' => [
+                            ['name' => 'permissions.show', 'cn_name' => '权限节点详情', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                        ]
+                    ],
+                ]
             ],
 
             [
@@ -120,27 +154,15 @@ class PermissionSeeder extends Seeder
             ],
         ];
 
-        // 使用扩展自带的模型插入数据
+        // 使用扩展自带的模型插入数据 只能二维数组
         // foreach ($permissions as $permission) {
-        //     $level_1_children = $permission['children'];
-        //     unset($permission['children']);
-        //     $level_1_model = Permission::create($permission);
-        //     foreach ($level_1_children as $level_2) {
-        //         $level_2_children = $level_2['children'];
-        //         unset($level_2['children']);
-        //         $level_2['parent_id'] = $level_1_model->id;
-        //         $level_2_model = Permission::create($level_2);
-        //         foreach ($level_2_children as $level_3) {
-        //             $level_3['parent_id'] = $level_2_model->id;
-        //             $level_3_model = Permission::create($level_3);
-        //         }
-        //     }
+        //     Permission::create($permission);
         // }
 
-        foreach ($permissions as $permission) {
-            $level_1_children = $permission['children'];
-            unset($permission['children']);
-            $level_1_model = Node::create($permission);
+        foreach ($permissions as $level_1) {
+            $level_1_children = $level_1['children'];
+            unset($level_1['children']);
+            $level_1_model = Node::create($level_1);
             foreach ($level_1_children as $level_2) {
                 $level_2_children = $level_2['children'];
                 unset($level_2['children']);

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->nullable()->unique();
             $table->string('password');
-            $table->tinyInteger('is_lock')->default(0)->comment('是否禁止用户：0 否 1 是');
+            $table->tinyInteger('is_locked')->default(0)->comment('是否禁止用户：0 否 1 是');
             $table->rememberToken();
             $table->timestamps();
         });

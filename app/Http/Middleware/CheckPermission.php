@@ -18,7 +18,8 @@ class CheckPermission
     public function handle(Request $request, Closure $next)
     {
         // 验证用户是否具有节点权限
-        $user = auth('api')->user();
+        $user = auth('admin')->user();
+        // dd($request->route()->getName());
         if (!$user->can($request->route()->getName())) {
             throw new AccessDeniedHttpException('没有权限访问此节点');
         }

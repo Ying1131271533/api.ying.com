@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\GoodsController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\Admin\UserController;
 
@@ -25,9 +27,17 @@ $api->version('v1', $params, function ($api) {
     // 前缀
     $api->group(['prefix' => 'admin'], function ($api) {
 
-        // 需要登录的路由
-        $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
+        // 管理员登录
+        $api->post('login', [AuthController::class, 'login'])->name('admin.login');
 
+
+
+        // 需要登录的路由
+        // 这里使用 auth.admin 将会显示 500 Route [login] not defined.
+        // 在控制器里面使用中间件，才能正确显示 401 Unauthorized
+        $api->group(['middleware' => ['auth:admin']], function ($api) {
+        // $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
+            $api->get('test', [AdminController::class, 'test']);
             /**
              * 管理员管理
              */
@@ -35,6 +45,14 @@ $api->version('v1', $params, function ($api) {
             $api->patch('admins/{admin}/lock', [AdminController::class, 'lock'])->name('admins.lock');
             // 资源路由
             $api->resource('admins', AdminController::class);
+
+            /**
+             * 权限节点管理
+             */
+            // 显示在导航栏 启用/禁用
+            $api->patch('permissions/{permission}/show', [PermissionController::class, 'show'])->name('permissions.show');
+            // 资源路由
+            $api->resource('permissions', PermissionController::class);
 
             /**
              * 用户管理
