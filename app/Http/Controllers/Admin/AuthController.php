@@ -30,6 +30,23 @@ class AuthController extends BaseController
     }
 
     /**
+     * 刷新token  一般由前端来判断token是否快过期了 然后重新获取token
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth('admin')->refresh());
+    }
+
+    /**
+     * 退出登录
+     */
+    public function logout()
+    {
+        auth('admin')->logout();
+        return $this->response->noContent();
+    }
+
+    /**
      * 格式化返回
      *
      * @param  string $token

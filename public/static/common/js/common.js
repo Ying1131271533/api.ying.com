@@ -153,7 +153,7 @@ function isApiLogin() {
                 layer.msg(res.responseJSON.message, { time: 500 }, function () {
                     $.removeCookie('admin_login_token', { path: '/' });
                     // $.removeCookie('api_login_token', {api_domain: document.api_domain, path: '/'});
-                    $(window).attr('location', "http://api.ying.com/admin/auth/login");
+                    $(window).attr('location', "http://api.ying.com/api/admin/login");
                 });
             }
         }
@@ -166,7 +166,7 @@ function isAdminLogin() {
     $.ajax({
         type: "GET",
         contentType: "application/x-www-form-urlencoded",
-        url: api_domain + '/api/user',
+        url: api_domain + '/api/admin/admins/info',
         beforeSend: function (request) {
             request.setRequestHeader("Accept", 'application/x.ying.v1+json');
             request.setRequestHeader("Authorization", 'Bearer ' + getToken());
@@ -198,6 +198,37 @@ function getUserById(uid) {
         beforeSend: function (request) {
             request.setRequestHeader("Accept", 'application/x.ying.v1+json');
             request.setRequestHeader("Authorization", 'Bearer ' + getApiToken());
+        },
+        success: function (res) {
+            if (res.code === config('goto')) {
+                layer.msg('登录凭证失效！', {}, function () {
+                    $.removeCookie('api_login_token', { path: '/' });
+                    $(window).attr('location', "http://api.ying.com/api/auth/login");
+                });
+            }
+
+            if (res.code === config('failed')) {
+                layer.msg(res.msg);
+                return false;
+            }
+            // console.log(res.data);
+            user = res.data;
+        }
+    });
+    // 返回用户信息，必须要在ajax外面返回值
+    return user;
+}
+
+// 根据id获取管理员
+function getAdminById(uid) {
+    let user = null;
+    $.ajax({
+        type: "GET",
+        contentType: "application/x-www-form-urlencoded",
+        url: api_domain + '/api/'+ uid +'/get-admin-by-id',
+        beforeSend: function (request) {
+            request.setRequestHeader("Accept", 'application/x.ying.v1+json');
+            request.setRequestHeader("Authorization", 'Bearer ' + getToken());
         },
         success: function (res) {
             if (res.code === config('goto')) {
@@ -262,7 +293,7 @@ function getAdmin() {
     $.ajax({
         type: "GET",
         contentType: "application/x-www-form-urlencoded",
-        url: api_domain + '/api/user',
+        url: api_domain + '/api/admin/admins/info',
         async: false,
         beforeSend: function (request) {
             request.setRequestHeader("Accept", 'application/x.ying.v1+json');

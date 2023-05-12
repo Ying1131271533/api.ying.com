@@ -14,7 +14,10 @@ class AdminRequest extends BaseRequest
      */
     public function rules()
     {
-        return $this->scene();
+        $rules = array_merge([
+            'password' => 'required|min:6|max:50|confirmed', // 必须有 password_confirmation
+        ], $this->scene());
+        return $rules;
     }
 
     /**

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('email')->unique();
+            $table->string('email')->nullable()->unique();
             $table->string('phone')->nullable()->unique();
             $table->string('password');
             $table->tinyInteger('is_locked')->default(0)->comment('是否禁止用户：0 否 1 是');

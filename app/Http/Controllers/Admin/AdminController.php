@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
+use App\Http\Requests\Admin\AdminRequest;
+use App\Models\Admin;
+use App\Services\Admin\AdminService;
+use App\Transformers\AdminTransformer;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class AdminController extends BaseController
 {
     public function __construct()
     {
+        // 如果路由那边出现问题就用这里
         // $this->middleware('auth.admin');
     }
 
@@ -18,57 +23,75 @@ class AdminController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 列表
      */
-    public function index()
+    public function index(Request $request)
+    {
+        $roles = Admin::paginate(20);
+        return $this->response->paginator($roles, new AdminTransformer);
+    }
+
+    /**
+     * 添加
+     */
+    public function store(AdminRequest $request)
+    {
+        $validetad = $request->validated();
+        AdminService::saveAdmin($validetad);
+        return $this->response->created();
+    }
+
+    /**
+     * 详情
+     */
+    public function show(Admin $admin)
+    {
+        return $this->response->item($admin, new AdminTransformer);
+    }
+
+    /**
+     * 更新
+     */
+    public function update(AdminRequest $request, Admin $admin)
+    {
+        $validetad = $request->validated();
+        AdminService::saveAdmin($validetad, $admin);
+        return $this->response->noContent();
+    }
+
+    /**
+     * 删除
+     */
+    public function destroy(Admin $admin)
     {
         //
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 启用/禁用
      */
-    public function store(Request $request)
+    public function lock(Admin $admin)
     {
-        //
+        $admin->is_locked == 1 ? 0 : 1;
+        if(!$admin->save()) return $this->response->errorInternal('修改失败！');
+        return $this->response->noContent();
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 获取管理员信息
      */
-    public function show($id)
+    public function info()
     {
-        //
+        return $this->response->item(auth('admin')->user(), new AdminTransformer);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 根据管理员id获取管理员信息
      */
-    public function update(Request $request, $id)
+    public function getAdminById(Admin $admin)
     {
-        //
+        return $this->response->array(['id' => $admin->id, 'name' => $admin->name]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
 }

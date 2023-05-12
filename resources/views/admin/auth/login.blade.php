@@ -78,15 +78,13 @@
           $.ajax({
             type: "POST",
             contentType: "application/x-www-form-urlencoded",
-            url: 'http://api.ying.com/api/auth/login',
+            url: 'http://api.ying.com/api/admin/login',
             data: {
               account: data.field.username,
               password: data.field.password
             },
             success: function (res) {
-                if (res.status_code != 200) {
-                    layer.msg(res.msg);
-                }
+                layer.msg('登录成功');
 
                 $.cookie('admin_login_token', res.access_token, { expires: 1 * 365, path: '/' });
                 $(window).attr('location', "{{ route('admin.home.index') }}");

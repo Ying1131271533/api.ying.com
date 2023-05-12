@@ -24,6 +24,6 @@ class CategoryService
 
         // 保存数据
         $result = $category->fill($data)->save();
-        if(!$result) throw new BadRequestException('保存失败！');
+        if(!$result) throw new BadRequestException('保存失败！');  // 500
     }
 }

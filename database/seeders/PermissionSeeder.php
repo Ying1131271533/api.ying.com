@@ -52,6 +52,7 @@ class PermissionSeeder extends Seeder
                             ['name' => 'admins.store', 'cn_name' => '管理员添加', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                             ['name' => 'admins.update', 'cn_name' => '管理员更新', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                             ['name' => 'admins.destroy', 'cn_name' => '管理员删除', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'admins.getAdminById', 'cn_name' => '根据id获取管理员信息', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                         ]
                     ],
                     [

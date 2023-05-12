@@ -112,44 +112,44 @@
                         <i class="iconfont left-nav-li" lay-tips="商品管理">&#xe70b;</i>
                         <cite>商品管理</cite>
                         <i class="iconfont nav_right">&#xe6a7;</i></a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a onclick="xadmin.add_tab('品牌列表', '/brands', true)">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>商品分类</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a onclick="xadmin.add_tab('商品列表', '/goods', true)">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>商品列表</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a onclick="xadmin.add_tab('属性列表', '/goods_attr', true)">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>属性列表</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a onclick="xadmin.add_tab('规格列表', '/goods_spec', true)">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>规格列表</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a onclick="xadmin.add_tab('类型列表', '/goods_type', true)">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>类型列表</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a onclick="xadmin.add_tab('品牌列表', '/brands', true)">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>品牌列表</cite>
-                            </a>
-                        </li>
-                    </ul>
+                        <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('品牌列表', '/brands', true)">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>商品分类</cite>
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('商品列表', '/goods', true)">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>商品列表</cite>
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('商品类型', '/goods_types', true)">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>商品类型</cite>
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('属性列表', '/goods_attrs', true)">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>属性列表</cite>
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('规格列表', '/goods_specs', true)">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>规格列表</cite>
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('品牌列表', '/brands', true)">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>品牌列表</cite>
+                                </a>
+                            </li>
+                        </ul>
                 </li>
             </ul>
         </div>
@@ -201,7 +201,7 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/x-www-form-urlencoded",
-                url: '/api/auth/logout',
+                url: '/api/admin/logout',
                 beforeSend: function(request) {
                     request.setRequestHeader("Accept", 'application/x.ying.v1+json');
                     request.setRequestHeader("Authorization", 'Bearer ' + getToken());
@@ -213,7 +213,7 @@
                         $.removeCookie('admin_login_token', {
                             path: '/'
                         });
-                        $(window).attr('location', '/api/auth/login');
+                        $(window).attr('location', '/api/admin/login');
                     });
                 },
                 error: function (res) {

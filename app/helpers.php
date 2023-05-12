@@ -399,3 +399,12 @@ if (!function_exists('cities_name')) {
     }
 }
 
+if (!function_exists('forget_permission_cache')) {
+    /**
+     * 清除权限缓存
+     */
+    function forget_permission_cache()
+    {
+        app()['cache']->forget('spatie.permission.cache');
+    }
+}

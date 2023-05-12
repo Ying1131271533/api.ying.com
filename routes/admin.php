@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Auth\OssController;
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -28,24 +30,42 @@ $api->version('v1', $params, function ($api) {
     $api->group(['prefix' => 'admin'], function ($api) {
 
         // 管理员登录
-        $api->post('login', [AuthController::class, 'login'])->name('admin.login');
-
-
+        $api->post('login', [AuthController::class, 'login'])->name('auth.login');
 
         // 需要登录的路由
         // 这里使用 auth.admin 将会显示 500 Route [login] not defined.
         // 在控制器里面使用中间件，才能正确显示 401 Unauthorized
         // 新情况：必须users和admins都有用户数据，中间这里才能用 api.auth ？
         // $api->group(['middleware' => ['auth:admin']], function ($api) {
-        $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
-            $api->get('test', [AdminController::class, 'test']);
+        $api->group(['middleware' => ['api.auth']], function ($api) {
+        // $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
+
+            // 退出登录
+            $api->post('logout', [AuthController::class, 'logout'])->name('auth.logout');
+
             /**
              * 管理员管理
              */
+            // 测试
+            $api->get('test', [AdminController::class, 'test'])->name('admins.test');
+            // 根据id获取管理员信息
+            $api->get('admins/{admin}/get-admin-by-id', [AdminController::class, 'getAdminById'])->name('admins.getAdminById');
+            // 获取管理员信息
+            $api->get('admins/info', [AdminController::class, 'info'])->name('admins.info');
             // 启用/禁用
             $api->patch('admins/{admin}/lock', [AdminController::class, 'lock'])->name('admins.lock');
             // 资源路由
             $api->resource('admins', AdminController::class);
+
+            /**
+             * 角色管理
+             */
+            // 角色拥有的权限
+            $api->get('roles/permissions', [AuthController::class, 'permissions'])->name('role.permissions');
+            // 角色赋予权限
+            $api->post('grant-permissions', [AuthController::class, 'grantPermissions'])->name('role.grantPermissions');
+            // 资源路由
+            $api->resource('roles', RoleController::class);
 
             /**
              * 权限节点管理
@@ -132,6 +152,11 @@ $api->version('v1', $params, function ($api) {
              */
             // 列表
             $api->get('menus', [MenuController::class, 'index'])->name('menus.index');
+
+            // 刷新token
+            $api->get('refresh', [AuthController::class, 'refresh'])->name('auth.refresh');
+            // 阿里云OSS Token
+            $api->get('oss-token', [OssController::class, 'token'])->name('auth.oss-token');
         });
     });
 

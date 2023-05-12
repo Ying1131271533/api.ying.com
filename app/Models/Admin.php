@@ -15,6 +15,8 @@ class Admin extends Authenticatable implements JWTSubject
 
     use HasRoles;
 
+    protected $guarded = [];
+
     // guard_name(看守器)
     protected $guard_name = 'admin';
 

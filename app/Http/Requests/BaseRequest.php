@@ -59,6 +59,8 @@ class BaseRequest extends FormRequest
             'content'      => '内容',
             'rate'         => '评价等级',
             'star'         => '评价星级',
+            'sort'         => '排序',
+            'cn_name'      => '中文名称',
         ];
     }
 }
