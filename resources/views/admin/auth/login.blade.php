@@ -85,7 +85,6 @@
             },
             success: function (res) {
                 layer.msg('登录成功');
-
                 $.cookie('admin_login_token', res.access_token, { expires: 1 * 365, path: '/' });
                 $(window).attr('location', "{{ route('admin.home.index') }}");
 

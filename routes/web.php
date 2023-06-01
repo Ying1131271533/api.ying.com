@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\Admin\AuthController;
+use App\Http\Controllers\Web\Admin\BrandController;
 use App\Http\Controllers\Web\Admin\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,9 +45,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('welcome', 'welcome')->name('welcome');
         });
 
-    /************************ 商品属性 ************************/
-    Route::prefix('goodsAttr')
-        ->name('goodsAttr.')
+    /************************ 分类列表 ************************/
+    Route::prefix('categorys')
+        ->name('categorys.')
         ->controller(HomeController::class)
         ->group(function () {
             // 列表
@@ -57,9 +58,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('edit', 'edit')->name('edit');
         });
 
-    /************************ 商品规格 ************************/
-    Route::prefix('goodsSpec')
-        ->name('goodsSpec.')
+    /************************ 品牌列表 ************************/
+    Route::prefix('brands')
+        ->name('brands.')
+        ->controller(BrandController::class)
+        ->group(function () {
+            // 列表
+            Route::get('index', 'index')->name('index');
+            // 添加
+            Route::get('create', 'create')->name('create');
+            // 修改
+            Route::get('edit', 'edit')->name('edit');
+        });
+
+    /************************ 商品管理 ************************/
+    Route::prefix('goods')
+        ->name('goods.')
         ->controller(HomeController::class)
         ->group(function () {
             // 列表
@@ -83,9 +97,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('edit', 'edit')->name('edit');
         });
 
-    /************************ 商品管理 ************************/
-    Route::prefix('goods')
-        ->name('goods.')
+    /************************ 商品属性 ************************/
+    Route::prefix('goodsAttr')
+        ->name('goodsAttr.')
+        ->controller(HomeController::class)
+        ->group(function () {
+            // 列表
+            Route::get('index', 'index')->name('index');
+            // 添加
+            Route::get('create', 'create')->name('create');
+            // 修改
+            Route::get('edit', 'edit')->name('edit');
+        });
+
+    /************************ 商品规格 ************************/
+    Route::prefix('goodsSpec')
+        ->name('goodsSpec.')
         ->controller(HomeController::class)
         ->group(function () {
             // 列表

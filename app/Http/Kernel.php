@@ -67,6 +67,6 @@ class Kernel extends HttpKernel
         'check.permission' => \App\Http\Middleware\CheckPermission::class,
         'check.email.code' => \App\Http\Middleware\CheckEmailCode::class,
         'check.phone.code' => \App\Http\Middleware\CheckPhoneCode::class,
-        'cross.domain' => \App\Http\Middleware\EnableCrossRequestMiddleware::class, // 允许那些网站跨域
+        'cross.domain' => \App\Http\Middleware\EnableCrossRequestMiddleware::class, // 允许哪些网站跨域
     ];
 }

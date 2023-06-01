@@ -18,12 +18,12 @@ class GoodsService
         // 找到分类
         $category = Category::find($data['category_id']);
         // 是否被禁用
-        if($category['status'] == 0) throw new BadRequestHttpException('分类已被禁用');
+        if($category['status'] == 0) throw new BadRequestHttpException('分类已被禁用'); // 400
         // 是否为3级分类
-        if($category['level'] != 3) throw new UnprocessableEntityHttpException('分类必须为3级');
+        if($category['level'] != 3) throw new UnprocessableEntityHttpException('分类必须为3级'); // 422
 
         // 数据加入用户id
-        $data['user_id'] = auth('api')->id();
+        $data['admin_id'] = auth('admin')->id();
 
         // 保存数据
         $result = $good->fill($data)->save();

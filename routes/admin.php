@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Auth\OssController;
+use App\Http\Controllers\Web\Admin\BrandController;
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -35,7 +36,7 @@ $api->version('v1', $params, function ($api) {
         // 需要登录的路由
         // 这里使用 auth.admin 将会显示 500 Route [login] not defined.
         // 在控制器里面使用中间件，才能正确显示 401 Unauthorized
-        // 新情况：必须users和admins都有用户数据，中间这里才能用 api.auth ？
+        // users和admins必需都有数据，中间件这里才能用 api.auth， 因为会先去找users表再去找admins表
         // $api->group(['middleware' => ['auth:admin']], function ($api) {
         $api->group(['middleware' => ['api.auth']], function ($api) {
         // $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
@@ -90,6 +91,8 @@ $api->version('v1', $params, function ($api) {
              */
             // 分类 启用/禁用
             $api->patch('categorys/{category}/status', [CategoryController::class, 'status'])->name('categorys.status');
+            // 排序
+            $api->patch('categorys/{category}/sort', [CategoryController::class, 'sort'])->name('categorys.sort');
             // 分类管理资源路由
             $api->resource('categorys', CategoryController::class, [
                 'except' => ['destroy']
@@ -99,9 +102,11 @@ $api->version('v1', $params, function ($api) {
              * 品牌管理
              */
             // 启用/禁用
-            $api->patch('brands/{brand}/status', [CategoryController::class, 'status'])->name('brands.status');
+            $api->patch('brands/{brand}/status', [BrandController::class, 'status'])->name('brands.status');
+            // 排序
+            $api->patch('brands/{brand}/sort', [BrandController::class, 'sort'])->name('brands.sort');
             // 资源路由
-            $api->resource('brands', CategoryController::class, [
+            $api->resource('brands', BrandController::class, [
                 'except' => ['destroy']
             ]);
 

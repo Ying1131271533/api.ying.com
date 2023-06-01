@@ -114,9 +114,15 @@
                         <i class="iconfont nav_right">&#xe6a7;</i></a>
                         <ul class="sub-menu">
                             <li>
+                                <a onclick="xadmin.add_tab('分类列表', '/categorys', true)">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>分类列表</cite>
+                                </a>
+                            </li>
+                            <li>
                                 <a onclick="xadmin.add_tab('品牌列表', '/brands', true)">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>商品分类</cite>
+                                    <cite>品牌列表</cite>
                                 </a>
                             </li>
                             <li>
@@ -141,12 +147,6 @@
                                 <a onclick="xadmin.add_tab('规格列表', '/goods_specs', true)">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>规格列表</cite>
-                                </a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('品牌列表', '/brands', true)">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>品牌列表</cite>
                                 </a>
                             </li>
                         </ul>

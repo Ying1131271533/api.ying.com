@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\OssController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\UploadController;
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -28,7 +29,8 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
         $api->patch('reset/password/sms', [PasswordResetController::class, 'resetPasswordBySms'])->name('auth.resetPasswordBySms');
 
         // 需要登录的路由
-        $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
+        $api->group(['middleware' => ['api.auth']], function ($api) {
+        // $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
             // 退出登录
             $api->post('logout', [LoginController::class, 'logout'])->name('auth.logout');
             // 刷新token
@@ -45,6 +47,8 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
             $api->post('phone/code', [BindController::class, 'phoneCode'])->name('auth.phoneCode');
             // 修改手机号
             $api->patch('phone/update', [BindController::class, 'updatePhone'])->name('auth.updatePhone');
+            // 上传文件
+            $api->post('upload', UploadController::class)->name('auth.upload');
         });
     });
 

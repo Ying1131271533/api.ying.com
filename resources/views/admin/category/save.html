@@ -1,0 +1,131 @@
+{extend name="public/base_layui" /}
+{block name="title"}分类保存{/block}
+{block name="load"}
+<!-- css -->
+<!-- js -->
+{/block}
+<!-- 主体内容 -->
+{block name="main"}
+<div class="layui-fluid">
+    <div class="layui-form" lay-filter="form">
+        <form action="" method="post" name="example">
+            <table class="layui-table" lay-size="lg" lay-skin="line">
+                <thead>
+                    <tr>
+                        <th colspan="2">分类添加</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="150" align="right"><strong>分类标题：</strong></td>
+                        <td>
+                            <div class="layui-input-inline">
+                                <input class="layui-input" type="text" name="title" placeholder="分类标题">
+                            </div>
+                            <div class="layui-input-inline">
+                                <span style="color: red;">*</span> 例如：首页
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="150" align="right"><strong>链接：</strong></td>
+                        <td>
+                            <div class="layui-input-inline">
+                                <input class="layui-input" type="text" name="url" placeholder="url">
+                            </div>
+                            <div class="layui-input-inline">
+                                <span style="color: red;">*</span> 例如：/article
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="150" align="right"><strong>图标：</strong></td>
+                        <td>
+                            <div class="layui-upload">
+                                <button type="button" class="layui-btn" id="upload-img">上传图片</button>
+                                <div class="layui-upload-list">
+                                  <img class="layui-upload-img" id="upload-preview">
+                                  <input type="hidden" name="image">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="150" align="right"><strong>排序：</strong></td>
+                        <td>
+                            <div class="layui-input-inline">
+                                <input class="layui-input" type="text" name="sort" placeholder="排序">
+                            </div>
+                            <div class="layui-input-inline">
+                                排序：数值越小位置越前，最大65535
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="150" align="right"><strong>链接打开方式：</strong></td>
+                        <td>
+                            <div class="layui-input-inline">
+                                <input class="layui-input" type="text" name="target" placeholder="_blank">
+                            </div>
+                            <div class="layui-input-inline">
+                                默认打开新窗口：_blank
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="150" align="right"><strong>显示：</strong></td>
+                        <td>
+                            <div class="layui-input-inline">
+                                <input type="radio" name="show" value="1" title="是" checked>
+                                <input type="radio" name="show" value="0" title="否">
+                            </div>
+                            <div class="layui-input-inline">
+                                是否显示在导航
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="right"><strong>状态：</strong></td>
+                        <td>
+                            <div class="layui-input-inline">
+                                <input type="radio" name="status" value="1" title="正常" checked>
+                                <input type="radio" name="status" value="0" title="禁止">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"></td>
+                        <td>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn" lay-submit lay-filter="formSubmit">立即提交</button>
+                                <input type="hidden" name="parent_id" value="0">
+                                <input type="hidden" name="id">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    var parent_id = getParams()['parent_id'];
+    $('input[name="parent_id"]').val(parent_id);
+
+    layui.use(['form', 'upload', 'layer'], function () {
+        // 表单实例化
+        var form = layui.form,
+            upload = layui.upload,
+            layer = layui.layer;
+
+        // 上传图片
+        layui_upload_image(upload);
+
+        // 保存
+        layui_ajax_save(form, '/category');
+    });
+</script>
+{/block}

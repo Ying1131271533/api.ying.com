@@ -35,6 +35,7 @@ class PermissionSeeder extends Seeder
                             ['name' => 'auth.refresh', 'cn_name' => '刷新token', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                             ['name' => 'auth.oss-token', 'cn_name' => '阿里云OSSToken', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                             ['name' => 'admin.test', 'cn_name' => '测试', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'auth.test', 'cn_name' => '上传文件', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                         ]
                     ],
                 ],
@@ -92,12 +93,24 @@ class PermissionSeeder extends Seeder
                 'level' => 1, 'show' => 1,
                 'children' => [
                     [
-                        'name' => 'categorys.index', 'cn_name' => '商品分类', 'guard_name' => 'admin', 'level' => 2, 'show' => 1,
+                        'name' => 'categorys.index', 'cn_name' => '分类列表', 'guard_name' => 'admin', 'level' => 2, 'show' => 1,
                         'children' => [
                             ['name' => 'categorys.status', 'cn_name' => '分类状态', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'categorys.sort', 'cn_name' => '分类排序', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                             ['name' => 'categorys.store', 'cn_name' => '分类添加', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                             ['name' => 'categorys.show', 'cn_name' => '分类详情', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                             ['name' => 'categorys.update', 'cn_name' => '分类更新', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                        ]
+                    ],
+
+                    [
+                        'name' => 'brands.index', 'cn_name' => '品牌列表', 'guard_name' => 'admin', 'level' => 2, 'show' => 1,
+                        'children' => [
+                            ['name' => 'brands.status', 'cn_name' => '品牌状态', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'brands.sort', 'cn_name' => '品牌排序', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'brands.store', 'cn_name' => '品牌添加', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'brands.show', 'cn_name' => '品牌详情', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
+                            ['name' => 'brands.update', 'cn_name' => '品牌更新', 'guard_name' => 'admin', 'level' => 3, 'show' => 0],
                         ]
                     ],
 

@@ -53,6 +53,18 @@ class CategoryController extends BaseController
     }
 
     /**
+     * 排序
+     */
+    public function sort(CategoryRequest $request, Category $category)
+    {
+        $validated = $request->validated();
+        $category->sort = $validated['sort'];
+        $result = $category->save();
+        if(!$result) return $this->response->errorInternal('排序失败！');
+        return $this->response->noContent();
+    }
+
+    /**
      * 分类 启用/禁用
      */
     public function status(Category $category)

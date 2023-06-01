@@ -3,10 +3,8 @@
 namespace App\Http\Requests\Admin;
 
 use App\Http\Requests\BaseRequest;
-use App\Rules\CategoryCheckLevel;
-use Illuminate\Validation\Rule;
 
-class CategoryRequest extends BaseRequest
+class BrandRequest extends BaseRequest
 {
     /**
      * 获取已定义验证规则

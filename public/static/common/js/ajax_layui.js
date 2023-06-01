@@ -21,13 +21,9 @@ function layui_ajax_save(form, url, back_url = null) {
             url: url,
             data: data.field,
             beforeSend: function (request) {
-                request.setRequestHeader("access-token", getToken());
+                request.setRequestHeader("Authorization", 'Bearer ' + getToken());
             },
             success: function (res) {
-                if (res.code !== config('success')) {
-                    layer.msg(res.msg, { icon: 2 });
-                    return false;
-                }
                 layer.msg(res.msg, { icon: 1, time: 500 }, function () {
                     if (back_url) {
                         window.location.href = back_url;
@@ -36,6 +32,9 @@ function layui_ajax_save(form, url, back_url = null) {
                     location.reload();
                 });
 
+            },
+            error: function (res) {
+                layer.msg(res.responseJSON.message, { icon: 2 });
             }
         });
 
@@ -65,13 +64,9 @@ function layui_ajax_update(form, url, back_url) {
             url: url,
             data: data.field,
             beforeSend: function (request) {
-                request.setRequestHeader("access-token", getToken());
+                request.setRequestHeader("Authorization", 'Bearer ' + getToken());
             },
             success: function (res) {
-                if (res.code !== config('success')) {
-                    layer.msg(res.msg, { icon: 2 });
-                    return false;
-                }
                 layer.msg(res.msg, { icon: 1, time: 500 }, function () {
                     if (back_url) {
                         window.location.href = back_url;
@@ -79,6 +74,9 @@ function layui_ajax_update(form, url, back_url) {
                     }
                     location.reload();
                 });
+            },
+            error: function (res) {
+                layer.msg(res.responseJSON.message, { icon: 2 });
             }
         });
 
@@ -104,7 +102,7 @@ function layui_form_delete(obj, url) {
             type: "DELETE",
             url: url,
             beforeSend: function (request) {
-                request.setRequestHeader("access-token", getToken());
+                request.setRequestHeader("Authorization", 'Bearer ' + getToken());
             },
             success: function (res) {
                 if (res.code !== config('success')) {

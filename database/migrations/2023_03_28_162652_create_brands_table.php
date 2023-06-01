@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->char('name', 25)->comment('品牌名称');
             $table->char('logo', 100)->comment('logo图片');
+            $table->integer('sort')->default(0)->comment('排序');
+            $table->tinyInteger('status')->default(1)->comment('状态: 0 关闭 1 开启');
             $table->timestamps();
         });
     }

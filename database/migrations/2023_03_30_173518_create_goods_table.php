@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('goods', function (Blueprint $table) {
             // $table->bigIncrements('id'); // 自增主键
             $table->id(); // 自增主键
-            $table->unsignedBigInteger('user_id')->comment('创建商品的用户id');
+            $table->unsignedBigInteger('admin_id')->comment('创建商品的用户id');
             $table->unsignedBigInteger('category_id')->comment('分类id');
             $table->unsignedBigInteger('brand_id')->comment('品牌id');
             $table->char('title', 50)->unique()->comment('标题');
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamps();
 
             // 单个索引
-            $table->index('user_id');
+            $table->index('admin_id');
             $table->index('category_id');
             $table->index('brand_id');
 
@@ -39,11 +39,11 @@ return new class extends Migration
             $table->index('is_recommend');
 
             // 复合索引
-            // 这里会生成 'user_id,category_id' 和 'category_id' 两个索引
-            // $table->index(['user_id', 'category_id']);
+            // 这里会生成 'admin_id,category_id' 和 'category_id' 两个索引
+            // $table->index(['admin_id', 'category_id']);
 
             // 外键约束
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('admin_id')->references('id')->on('admins');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('brand_id')->references('id')->on('brands');
 

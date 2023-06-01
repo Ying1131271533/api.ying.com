@@ -61,6 +61,8 @@ class BaseRequest extends FormRequest
             'star'         => '评价星级',
             'sort'         => '排序',
             'cn_name'      => '中文名称',
+            'file_type'      => '文件类型',
+            'file'      => '文件',
         ];
     }
 }
