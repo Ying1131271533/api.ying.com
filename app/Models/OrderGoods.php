@@ -22,6 +22,16 @@ class OrderGoods extends Model
     ];
 
     /**
+     * 类型转换
+     *
+     * @var array
+     */
+    protected $casts = [
+        'market_price' => 'decimal:2',
+        'show_price' => 'decimal:2',
+    ];
+
+    /**
      * 获取这个订单详情所属的订单
      */
     public function order()

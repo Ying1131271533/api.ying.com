@@ -44,7 +44,8 @@ class Good extends Model
      */
     protected $casts = [
         'pics'  => 'array',
-        'price' => 'double',
+        'market_price' => 'decimal:2',
+        'show_price' => 'decimal:2',
     ];
 
     /**
@@ -54,7 +55,7 @@ class Good extends Model
      */
     protected $appends = [
         'cover_url',
-        // 这里因为只有商品详情才会用到，所以这里在查询的时候，手动追加字段 使用 append()
+        // pics_url因为只有商品详情才会用到，所以这里在查询的时候，手动追加字段 使用 append()
         // 'pics_url',
     ];
 

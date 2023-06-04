@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('goods', function (Blueprint $table) {
-            $table->integer('sales')->after('stock')->default(0)->comment('销量');
+        Schema::create('goods_types', function (Blueprint $table) {
+            $table->id();
+            $table->char('name', 25);
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('goods', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('goods_types');
     }
 };

@@ -67,7 +67,7 @@ function layui_ajax_update(form, url, back_url) {
                 request.setRequestHeader("Authorization", 'Bearer ' + getToken());
             },
             success: function (res) {
-                layer.msg(res.msg, { icon: 1, time: 500 }, function () {
+                layer.msg('更新成功', { icon: 1, time: 500 }, function () {
                     if (back_url) {
                         window.location.href = back_url;
                         return false;
@@ -180,7 +180,7 @@ function layui_upload_imgs(upload, name='imgs', multiple = false) {
         , method: 'POST'  // 可选项。HTTP类型，默认post
         , data: { type: 'images' } // 可选项。额外的参数，如：{id: 123, abc: 'xxx'}
         , field: 'images' // 上传文件的字段名
-        , headers: { 'access-token': getToken() }
+        , headers: { 'Authorization': 'Bearer ' + getToken() }
         , before: function (obj) {
             // 预读本地文件示例，不支持ie8
             obj.preview(function (index, file, result) {

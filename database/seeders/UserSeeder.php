@@ -15,20 +15,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // 清除缓存
-        app()['cache']->forget('spatie.role.cache');
 
         // 创建用户
         $user = User::create([
-            'name' => '超级管理员',
-            'email' => 'akaliying@foxmail.com',
+            'name' => 'akali',
+            'email' => '1131271533@qq.com',
             'password' => bcrypt('123456'),
         ]);
-        // 获取用户
-        // $user = User::find(1);
-
-        // 给用户分配角色
-        $user->assignRole('super-admin');
-        // $user->assignRole(['article-admin', 'goods-admin']);
     }
 }

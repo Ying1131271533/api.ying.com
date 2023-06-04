@@ -4,7 +4,7 @@
  * @param  this
  * @return $
  */
-function ajax_change_status(obj) {
+function ajax_change_status(obj, url) {
     // 数据
     var id = $(obj).attr("data-id"); // id
     var value = $(obj).attr("data-value") == 1 ? 0 : 1; // 要修改的值
@@ -14,22 +14,13 @@ function ajax_change_status(obj) {
     $.ajax({
         type: "PATCH",
         contentType: "application/x-www-form-urlencoded",
-        url: '/ajax/update_field_value',
-        data: {
-            id: id,
-            field: field,
-            value: value,
-            db: db,
-        },
-        beforeSend: function (request) {
-            request.setRequestHeader("access-token", getApiToken());
-        },
+        url: url,
+        // beforeSend: function (request) {
+        //     request.setRequestHeader("access-token", getToken());
+        // },
         success: function (res) {
 
-            if (res.code !== config('success')) {
-                layer.msg(res.msg, { icon: 2 });
-                return false;
-            }
+            layer.msg(res.msg, { icon: 2 });
 
             if (res.data.value == 1) {
                 $(obj).removeClass("layui-btn-danger").attr("data-value", 1).text("开启");
@@ -91,15 +82,11 @@ function ajax_read(url, is_token = false) {
             contentType: "application/x-www-form-urlencoded",
             url: api_domain + url + '/' + id,
             async: false, // 关闭异步
-            beforeSend: function (request) {
-                request.setRequestHeader("access-token", getApiToken());
-            },
             success: function (res) {
-                if (res.code !== config('success')) {
-                    layer.msg(res.msg);
-                    return false;
-                }
-                data = res.data;
+                data = res;
+            },
+            error: function (res) {
+                layer.msg(res.responseJSON.message, { icon: 2 });
             }
         });
     } else {
@@ -109,11 +96,10 @@ function ajax_read(url, is_token = false) {
             url: api_domain + url + '/' + id,
             async: false, // 关闭异步
             success: function (res) {
-                if (res.code !== config('success')) {
-                    layer.msg(res.msg);
-                    return false;
-                }
-                data = res.data;
+                data = res;
+            },
+            error: function (res) {
+                layer.msg(res.responseJSON.message, { icon: 2 });
             }
         });
     }

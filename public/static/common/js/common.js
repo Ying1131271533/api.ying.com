@@ -381,7 +381,7 @@ var HtmlUtil = {
 // 获取地址的id
 function get_url_id() {
     // 正则匹配地址栏最后的数字
-    var id = location.href.match(/\d+/g)[1];
+    var id = location.href.match(/\d+/g);
     if (empty(id)) {
         layer.msg('地址参数出错！，请刷新页面', { icon: 2 });
         return false;

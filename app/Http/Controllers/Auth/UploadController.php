@@ -33,13 +33,13 @@ class UploadController extends BaseController
                     // 验证文件
                     $this->validateFile($value, $file_type);
                     // 保存文件，获取文件路径
-                    $path[] = '/storage/' . $value->store($file_type . 's/' . date('Ymd'), 'public');
+                    $path[] = 'storage/' . $value->store($file_type . 's/' . date('Ymd'), 'public');
                 }
             } else { // 单个文件
                 // 验证文件
                 $this->validateFile($file, $file_type);
                 // 保存文件，获取文件路径
-                $path = '/storage/' . $file->store($file_type . 's/' . date('Ymd'), 'public');
+                $path = 'storage/' . $file->store($file_type . 's/' . date('Ymd'), 'public');
             }
             // 返回文件路径
             return $this->response->array(['path' => $path]);

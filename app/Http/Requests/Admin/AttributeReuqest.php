@@ -5,10 +5,10 @@ namespace App\Http\Requests\Admin;
 use App\Http\Requests\BaseRequest;
 use Illuminate\Validation\Rule;
 
-class BrandRequest extends BaseRequest
+class AttributeReuqest extends BaseRequest
 {
     /**
-     * 获取已定义验证规则
+     * Get the validation rules that apply to the request.
      *
      * @return array<string, mixed>
      */
@@ -25,7 +25,7 @@ class BrandRequest extends BaseRequest
     public function messages()
     {
         return [
-            'status.in' => '状态必须是0或1',
+            'input_type.in' => '录入方式必须是1,2,3',
         ];
     }
 
@@ -39,28 +39,25 @@ class BrandRequest extends BaseRequest
         // 获取路由名称
         $route_name = $this->route()->getName();
         switch ($route_name) {
-            case 'brands.store':
+            case 'attributes.store':
                 return [
-                    'name' => 'required|max:25|unique:brands',
-                    'logo'   => 'required|max:100',
+                    'goods_type_id' => 'required|integer|gt:0|exists:goods_types,id',
+                    'name'          => 'required|max:25',
+                    'input_type'    => 'required|in:1,2,3',
+                    'values'        => 'array|max:255',
                 ];
                 break;
-            case 'brands.update':
+            case 'attributes.update':
                 return [
-                    'name' => [
-                        'required',
-                        'max:50',
-                        Rule::unique('brands')->ignore($this->brand), // 检查唯一性时，排除自己
-                    ],
-                    'logo' => [
-                        'required',
-                        'max:100',
-                    ],
+                    'goods_type_id' => 'required|integer|gt:0|exists:goods_types,id',
+                    'name'          => 'required|max:25',
+                    'input_type'    => 'required|in:1,2,3',
+                    'values'        => 'array|max:255',
                 ];
                 break;
-            case 'brands.sort':
+            case 'attributes.sort':
                 return [
-                    'sort' => 'required|integer|max:99999|min:0',
+                    'sort' => 'required|integer|max:999999|min:0',
                 ];
                 break;
             default:

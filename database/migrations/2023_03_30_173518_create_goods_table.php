@@ -23,9 +23,10 @@ return new class extends Migration
             $table->char('cover', 100)->comment('封面图');
             $table->unsignedDecimal('market_price', 10, 2)->default(0)->comment('市场价格');
             $table->unsignedDecimal('show_price', 10, 2)->default(0)->comment('购买价格');
-            $table->unsignedinteger('stock')->comment('库存');
-            $table->tinyInteger('is_on')->default(0)->comment('上架：0 否 1 是');
-            $table->tinyInteger('is_recommend')->default(0)->comment('推荐商品：0 否 1是');
+            $table->unsignedInteger('stock')->comment('库存');
+            $table->integer('sales')->unsigned()->default(0)->comment('销量');
+            $table->unsignedTinyInteger('is_on')->default(0)->comment('上架：0 否 1 是');
+            $table->unsignedTinyInteger('is_recommend')->default(0)->comment('推荐商品：0 否 1 是');
             $table->mediumText('details')->comment('商品详情');
             $table->timestamps();
 

@@ -1,6 +1,6 @@
-@extends('layout.app')
+@extends('admin.layout.app')
 
-@section('title', '品牌保存')
+@section('title', '品牌添加')
 
 <!-- 主体内容 -->
 @section('content')
@@ -10,7 +10,7 @@
             <table class="layui-table" lay-size="lg" lay-skin="line">
                 <thead>
                     <tr>
-                        <th colspan="2">品牌保存</th>
+                        <th colspan="2">品牌添加</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,7 +58,7 @@
     layui.use(['form', 'layer'], function () {
         // 表单实例化
         var form = layui.form;
-        // 保存
+        // 添加
         layui_ajax_save(form, '/api/admin/brands', '/admin/brands/index');
     });
 </script>

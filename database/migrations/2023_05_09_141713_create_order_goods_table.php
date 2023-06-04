@@ -26,7 +26,7 @@ return new class extends Migration
             $table->index('goods_id');
 
             // 复合索引
-            // 这里会生成 'order_id,goods_id' 和 'goods_id' 两个索引
+            // 这样会生成 'order_id,goods_id' 和 'goods_id' 两个索引
             // $table->index(['order_id', 'goods_id']);
 
             // 外键约束

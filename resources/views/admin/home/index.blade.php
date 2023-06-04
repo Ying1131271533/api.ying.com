@@ -114,37 +114,43 @@
                         <i class="iconfont nav_right">&#xe6a7;</i></a>
                         <ul class="sub-menu">
                             <li>
-                                <a onclick="xadmin.add_tab('分类列表', '/categorys', true)">
+                                <a onclick="xadmin.add_tab('分类列表', '/admin/categorys/index', true)">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>分类列表</cite>
                                 </a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('品牌列表', '/brands', true)">
+                                <a onclick="xadmin.add_tab('品牌列表', '/admin/brands/index', true)">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>品牌列表</cite>
                                 </a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('商品列表', '/goods', true)">
+                                <a onclick="xadmin.add_tab('商品列表', '/admin/goods/index', true)">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>商品列表</cite>
                                 </a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('商品类型', '/goods_types', true)">
+                                <a onclick="xadmin.add_tab('商品模型', '/admin/goods/goods_model', true)">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>商品模型</cite>
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('商品类型', '/admin/goods_types/index', true)">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>商品类型</cite>
                                 </a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('属性列表', '/goods_attrs', true)">
+                                <a onclick="xadmin.add_tab('商品属性', '/admin/goods_attrs/index', true)">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>属性列表</cite>
                                 </a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('规格列表', '/goods_specs', true)">
+                                <a onclick="xadmin.add_tab('商品规格', '/admin/goods_specs/index', true)">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>规格列表</cite>
                                 </a>

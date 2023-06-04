@@ -18,7 +18,6 @@ class CartTransformer extends TransformerAbstract
             'goods_id'   => $cart->goods_id,
             'number'     => $cart->number,
             'is_checked' => $cart->is_checked,
-
         ];
     }
 

@@ -2,17 +2,19 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\GoodsController;
+use App\Http\Controllers\Admin\GoodsTypeController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Auth\OssController;
-use App\Http\Controllers\Web\Admin\BrandController;
+use App\Http\Controllers\Admin\SpecController;
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -41,6 +43,11 @@ $api->version('v1', $params, function ($api) {
         $api->group(['middleware' => ['api.auth']], function ($api) {
         // $api->group(['middleware' => ['api.auth', 'check.permission']], function ($api) {
 
+            /**
+             * 认证管理
+             */
+            // 刷新token
+            $api->get('refresh', [AuthController::class, 'refresh'])->name('auth.refresh');
             // 退出登录
             $api->post('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
@@ -117,8 +124,40 @@ $api->version('v1', $params, function ($api) {
             $api->patch('goods/{good}/on', [GoodsController::class, 'isOn'])->name('goods.on');
             // 推荐商品
             $api->patch('goods/{good}/recommend', [GoodsController::class, 'isRecommend'])->name('goods.recommend');
-            // 商品管理资源路由
+            // 资源路由
             $api->resource('goods', GoodsController::class, [
+                'except' => ['destroy'],
+            ]);
+
+            /**
+             * 商品类型
+             */
+            // 资源路由
+            $api->resource('goods-types', GoodsTypeController::class, [
+                'except' => ['destroy']
+            ]);
+
+            /**
+             * 商品属性
+             */
+            // 检索
+            $api->patch('attributes/{attribute}/index', [AttributeController::class, 'isIndex'])->name('attributes.index');
+            // 排序
+            $api->patch('attributes/{attribute}/sort', [AttributeController::class, 'sort'])->name('attributes.sort');
+            // 资源路由
+            $api->resource('attributes', AttributeController::class, [
+                'except' => ['destroy']
+            ]);
+
+            /**
+             * 商品规格
+             */
+            // 筛选
+            $api->patch('attributes/{attribute}/index', [AttributeController::class, 'isIndex'])->name('attributes.index');
+            // 排序
+            $api->patch('specs/{spec}/sort', [SpecController::class, 'sort'])->name('specs.sort');
+            // 资源路由
+            $api->resource('specs', SpecController::class, [
                 'except' => ['destroy']
             ]);
 
@@ -151,17 +190,6 @@ $api->version('v1', $params, function ($api) {
             $api->patch('slides/{slide}/sort', [SlideController::class, 'sort'])->name('slides.sort');
             // 资源路由
             $api->resource('slides', SlideController::class);
-
-            /**
-             * 菜单管理
-             */
-            // 列表
-            $api->get('menus', [MenuController::class, 'index'])->name('menus.index');
-
-            // 刷新token
-            $api->get('refresh', [AuthController::class, 'refresh'])->name('auth.refresh');
-            // 阿里云OSS Token
-            $api->get('oss-token', [OssController::class, 'token'])->name('auth.oss-token');
         });
     });
 

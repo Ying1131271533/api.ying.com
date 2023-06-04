@@ -7,6 +7,7 @@
 <script src="{{ asset('static/common/js/common.js') }}" charset="utf-8"></script>
 <script src="{{ asset('static/common/js/ajax_admin.js') }}" charset="utf-8"></script>
 <script src="{{ asset('static/common/js/ajax_layui.js') }}" charset="utf-8"></script>
+<script src="{{ asset('static/common/js/ajax_api.js') }}" charset="utf-8"></script>
 
 <script>
     // 验证登录
@@ -47,7 +48,7 @@
     $.ajaxSetup({
         headers: {
             'Accept': 'application/x.ying.v1+json',
-            'Authorization': 'Bearer ' + getApiToken()
+            'Authorization': 'Bearer ' + getToken()
         }
     });
 

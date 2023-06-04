@@ -4,6 +4,7 @@ use App\Models\Category;
 use App\Models\Citie;
 use App\Models\Node;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 if (!function_exists('success')) {
     /**
@@ -64,6 +65,34 @@ if (!function_exists('fail')) {
     }
 
 }
+
+/**
+ * 返回成功的api接口数据 - layui的动态表格使用
+ *
+ * @param  array|string     $data           返回的数据
+ * @param  int              $code           程序状态码
+ * @param  int              $HttpStatus     http状态码
+ * @param  string           $msg            描述信息
+ * @return json                             api返回的json数据
+ */
+function layui($data = null, int $code = 0, int $HttpStatus = 200, string $msg = '成功')
+{
+    // 组装数据
+    $resultData = [
+        'code' => $code,
+        'msg'  => $msg,
+        'data' => $data,
+    ];
+
+    // 有分页
+    if (isset($data['total'])) {
+        $resultData['count'] = $data['total'];
+        $resultData['data']  = $data['data'];
+    }
+    // 返回数据
+    return response()->json($resultData, $HttpStatus);
+}
+
 
 if (!function_exists('cache_time')) {
     /**
@@ -406,5 +435,31 @@ if (!function_exists('forget_permission_cache')) {
     function forget_permission_cache()
     {
         app()['cache']->forget('spatie.permission.cache');
+    }
+}
+
+if (!function_exists('delete_old_file')) {
+    /**
+     * 删除旧文件
+     */
+    function delete_old_file($file, $old_file)
+    {
+        if($file != $old_file && Storage::disk('public_link')->exists($old_file)) {
+            // 删除旧文件
+            Storage::disk('public_link')->delete($old_file);
+        }
+    }
+}
+
+if (!function_exists('delete_file')) {
+    /**
+     * 删除文件
+     */
+    function delete_file($file)
+    {
+        if(Storage::disk('public_link')->exists($file)) {
+            // 删除文件
+            Storage::disk('public_link')->delete($file);
+        }
     }
 }

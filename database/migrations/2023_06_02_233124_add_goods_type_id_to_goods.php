@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('comment_pics', function (Blueprint $table) {
-            $table->unsignedBigInteger('comment_id')->comment('评价表id');
-            $table->json('paths')->comment('评价图册');
-            $table->timestamps();
+        Schema::table('goods', function (Blueprint $table) {
+            $table->unsignedBigInteger('goods_type_id')->after('brand_id')->comment('商品类型id');
 
-            $table->primary('comment_id');
+            $table->index('goods_type_id');
+            $table->foreign('goods_type_id')->references('id')->on('goods_types');
         });
     }
 
@@ -29,6 +28,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comment_pics');
+        Schema::table('goods', function (Blueprint $table) {
+            //
+        });
     }
 };
