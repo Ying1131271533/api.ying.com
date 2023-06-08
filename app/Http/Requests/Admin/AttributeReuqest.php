@@ -25,7 +25,7 @@ class AttributeReuqest extends BaseRequest
     public function messages()
     {
         return [
-            'input_type.in' => '录入方式必须是1,2,3',
+            'input_type.in' => '录入方式必须是0,1,2',
         ];
     }
 
@@ -43,7 +43,7 @@ class AttributeReuqest extends BaseRequest
                 return [
                     'goods_type_id' => 'required|integer|gt:0|exists:goods_types,id',
                     'name'          => 'required|max:25',
-                    'input_type'    => 'required|in:1,2,3',
+                    'input_type'    => 'required|in:0,1,2',
                     'values'        => 'array|max:255',
                 ];
                 break;
@@ -51,7 +51,7 @@ class AttributeReuqest extends BaseRequest
                 return [
                     'goods_type_id' => 'required|integer|gt:0|exists:goods_types,id',
                     'name'          => 'required|max:25',
-                    'input_type'    => 'required|in:1,2,3',
+                    'input_type'    => 'required|in:0,1,2',
                     'values'        => 'array|max:255',
                 ];
                 break;

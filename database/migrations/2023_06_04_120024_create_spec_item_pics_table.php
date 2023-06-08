@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('spec_item_pics', function (Blueprint $table) {
+        Schema::create('goods_spec_item_pics', function (Blueprint $table) {
             $table->unsignedBigInteger('goods_id')->comment('商品id');
             $table->unsignedBigInteger('spec_item_id')->comment('商品规格选项的id');
-            $table->decimal('pic')->unsigned()->comment('商品规格选项显示的图片');
-            $table->timestamps();
+            $table->string('path', 100)->comment('商品规格选项显示的图片路径');
+
             // 单个索引
             $table->index('goods_id');
             $table->index('spec_item_id');

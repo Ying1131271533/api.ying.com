@@ -17,6 +17,8 @@ class LoginRequest extends BaseRequest
             // 'email'    => 'required|email',
             'account'  => 'required',
             'password' => 'required|min:6|max:50',
+            // 直接验证密码
+            // 'password' => 'current_password:api',
         ];
     }
 }

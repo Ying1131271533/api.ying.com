@@ -15,16 +15,21 @@ class GoodsRequest extends BaseRequest
     public function rules()
     {
         $rules = array_merge([
-            'category_id'  => 'required|integer|gt:0|exists:categories,id',
-            'title'        => 'required|max:191',
-            'description'  => 'required|max:255',
-            'price'        => 'required|min:0',
-            'stock'        => 'required|min:0',
-            'cover'        => 'required',
-            'pics'         => 'required|array',
-            'is_on'        => 'in:0,1',
-            'is_recommend' => 'in:0,1',
-            'details'      => 'required',
+            'category_id'   => 'required|integer|gt:0|exists:categories,id',
+            'brand_id'      => 'required|integer|gt:0|exists:brands,id',
+            'goods_type_id' => 'required|integer|gt:0|exists:goods_types,id',
+            'cover'         => 'required|max:100',
+            // 'description'  => 'required|max:255',
+            'market_price'  => 'required|numeric|min:0',
+            'shop_price'    => 'required|numeric|min:0',
+            'stock'         => 'required|integer|min:0',
+            'is_on'         => 'in:0,1',
+            'is_recommend'  => 'in:0,1',
+            'pics'          => 'required|array',
+            'content'       => 'required', // 商品详情内容
+            'attributes' => 'required|array', // 商品属性
+            'specs' => 'required|array', // 商品规格
+            'spec_itme_pics' => 'array', // 商品规格项的图片
         ], $this->scene());
         return $rules;
     }
@@ -41,14 +46,14 @@ class GoodsRequest extends BaseRequest
         switch ($route_name) {
             case 'goods.store':
                 return [
-                    'title' => 'required|max:255|unique:goods',
+                    'title' => 'required|max:50|unique:goods',
                 ];
                 break;
             case 'goods.update':
                 return [
                     'title' => [
                         'required',
-                        'max:255',
+                        'max:50',
                         Rule::unique('goods')
                             ->ignore($this->good), // 检查唯一性时，排除自己
                     ],

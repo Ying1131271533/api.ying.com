@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('goods_id')->comment('商品id');
             $table->json('pics')->comment('商品图册');
             $table->mediumText('content')->comment('详情内容');
-            $table->timestamps();
 
             $table->index('goods_id');
             $table->foreign('goods_id')->references('id')->on('goods');

@@ -66,7 +66,8 @@ class BaseRequest extends FormRequest
             'values'        => '属性值',
             'goods_type_id' => '商品类型id',
             'input_type'    => '录入方式',
-            'spec_items'    => '商品规格项',
+            'attributes'    => '商品属性',
+            'specs'         => '商品规格',
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SpecItem extends Model
+class GoodsDetails extends Model
 {
     use HasFactory;
 
@@ -16,14 +16,21 @@ class SpecItem extends Model
      */
     public $timestamps = false;
 
-    // 不可以批量赋值的属性。 给空数组
+    /**
+     * 不可以批量赋值的属性。 给空数组 那就是所有属性都可以赋值
+     *
+     * @var array
+     */
     protected $guarded = [];
 
+
     /**
-     * 获取这个规格项所属的商品规格
+     * 类型转换
+     *
+     * @var array
      */
-    public function spec()
-    {
-        return $this->belongsTo(Spec::class);
-    }
+    protected $casts = [
+        'pics'  => 'array',
+    ];
+
 }

@@ -40,7 +40,7 @@ class GoodsTransformer extends TransformerAbstract
             'cover'        => $good->cover,
             'cover_url'    => oss_url($good->cover),
             'pics'         => $good->pics,
-            'pics_url'     => $pics_url,
+            // 'pics_url'     => $pics_url,
             'is_on'        => $good->is_on,
             'is_recommend' => $good->is_recommend,
             'details'      => $good->details,

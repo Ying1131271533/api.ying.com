@@ -118,18 +118,6 @@ $api->version('v1', $params, function ($api) {
             ]);
 
             /**
-             * 商品管理
-             */
-            // 商品上架
-            $api->patch('goods/{good}/on', [GoodsController::class, 'isOn'])->name('goods.on');
-            // 推荐商品
-            $api->patch('goods/{good}/recommend', [GoodsController::class, 'isRecommend'])->name('goods.recommend');
-            // 资源路由
-            $api->resource('goods', GoodsController::class, [
-                'except' => ['destroy'],
-            ]);
-
-            /**
              * 商品类型
              */
             // 资源路由
@@ -153,12 +141,24 @@ $api->version('v1', $params, function ($api) {
              * 商品规格
              */
             // 筛选
-            $api->patch('attributes/{attribute}/index', [AttributeController::class, 'isIndex'])->name('attributes.index');
+            $api->patch('specs/{spec}/index', [SpecController::class, 'isIndex'])->name('specs.index');
             // 排序
             $api->patch('specs/{spec}/sort', [SpecController::class, 'sort'])->name('specs.sort');
+            // 获取处理过的套餐组合
+            $api->post('specs/handle-spec-group', [SpecController::class, 'handleSpecGroup'])->name('specs.handleSpecGroup');
             // 资源路由
-            $api->resource('specs', SpecController::class, [
-                'except' => ['destroy']
+            $api->resource('specs', SpecController::class);
+
+            /**
+             * 商品管理
+             */
+            // 商品上架
+            $api->patch('goods/{good}/on', [GoodsController::class, 'isOn'])->name('goods.on');
+            // 推荐商品
+            $api->patch('goods/{good}/recommend', [GoodsController::class, 'isRecommend'])->name('goods.recommend');
+            // 资源路由
+            $api->resource('goods', GoodsController::class, [
+                'except' => ['destroy'],
             ]);
 
             /**

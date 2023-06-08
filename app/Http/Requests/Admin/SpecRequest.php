@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use App\Http\Requests\BaseRequest;
+use App\Rules\Admin\SpecItemIsEmpty;
 
 class SpecRequest extends BaseRequest
 {
@@ -25,7 +26,7 @@ class SpecRequest extends BaseRequest
     {
         return [
             'is_index.in'   => '检索必须是0或1',
-            'input_type.in' => '检索必须是1,2,3',
+            'input_type.in' => '输入方式必须是1,2,3',
         ];
     }
 
@@ -43,19 +44,34 @@ class SpecRequest extends BaseRequest
                 return [
                     'goods_type_id' => 'required|integer|gt:0|exists:goods_types,id',
                     'name'          => 'required|max:25',
-                    'spec_items'    => 'required|array|max:255',
+                    'spec_items'    => [
+                        'required',
+                        'array',
+                        'max:255',
+                        new SpecItemIsEmpty
+                    ]
                 ];
                 break;
             case 'specs.update':
                 return [
                     'goods_type_id' => 'required|integer|gt:0|exists:goods_types,id',
                     'name'          => 'required|max:25',
-                    'spec_items'    => 'required|array|max:255',
+                    'spec_items'    => [
+                        'required',
+                        'array',
+                        'max:255',
+                        new SpecItemIsEmpty
+                    ]
                 ];
                 break;
             case 'specs.sort':
                 return [
                     'sort' => 'required|integer|max:999999|min:0',
+                ];
+                break;
+            case 'specs.getSpecGroup':
+                return [
+                    'spec_items' => 'required|array',
                 ];
                 break;
             default:

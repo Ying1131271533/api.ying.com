@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Good extends Model
+class Goods extends Model
 {
     use HasFactory;
 
@@ -17,25 +17,6 @@ class Good extends Model
      */
     protected $guarded = [];
 
-    /**
-     * 可批量赋值的属性。
-     *
-     * @var array
-     */
-    // protected $fillable = [
-    //     'user_id',
-    //     'category_id',
-    //     'title',
-    //     'description',
-    //     'price',
-    //     'stock',
-    //     'sales',
-    //     'cover',
-    //     'pics',
-    //     'is_on',
-    //     'is_recommend',
-    //     'details',
-    // ];
 
     /**
      * 类型转换
@@ -91,6 +72,14 @@ class Good extends Model
     }
 
     /**
+     * 获取这个商品所属的创建用户
+     */
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
+
+    /**
      * 获取这个商品所属的用户
      */
     public function user()
@@ -107,10 +96,26 @@ class Good extends Model
     }
 
     /**
-     * 获取这个商品的所有订单
+     * 获取这个商品的所有规格项
      */
-    public function orderDateils()
+    public function specItems()
     {
-        return $this->hasMany(OrderDetails::class);
+        return $this->hasMany(SpecItem::class);
+    }
+
+    /**
+     * 获取这个商品的所有属性
+     */
+    public function attributes()
+    {
+        return $this->hasMany(GoodsAttribute::class);
+    }
+
+    /**
+     * 获取这个商品的所有规格项的图片
+     */
+    public function specItemPics()
+    {
+        return $this->hasMany(GoodsSpecItemPic::class);
     }
 }

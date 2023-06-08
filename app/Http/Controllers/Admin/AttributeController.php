@@ -16,6 +16,7 @@ class AttributeController extends BaseController
     public function index(Request $request)
     {
         // 条件参数
+        $include = $request->query('include');
         $name = $request->query('name');
         $limit = $request->query('limit', 10);
 
@@ -23,11 +24,12 @@ class AttributeController extends BaseController
         $attributes = Attribute::when($name, function ($query) use ($name) {
             $query->where('name', 'like', "%{$name}%");
         })
-        ->paginate($limit);
-        // ->appends([
-        //     'include' => 'goodsType',
-        //     'limit' => $limit,
-        // ]);
+        ->paginate($limit)
+        ->appends([
+            'include' => $include,
+            'name' => $name,
+            'limit' => $limit,
+        ]);
         return $this->response->paginator($attributes, new AttributeTransformer);
     }
 

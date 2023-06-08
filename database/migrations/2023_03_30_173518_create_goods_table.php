@@ -22,12 +22,12 @@ return new class extends Migration
             $table->char('title', 50)->unique()->comment('标题');
             $table->char('cover', 100)->comment('封面图');
             $table->unsignedDecimal('market_price', 10, 2)->default(0)->comment('市场价格');
-            $table->unsignedDecimal('show_price', 10, 2)->default(0)->comment('购买价格');
+            $table->unsignedDecimal('shop_price', 10, 2)->default(0)->comment('购买价格');
             $table->unsignedInteger('stock')->comment('库存');
             $table->integer('sales')->unsigned()->default(0)->comment('销量');
             $table->unsignedTinyInteger('is_on')->default(0)->comment('上架：0 否 1 是');
             $table->unsignedTinyInteger('is_recommend')->default(0)->comment('推荐商品：0 否 1 是');
-            $table->mediumText('details')->comment('商品详情');
+            // $table->mediumText('details')->comment('商品详情');
             $table->timestamps();
 
             // 单个索引

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\GoodsRequest;
 use App\Services\Admin\GoodsService;
-use App\Models\Good;
+use App\Models\Goods;
 use App\Transformers\GoodsTransformer;
 use Illuminate\Http\Request;
 
@@ -45,6 +45,7 @@ class GoodsController extends BaseController
     public function store(GoodsRequest $request)
     {
         $validated = $request->validated();
+        return $validated;
         GoodsService::saveGoods($validated);
         return $this->response->created();
     }
@@ -52,7 +53,7 @@ class GoodsController extends BaseController
     /**
      * 商品详情
      */
-    public function show(Good $good)
+    public function show(Goods $good)
     {
         return $this->response->item($good, new GoodsTransformer);
     }
@@ -60,7 +61,7 @@ class GoodsController extends BaseController
     /**
      * 商品更新
      */
-    public function update(GoodsRequest $request, Good $good)
+    public function update(GoodsRequest $request, Goods $good)
     {
         $validated = $request->validated();
         GoodsService::saveGoods($validated, $good);
@@ -70,7 +71,7 @@ class GoodsController extends BaseController
     /**
      * 商品上架
      */
-    public function isOn(Good $good)
+    public function isOn(Goods $good)
     {
         $good->is_on = $good->is_on == 1 ? 0 : 1;
         $result = $good->save();
@@ -81,7 +82,7 @@ class GoodsController extends BaseController
     /**
      * 商品推荐
      */
-    public function isRecommend(Good $good)
+    public function isRecommend(Goods $good)
     {
         $good->is_recommend = $good->is_recommend == 1 ? 0 : 1;
         $result = $good->save();

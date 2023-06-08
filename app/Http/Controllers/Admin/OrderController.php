@@ -36,7 +36,7 @@ class OrderController extends BaseController
             $query->where('status', $status);
         })
         ->when($goods_title, function($query) use ($goods_title) {
-            $query->whereHas('goods', function ($query) use ($goods_title){
+            $query->whereHas('goods', function ($query) use ($goods_title) {
                 $query->where('title', 'like', "%{$goods_title}%");
             });
         })

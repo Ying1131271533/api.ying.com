@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Rules\Api;
+namespace App\Rules\Admin;
 
-use App\Models\Goods;
 use Illuminate\Contracts\Validation\Rule;
 
-class GoodsIsOn implements Rule
+class SpecItemIsEmpty implements Rule
 {
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(protected $goods_id)
+    public function __construct()
     {
         //
     }
@@ -26,9 +25,12 @@ class GoodsIsOn implements Rule
      */
     public function passes($attribute, $value)
     {
-        $is_on = Goods::where('id', $this->goods_id)->value('is_on');
-        // 商品必须是上架
-        return ($is_on == 1);
+        foreach ($value as $spec_item) {
+            // 规格项是否为空
+            if(empty($spec_item)) return false;
+        }
+
+        return true;
     }
 
     /**
@@ -38,6 +40,6 @@ class GoodsIsOn implements Rule
      */
     public function message()
     {
-        return '商品已下架';
+        return '规格项不能为空项！';
     }
 }

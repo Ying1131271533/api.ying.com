@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('goods_attributes', function (Blueprint $table) {
             $table->unsignedBigInteger('goods_id')->comment('商品id');
             $table->unsignedBigInteger('attribute_id')->comment('商品属性id');
-            $table->char('attr_value', 25)->comment('属性值');
+            $table->char('value', 25)->comment('属性的值');
             $table->timestamps();
 
             // 单个索引

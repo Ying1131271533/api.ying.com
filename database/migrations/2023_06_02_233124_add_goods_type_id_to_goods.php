@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('goods', function (Blueprint $table) {
-            $table->unsignedBigInteger('goods_type_id')->after('brand_id')->comment('商品类型id');
+            $table->unsignedBigInteger('goods_type_id')->nullable()->after('brand_id')->comment('商品类型id');
 
             $table->index('goods_type_id');
             $table->foreign('goods_type_id')->references('id')->on('goods_types');

@@ -28,6 +28,9 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionSeeder::class);
         $this->call(AdminSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(CitieSeeder::class);
+        $this->call(GoodsTypeSeeder::class);
+        $this->call(AttributeSeeder::class);
+        $this->call(GoodsSpecSeeder::class);
+        $this->call(CitieSeeder::class); // 中国地区表
     }
 }
