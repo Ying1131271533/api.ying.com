@@ -23,6 +23,17 @@ class GoodsDetails extends Model
      */
     protected $guarded = [];
 
+    /**
+     * 允许批量保存的字段
+     *
+     * @var array<int, string>
+     */
+    // protected $fillable = [
+    //     'goods_id',
+    //     'pics',
+    //     'content',
+    // ];
+
 
     /**
      * 类型转换

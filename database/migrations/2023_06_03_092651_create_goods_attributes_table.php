@@ -25,7 +25,7 @@ return new class extends Migration
 
             // 外键约束
             $table->foreign('goods_id')->references('id')->on('goods');
-            $table->foreign('attribute_id')->references('id')->on('orders');
+            $table->foreign('attribute_id')->references('id')->on('attributes');
 
             // 主键
             $table->primary(['goods_id', 'attribute_id']);

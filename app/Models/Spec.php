@@ -9,8 +9,15 @@ class Spec extends Model
 {
     use HasFactory;
 
-    // 不可以批量赋值的属性。 给空数组
-    protected $guarded = [];
+    /**
+     * 允许批量保存的字段
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'goods_type_id',
+        'name',
+    ];
 
     /**
      * 获取这个商品规格所属的商品类型

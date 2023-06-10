@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('admin_id')->comment('创建商品的用户id');
             $table->unsignedBigInteger('category_id')->comment('分类id');
             $table->unsignedBigInteger('brand_id')->comment('品牌id');
-            $table->char('title', 50)->unique()->comment('标题');
+            $table->char('title', 100)->unique()->comment('标题');
             $table->char('cover', 100)->comment('封面图');
             $table->unsignedDecimal('market_price', 10, 2)->default(0)->comment('市场价格');
             $table->unsignedDecimal('shop_price', 10, 2)->default(0)->comment('购买价格');

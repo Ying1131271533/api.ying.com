@@ -124,7 +124,7 @@ class CategorySeeder extends Seeder
                 // $level_2['parent_id'] = $level_1_model->id;
                 // $level_2_model = Category::create($level_2);
                 $level_2_model = $level_1_model->children()->create($level_2);
-                $level_2_model->children()->createMany($level_2_children);
+                // $level_2_model->children()->createMany($level_2_children);
             }
         }
 

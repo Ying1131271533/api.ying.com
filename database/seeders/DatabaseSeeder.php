@@ -31,6 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GoodsTypeSeeder::class);
         $this->call(AttributeSeeder::class);
         $this->call(GoodsSpecSeeder::class);
-        $this->call(CitieSeeder::class); // 中国地区表
+        // $this->call(CitieSeeder::class); // 中国地区表
     }
 }

@@ -66,31 +66,33 @@ if (!function_exists('fail')) {
 
 }
 
-/**
- * 返回成功的api接口数据 - layui的动态表格使用
- *
- * @param  array|string     $data           返回的数据
- * @param  int              $code           程序状态码
- * @param  int              $HttpStatus     http状态码
- * @param  string           $msg            描述信息
- * @return json                             api返回的json数据
- */
-function layui($data = null, int $code = 0, int $HttpStatus = 200, string $msg = '成功')
-{
-    // 组装数据
-    $resultData = [
-        'code' => $code,
-        'msg'  => $msg,
-        'data' => $data,
-    ];
+if (!function_exists('layui')) {
+    /**
+     * 返回成功的api接口数据 - layui的动态表格使用
+     *
+     * @param  array|string     $data           返回的数据
+     * @param  int              $code           程序状态码
+     * @param  int              $HttpStatus     http状态码
+     * @param  string           $msg            描述信息
+     * @return json                             api返回的json数据
+     */
+    function layui($data = null, int $code = 0, int $HttpStatus = 200, string $msg = '成功')
+    {
+        // 组装数据
+        $resultData = [
+            'code' => $code,
+            'msg'  => $msg,
+            'data' => $data,
+        ];
 
-    // 有分页
-    if (isset($data['total'])) {
-        $resultData['count'] = $data['total'];
-        $resultData['data']  = $data['data'];
+        // 有分页
+        if (isset($data['total'])) {
+            $resultData['count'] = $data['total'];
+            $resultData['data']  = $data['data'];
+        }
+        // 返回数据
+        return response()->json($resultData, $HttpStatus);
     }
-    // 返回数据
-    return response()->json($resultData, $HttpStatus);
 }
 
 
@@ -154,6 +156,19 @@ if (!function_exists('cache_time')) {
     }
 }
 
+if (!function_exists('dawn_time')) {
+    /**
+     * 返回黎明三点的随机时间
+     *
+     * @return integer 返回距离黎明三点的剩余时间戳
+     */
+    function dawn_time()
+    {
+        $time = 86400 - (time() + 8 * 3600) % 86400 + 3600 * 3 + rand(1, 3600);
+        return $time;
+    }
+}
+
 if (!function_exists('get_children')) {
     /**
      * @description:  オラ!オラ!オラ!オラ!⎛⎝≥⏝⏝≤⎛⎝
@@ -188,8 +203,7 @@ if (!function_exists('category_tree')) {
      * @param   int         $level      分类层级
      * @return  array
      */
-    function category_tree($group = 'goods', $status = false)
-    // function category_tree($status = false, $level = 3)
+    function category_tree($status = false)
     {
         $categorys = Category::with([
             'children' => function($qeury) use ($status){
@@ -206,7 +220,6 @@ if (!function_exists('category_tree')) {
         ->when($status !== false, function($query) use ($status) {
             $query->where('status', $status);
         })
-        ->where('group', $group)
         ->where('parent_id', 0)
         ->select(['id', 'parent_id', 'name', 'level'])
         ->get();
@@ -262,7 +275,7 @@ if (!function_exists('cache_categorys')) {
     function cache_categorys()
     {
         $categorys = Cache::store('redis')->rememberForever('categorys_1', function() {
-            return category_tree('goods', 1);
+            return category_tree(1);
         });
 
         return $categorys;
@@ -279,7 +292,7 @@ if (!function_exists('cache_categorys_all')) {
     function cache_categorys_all()
     {
         $categorys = Cache::store('redis')->rememberForever('categorys', function() {
-            return category_tree('goods');
+            return category_tree();
         });
         return $categorys;
     }
@@ -296,8 +309,6 @@ if (!function_exists('forget_cache_category')) {
     {
         Cache::store('redis')->forget('categorys');
         Cache::store('redis')->forget('categorys_1');
-        Cache::store('redis')->forget('menus');
-        Cache::store('redis')->forget('menus_1');
     }
 
 }

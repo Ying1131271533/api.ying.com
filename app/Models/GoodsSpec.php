@@ -5,16 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GoodsSpecItemPic extends Model
+class GoodsSpec extends Model
 {
     use HasFactory;
-
-    /**
-     * 指示模型是否主动维护时间戳。
-     *
-     * @var bool
-     */
-    public $timestamps = false;
 
     // 不可以批量赋值的属性。 给空数组
     protected $guarded = [];
@@ -26,7 +19,10 @@ class GoodsSpecItemPic extends Model
      */
     // protected $fillable = [
     //     'goods_id',
-    //     'spec_item_id',
-    //     'path',
+    //     'item_ids',
+    //     'item_ids_name',
+    //     'spec_price',
+    //     'stock',
+    //     'sales',
     // ];
 }

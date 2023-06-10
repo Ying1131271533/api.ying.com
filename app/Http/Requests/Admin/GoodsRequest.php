@@ -46,14 +46,14 @@ class GoodsRequest extends BaseRequest
         switch ($route_name) {
             case 'goods.store':
                 return [
-                    'title' => 'required|max:50|unique:goods',
+                    'title' => 'required|max:100|unique:goods',
                 ];
                 break;
             case 'goods.update':
                 return [
                     'title' => [
                         'required',
-                        'max:50',
+                        'max:100',
                         Rule::unique('goods')
                             ->ignore($this->good), // 检查唯一性时，排除自己
                     ],

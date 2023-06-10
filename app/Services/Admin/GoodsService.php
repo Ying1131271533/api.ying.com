@@ -25,14 +25,14 @@ class GoodsService
         // 是否被禁用
         if($category['status'] == 0) throw new BadRequestHttpException('分类已被禁用'); // 400
         // 是否为3级分类
-        if($category['level'] != 3) throw new UnprocessableEntityHttpException('分类必须为3级'); // 422
+        if($category['level'] != 2) throw new UnprocessableEntityHttpException('分类必须为2级'); // 422
 
         // 找到品牌
         $brand = Brand::find($data['brand_id']);
         // 是否被禁用
         if($brand['status'] == 0) throw new BadRequestHttpException('品牌已被禁用'); // 400
 
-        // 数据加入用户id
+        // 数据加入管理员id
         $data['admin_id'] = auth('admin')->id();
 
         // 取出商品图集和详情内容
@@ -43,10 +43,10 @@ class GoodsService
         unset($data['content']);
 
         // 取出商品属性
-        $attributes = $data['attributs'];
-        unset($data['attributs']);
+        $attributes = $data['attributes'];
+        unset($data['attributes']);
 
-        // 取出商品规格
+        // 取出商品规格套餐
         $specs = $data['specs'];
         unset($data['specs']);
 
@@ -61,21 +61,22 @@ class GoodsService
 
             // 如果是更新，则删除原来的商品属性和规格关联数据
             if(isset($goods->id)) {
+                $goods->details()->delete();
                 $goods->attributes()->delete();
-                $goods->specItems()->delete();
+                $goods->specs()->delete();
                 $goods->specItemPics()->delete();
             }
 
             // 保存商品
             $goods->fill($data)->save();
             // 保存商品详情
-            $goods->details()->updateOrCreate($details);
+            $goods->details()->create($details);
 
             // 保存商品属性
             $goods->attributes()->createMany($attributes);
 
             // 保存商品规格套餐
-            $goods->specItems()->createMany($specs);
+            $goods->specs()->createMany($specs);
 
             // 保存商品规格项的图片
             $goods->specItemPics()->createMany($spec_itme_pics);

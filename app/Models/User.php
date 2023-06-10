@@ -22,7 +22,7 @@ class User extends Authenticatable implements JWTSubject
     protected $guard_name = 'api';
 
     /**
-     * The attributes that are mass assignable.
+     * 允许批量保存的字段
      *
      * @var array<int, string>
      */

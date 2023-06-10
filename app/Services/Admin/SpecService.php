@@ -19,7 +19,6 @@ class SpecService
 
         // 取出规格项
         $spec_items = array_unique($data['spec_items']); // 数组去重
-        unset($data['spec_items']);
 
         // 开启事务
         DB::beginTransaction();

@@ -17,6 +17,25 @@ class Goods extends Model
      */
     protected $guarded = [];
 
+    /**
+     * 允许批量保存的字段
+     *
+     * @var array<int, string>
+     */
+    // protected $fillable = [
+    //     'admin_id',
+    //     'category_id',
+    //     'brand_id',
+    //     'goods_type_id',
+    //     'title',
+    //     'cover',
+    //     'market_price',
+    //     'shop_price',
+    //     'stock',
+    //     'sales',
+    //     'is_on',
+    //     'is_recommend',
+    // ];
 
     /**
      * 类型转换
@@ -24,9 +43,7 @@ class Goods extends Model
      * @var array
      */
     protected $casts = [
-        'pics'  => 'array',
-        'market_price' => 'decimal:2',
-        'show_price' => 'decimal:2',
+        'pics' => 'array',
     ];
 
     /**
@@ -34,33 +51,24 @@ class Goods extends Model
      *
      * @var array
      */
-    protected $appends = [
-        'cover_url',
-        // pics_url因为只有商品详情才会用到，所以这里在查询的时候，手动追加字段 使用 append()
-        // 'pics_url',
-    ];
+    protected $appends = [];
 
     /**
      * 获取oss封面链接 - 这种可以访问不存在的字段
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function getCoverUrlAttribute()
-    {
-        return oss_url($this->cover);
-    }
+    // public function getCoverUrlAttribute()
+    // {
+    //     return oss_url($this->cover);
+    // }
 
     /**
-     * 获取商品图集oss链接
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     * 获取这个商品所属的创建管理员
      */
-    public function getPicsUrlAttribute()
+    public function admin()
     {
-        // 使用集合处理每一项元素，返回处理后新的集合
-        return collect($this->pics)->map(function($item, $key){
-            return oss_url($item);
-        });
+        return $this->belongsTo(Admin::class);
     }
 
     /**
@@ -72,35 +80,27 @@ class Goods extends Model
     }
 
     /**
-     * 获取这个商品所属的创建用户
+     * 获取这个商品所属的品牌
      */
-    public function admin()
+    public function brand()
     {
-        return $this->belongsTo(Admin::class);
+        return $this->belongsTo(Brand::class);
     }
 
     /**
-     * 获取这个商品所属的用户
+     * 获取这个商品所属的商品类型
      */
-    public function user()
+    public function goodsType()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(GoodsType::class);
     }
 
     /**
-     * 获取这个商品的所有评论
+     * 获取这个商品的详情
      */
-    public function comments()
+    public function details()
     {
-        return $this->hasMany(Comment::class, 'goods_id', 'id');
-    }
-
-    /**
-     * 获取这个商品的所有规格项
-     */
-    public function specItems()
-    {
-        return $this->hasMany(SpecItem::class);
+        return $this->hasOne(GoodsDetails::class);
     }
 
     /**
@@ -109,13 +109,38 @@ class Goods extends Model
     public function attributes()
     {
         return $this->hasMany(GoodsAttribute::class);
+        // return $this->belongsToMany(Attribute::class, GoodsAttribute::class);
     }
 
     /**
-     * 获取这个商品的所有规格项的图片
+     * 获取这个商品的所有规格套餐
+     */
+    public function specs()
+    {
+        return $this->hasMany(GoodsSpec::class);
+    }
+
+    /**
+     * 获取这个商品所有规格项的图片
      */
     public function specItemPics()
     {
         return $this->hasMany(GoodsSpecItemPic::class);
+    }
+
+    /**
+     * 获取这个商品的所有订单，这样行不行
+     */
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, OrderGoods::class);
+    }
+
+    /**
+     * 获取这个商品的所有评论
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'goods_id', 'id');
     }
 }
