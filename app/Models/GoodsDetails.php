@@ -44,4 +44,25 @@ class GoodsDetails extends Model
         'pics'  => 'array',
     ];
 
+    /**
+     * 追加字段 配合下面的访问器使用
+     *
+     * @var array
+     */
+    protected $appends = [
+        'pics_url',
+    ];
+
+    /**
+     * 获取商品图集oss链接
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function getPicsUrlAttribute()
+    {
+        // 使用集合处理每一项元素，返回处理后新的集合
+        return collect($this->pics)->map(function($item, $key){
+            return oss_url($item);
+        });
+    }
 }

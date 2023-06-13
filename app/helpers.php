@@ -363,6 +363,7 @@ if (!function_exists('oss_url')) {
             strpos($url, 'http://') !== false
             || strpos($url, 'https://') !== false
             || strpos($url, 'data:image') !== false
+            || strpos($url, 'storage') !== false
         ){
             return $url;
         }

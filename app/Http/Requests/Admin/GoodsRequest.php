@@ -19,7 +19,6 @@ class GoodsRequest extends BaseRequest
             'brand_id'      => 'required|integer|gt:0|exists:brands,id',
             'goods_type_id' => 'required|integer|gt:0|exists:goods_types,id',
             'cover'         => 'required|max:100',
-            // 'description'  => 'required|max:255',
             'market_price'  => 'required|numeric|min:0',
             'shop_price'    => 'required|numeric|min:0',
             'stock'         => 'required|integer|min:0',
@@ -29,7 +28,7 @@ class GoodsRequest extends BaseRequest
             'content'       => 'required', // 商品详情内容
             'attributes' => 'required|array', // 商品属性
             'specs' => 'required|array', // 商品规格
-            'spec_itme_pics' => 'array', // 商品规格项的图片
+            'spec_itme_pics' => 'required|array', // 商品规格项的图片
         ], $this->scene());
         return $rules;
     }

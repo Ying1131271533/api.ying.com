@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Good;
+use App\Models\Goods;
+use App\Models\GoodsDetails;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +16,11 @@ class GoodsSeeder extends Seeder
      */
     public function run()
     {
-        // 生成大量测试用的商品数据
-        Good::factory()->count(100)->create();
+        // 生成商品数据
+        Goods::factory()
+        // ->has(GoodsDetails::factory()->count(1), 'details')
+        ->hasDetails(1)
+        ->count(100)
+        ->create();
     }
 }

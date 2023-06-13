@@ -24,7 +24,7 @@ class AttributeSeeder extends Seeder
             ],
             [
                 'goods_type_id' => 1,
-                'name' => '尺寸体积',
+                'name' => '尺寸/体积',
                 'is_index' => 1,
                 'input_type' => 0,
             ],
@@ -44,10 +44,24 @@ class AttributeSeeder extends Seeder
                 'is_index' => 0,
                 'input_type' => 0,
             ],
+            [
+                'goods_type_id' => 3,
+                'name' => '适用季节',
+                'is_index' => 1,
+                'input_type' => 1,
+                'values' => [
+                    '春季',
+                    '夏季',
+                    '秋季',
+                    '冬季',
+                ],
+            ],
         ];
 
         foreach ($data as $value) {
             Attribute::create($value);
         }
+
     }
 }
+

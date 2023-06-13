@@ -16,48 +16,42 @@ class CategorySeeder extends Seeder
     public function run()
     {
         // 填充分类信息
+        // 参考京东的分类，不知道名称的就看浏览器页面的title，显示：男士T恤 男装【行情 价格
+        // 或者是商品列表上的分类导航：服饰内衣 > 男装 > 男士T恤
         $categorys = [
             [
-                'name'      => '电子数码',
-                'group'     => 'goods',
+                'name'      => '家用电器',
                 'parent_id' => 0,
                 'level'     => 1,
                 'children'  => [
                     [
-                        'name'     => '手机',
-                        'group'    => 'goods',
+                        'name'     => '大家电',
                         'level'    => 2,
                         'children' => [
                             [
-                                'name'  => '华为',
-                                'group' => 'goods',
+                                'name'  => '冰箱',
                                 'level' => 3,
                             ],
                             [
-                                'name'  => '小米',
-                                'group' => 'goods',
+                                'name'  => '空调',
                                 'level' => 3,
                             ],
                             [
-                                'name'  => '苹果',
-                                'group' => 'goods',
+                                'name'  => '平板电视',
                                 'level' => 3,
                             ],
                         ],
                     ],
                     [
-                        'name'     => '电脑',
-                        'group'    => 'goods',
+                        'name'     => '厨卫大电',
                         'level'    => 2,
                         'children' => [
                             [
-                                'name'  => '联想',
-                                'group' => 'goods',
+                                'name'  => '油烟机',
                                 'level' => 3,
                             ],
                             [
-                                'name'  => '戴尔',
-                                'group' => 'goods',
+                                'name'  => '洗碗机',
                                 'level' => 3,
                             ],
                         ],
@@ -65,46 +59,109 @@ class CategorySeeder extends Seeder
                 ],
             ],
             [
-                'name'      => '衣帽服装',
-                'group'     => 'goods',
+                'name'      => '手机通讯',
+                'parent_id' => 0,
+                'level'     => 1,
+                'children'  => [
+                    [
+                        'name'     => '手机',
+                        'level'    => 2,
+                        'children' => [
+                            [
+                                'name'  => '手机',
+                                'level' => 3,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'name'      => '电脑、办公',
+                'parent_id' => 0,
+                'level'     => 1,
+                'children'  => [
+                    [
+                        'name'     => '电脑整机',
+                        'level'    => 2,
+                        'children' => [
+                            [
+                                'name'  => '笔记本',
+                                'level' => 3,
+                            ],
+                            [
+                                'name'  => '游戏本',
+                                'level' => 3,
+                            ],
+                            [
+                                'name'  => '台式机',
+                                'level' => 3,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name'     => '电脑配件',
+                        'level'    => 2,
+                        'children' => [
+                            [
+                                'name'  => '显示器',
+                                'level' => 3,
+                            ],
+                            [
+                                'name'  => 'CPU',
+                                'level' => 3,
+                            ],
+                            [
+                                'name'  => '主板',
+                                'level' => 3,
+                            ],
+                            [
+                                'name'  => '显卡',
+                                'level' => 3,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'name'      => '服饰内衣',
                 'parent_id' => 0,
                 'level'     => 1,
                 'children'  => [
                     [
                         'name'     => '男装',
-                        'group'    => 'goods',
                         'level'    => 2,
                         'children' => [
                             [
-                                'name'  => '海澜之家',
-                                'group' => 'goods',
+                                'name'  => '男士T恤',
+
                                 'level' => 3,
                             ],
                             [
-                                'name'  => 'Nike',
-                                'group' => 'goods',
+                                'name'  => '衬衫',
                                 'level' => 3,
                             ],
                             [
-                                'name'  => '优衣库',
-                                'group' => 'goods',
+                                'name'  => '工装',
+
                                 'level' => 3,
                             ],
                         ],
                     ],
                     [
                         'name'     => '女装',
-                        'group'    => 'goods',
                         'level'    => 2,
                         'children' => [
                             [
-                                'name'  => '欧时力',
-                                'group' => 'goods',
+                                'name'  => '女士T恤',
+
                                 'level' => 3,
                             ],
                             [
-                                'name'  => 'Only',
-                                'group' => 'goods',
+                                'name'  => '衬衫',
+                                'level' => 3,
+                            ],
+                            [
+                                'name'  => '工装',
                                 'level' => 3,
                             ],
                         ],
@@ -124,7 +181,7 @@ class CategorySeeder extends Seeder
                 // $level_2['parent_id'] = $level_1_model->id;
                 // $level_2_model = Category::create($level_2);
                 $level_2_model = $level_1_model->children()->create($level_2);
-                // $level_2_model->children()->createMany($level_2_children);
+                $level_2_model->children()->createMany($level_2_children);
             }
         }
 

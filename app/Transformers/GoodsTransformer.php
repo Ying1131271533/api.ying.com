@@ -40,6 +40,7 @@ class GoodsTransformer extends TransformerAbstract
             'goods_type_id' => $goods->goods_type_id,
             'title'         => $goods->title,
             'cover'         => $goods->cover,
+            'cover_url'         => $goods->cover_url,
             'shop_price'    => $goods->shop_price,
             'stock'         => $goods->stock,
             'sales'         => $goods->sales,

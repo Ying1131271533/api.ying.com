@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
-use App\Models\Good;
+use App\Models\Goods;
 use App\Models\Slide;
 use App\Transformers\GoodsTransformer;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class IndexController extends BaseController
         // 分类数据
         $categorys = cache_categorys();
         // 推荐商品
-        $goods = Good::where('is_on', 1)->where('is_recommend', 1)->limit(20)->get();
+        $goods = Goods::where('is_on', 1)->where('is_recommend', 1)->limit(20)->get();
 
         // 返回数据
         return $this->response->array([

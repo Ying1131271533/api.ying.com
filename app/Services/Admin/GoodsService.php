@@ -25,7 +25,7 @@ class GoodsService
         // 是否被禁用
         if($category['status'] == 0) throw new BadRequestHttpException('分类已被禁用'); // 400
         // 是否为3级分类
-        if($category['level'] != 2) throw new UnprocessableEntityHttpException('分类必须为2级'); // 422
+        if($category['level'] != 3) throw new UnprocessableEntityHttpException('分类必须为3级'); // 422
 
         // 找到品牌
         $brand = Brand::find($data['brand_id']);

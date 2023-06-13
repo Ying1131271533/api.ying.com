@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
-use App\Models\Good;
+use App\Models\Brand;
+use App\Models\Goods;
 use App\Transformers\GoodsTransformer;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
@@ -21,28 +22,17 @@ class GoodsController extends BaseController
         // 要注意每个搜索条件或者排序条件的先后顺序
 
         // 搜索条件
-        $where       = [];
         $title       = $request->query('title');
         $category_id = $request->query('category_id');
-
-        if ($title) $where[] = ['title', 'like', "%{$title}%"];
-        if ($category_id) $where[] = ['category_id', $category_id];
+        $brand_id = $request->query('brand_id');
 
         // 排序
         $sales          = $request->query('sales');
         $price          = $request->query('price');
         $comments_count = $request->query('comments_count');
 
-        // 竟然可以用id数组维持搜索条件
-        $ids = [1, 2];
-        // 如果是TP框架，把全文检索出来的id数组放到接口数据里面，传递给前端
-        // 前端再用id[]=1&id[]=2，这个种方式传回来
-
         // 商品的分页数据
-        $goods = Good::select('id', 'title', 'cover', 'price', 'category_id', 'stock', 'sales')
-        // 第一种方式
-        // ->where($where)
-        // 第二种方式
+        $goodsQuery = Goods::select('id', 'category_id', 'brand_id', 'title', 'cover', 'market_price', 'shop_price', 'stock', 'sales')
             ->where('is_on', 1)
             ->when($title, function ($query) use ($title) {
                 $query->where('title', 'like', "%{$title}%");
@@ -50,33 +40,30 @@ class GoodsController extends BaseController
             ->when($category_id, function ($query) use ($category_id) {
                 $query->where('category_id', $category_id);
             })
+            ->when($brand_id, function ($query) use ($brand_id) {
+                $query->where('brand_id', $brand_id);
+            });
 
-        // 老师：正常的排序没有这么简单，而是使用了复杂的算法
-            ->when($sales == 1, function ($query) {
+            // 老师：正常的排序没有这么简单，而是使用了复杂的算法
+        $goods = $goodsQuery->when($sales == 1, function ($query) {
                 $query->orderBy('sales', 'desc');
             })
             ->when($price == 1, function ($query) {
-                $query->orderBy('price', 'desc');
+                $query->orderBy('shop_price', 'desc');
             })
             ->when($comments_count == 1, function ($query) {
                 $query->orderBy('comments_count', 'desc');
             })
-            ->whereIn('id', $ids)
             ->withCount('comments')
             ->orderBy('updated_at', 'desc')
-            ->simplePaginate(20)
-            // 维持搜索条件
-            ->appends([
-                // 'id'             => $ids,
-                'title'          => $title,
-                'category_id'    => $category_id,
-                'sales'          => $sales,
-                'price'          => $price,
-                'comments_count' => $comments_count,
-            ]);
+            ->simplePaginate(20);
+
+        // 品牌
+        // $goods_brand_ids = $goodsQuery->distinct()->pluck('brand_id');
+        // return $goods_brand_ids;
 
         // 推荐商品
-        $recommend_goods = Good::select('id', 'title', 'cover', 'price')
+        $recommend_goods = Goods::select('id', 'title', 'cover', 'shop_price')
             ->where(['is_on' => 1, 'is_recommend' => 1])
             ->withCount('comments')
             ->inRandomOrder()
@@ -97,7 +84,7 @@ class GoodsController extends BaseController
     public function show($id)
     {
         // 详情
-        $goods = Good::query()->where('id', $id)
+        $goods = Goods::query()->where('id', $id)
             ->with(['comments', 'comments.user' => function ($query) {
                 $query->select('id', 'name', 'avatar');
             }])
@@ -107,7 +94,7 @@ class GoodsController extends BaseController
         // 相似的商品
         // 1 根据用户在那个商品上停留的时间 来给用户做只能推荐商品
         // 2 或者是哪一类的商品查看很多次
-        $like_goods = Good::where('is_on', 1)
+        $like_goods = Goods::where('is_on', 1)
             ->where('category_id', $goods['category_id'])
             ->limit(10)
             ->inRandomOrder() // 随机排序

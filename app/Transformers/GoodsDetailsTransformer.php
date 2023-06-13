@@ -12,6 +12,7 @@ class GoodsDetailsTransformer extends TransformerAbstract
         return [
             'goods_id' => $goodsDetails->goods_id,
             'pics'     => $goodsDetails->pics,
+            'pics_url'     => $goodsDetails->pics_url,
             'content'  => $goodsDetails->content,
         ];
     }

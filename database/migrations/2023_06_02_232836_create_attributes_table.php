@@ -20,7 +20,7 @@ return new class extends Migration
             $table->smallInteger('is_index')->unsigned()->default(0)->comment('是否检索: 0 否 1 是 显示在前端的商品筛选里面');
             $table->tinyInteger('input_type')->unsigned()->default(0)->comment('输入方式: 0 手工录入 1 列表中选择 2 多行文本框');
             $table->char('values', 255)->nullable()->comment('可选值列表，录入方式为手工和或者多行文本时，此值则不需要');
-            $table->integer('sort')->unsigned()->default(0)->comment('排序');
+            $table->integer('sort')->unsigned()->default(50)->comment('排序'); // 老师说默认给50比较好调整排序
             $table->timestamps();
 
             $table->index('goods_type_id');

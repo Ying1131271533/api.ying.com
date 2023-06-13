@@ -43,6 +43,7 @@ class Goods extends Model
      * @var array
      */
     protected $casts = [
+        'cover_url' => 'array',
         'pics' => 'array',
     ];
 
@@ -51,17 +52,32 @@ class Goods extends Model
      *
      * @var array
      */
-    protected $appends = [];
+    protected $appends = [
+        'cover_url',
+    ];
 
     /**
      * 获取oss封面链接 - 这种可以访问不存在的字段
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    // public function getCoverUrlAttribute()
-    // {
-    //     return oss_url($this->cover);
-    // }
+    public function getCoverUrlAttribute()
+    {
+        return oss_url($this->cover);
+    }
+
+    /**
+     * 获取商品图集oss链接
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function getPicsUrlAttribute()
+    {
+        // 使用集合处理每一项元素，返回处理后新的集合
+        return collect($this->pics)->map(function($item, $key){
+            return oss_url($item);
+        });
+    }
 
     /**
      * 获取这个商品所属的创建管理员

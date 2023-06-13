@@ -24,7 +24,6 @@ return new class extends Migration
             $table->char('image', 100)->nullable()->comment('图片');
             $table->char('icon', 25)->nullable()->comment('图标');
             $table->integer('sort')->default(0)->comment('排序');
-            $table->char('group', 10)->default('goods')->comment('分组: goods 商品分类 menu 后台菜单');
             $table->timestamps();
 
             $table->index('name');
