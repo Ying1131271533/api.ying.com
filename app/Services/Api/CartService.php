@@ -3,7 +3,7 @@
 namespace App\Services\Api;
 
 use App\Models\Cart;
-use App\Models\Good;
+use App\Models\Goods;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -18,7 +18,7 @@ class CartService
             $goods = $cart->goods;
             $number = $data['number'];
         }else{
-            $goods = Good::find($data['goods_id']);
+            $goods = Goods::find($data['goods_id']);
             $number = isset($data['number']) ? $data['number'] : 1;
             // 查询购物车是否已存在相同的商品
             $existCart = Cart::where('user_id', auth('api')->id())

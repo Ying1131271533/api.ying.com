@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\BaseController;
 use App\Models\Brand;
 use App\Models\Goods;
+use App\Models\GoodsAttribute;
+use App\Models\GoodsType;
+use App\Models\SpecItem;
+use App\Services\Api\GoodsService;
 use App\Transformers\GoodsTransformer;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
@@ -19,48 +23,43 @@ class GoodsController extends BaseController
     {
         // 分类数据
         $catgorys = cache_categorys();
+
         // 要注意每个搜索条件或者排序条件的先后顺序
 
-        // 搜索条件
-        $title       = $request->query('title');
-        $category_id = $request->query('category_id');
-        $brand_id = $request->query('brand_id');
+        // 获取商品筛选数据
+        $goodsAttrScreen = GoodsService::getGoodsAttrScreen($request->query());
 
-        // 排序
-        $sales          = $request->query('sales');
-        $price          = $request->query('price');
-        $comments_count = $request->query('comments_count');
+        $params = [
+            'title'       => $request->query('title'),
+            'category_id' => $request->query('category_id', 0),
+            'brand_id'    => $request->query('brand_id'),
+            'attr'        => $request->query('attr'),
+            'sort'        => $request->query('sort'),
+            'price_range' => $request->query('price_range'),
+            'limit'       => $request->query('limit', 10),
+        ];
 
-        // 商品的分页数据
-        $goodsQuery = Goods::select('id', 'category_id', 'brand_id', 'title', 'cover', 'market_price', 'shop_price', 'stock', 'sales')
-            ->where('is_on', 1)
-            ->when($title, function ($query) use ($title) {
-                $query->where('title', 'like', "%{$title}%");
-            })
-            ->when($category_id, function ($query) use ($category_id) {
-                $query->where('category_id', $category_id);
-            })
-            ->when($brand_id, function ($query) use ($brand_id) {
-                $query->where('brand_id', $brand_id);
-            });
+        // 获取商品列表
+        $goods = GoodsService::getGoodsList($params);
 
-            // 老师：正常的排序没有这么简单，而是使用了复杂的算法
-        $goods = $goodsQuery->when($sales == 1, function ($query) {
-                $query->orderBy('sales', 'desc');
-            })
-            ->when($price == 1, function ($query) {
-                $query->orderBy('shop_price', 'desc');
-            })
-            ->when($comments_count == 1, function ($query) {
-                $query->orderBy('comments_count', 'desc');
-            })
-            ->withCount('comments')
-            ->orderBy('updated_at', 'desc')
-            ->simplePaginate(20);
-
-        // 品牌
-        // $goods_brand_ids = $goodsQuery->distinct()->pluck('brand_id');
-        // return $goods_brand_ids;
+        // 处理排序的url
+        $sortArray = ['default', 'asc'];
+        if (!empty($sortArray = explode('-', $params['sort']))) {
+            $sortArray = explode('-', $params['sort']);
+        }
+        $sort = [
+            'sales'          => '',
+            'comments_count' => '',
+            'new'            => '',
+            'price'          => '',
+            'default'        => '',
+        ];
+        // 组装
+        foreach ($sort as $key => $value) {
+            $temp         = $params;
+            $temp['sort'] = "{$key}-" . ($sortArray[0] == $key) ? ($sortArray[1] == 'asc' ? 'desc' : 'asc') : 'asc';
+            $sort[$key]   = url('api/goods', $temp);
+        }
 
         // 推荐商品
         $recommend_goods = Goods::select('id', 'title', 'cover', 'shop_price')
@@ -72,6 +71,7 @@ class GoodsController extends BaseController
 
         return $this->response->array([
             'categorys'       => $catgorys,
+            'goodsAttrScreen' => $goodsAttrScreen,
             'goods'           => $goods,
             // 'goods'           => json_decode($this->response->paginator($goods, new GoodsTransformer)->morph()->getContent()),
             'recommend_goods' => $recommend_goods,
@@ -84,21 +84,46 @@ class GoodsController extends BaseController
     public function show($id)
     {
         // 详情
-        $goods = Goods::query()->where('id', $id)
-            ->with(['comments', 'comments.user' => function ($query) {
+        $goods = Goods::with([
+            'details',
+            'attributes',
+            'attributes.attribute' => function ($query) {
+                $query->select('id', 'goods_type_id', 'name', 'input_type', 'values');
+            },
+            'specs',
+            'specItemPics',
+            'comments',
+            'comments.user'        => function ($query) {
                 $query->select('id', 'name', 'avatar');
             }])
-            ->first()
-            ->append('pics_url');
+            ->find($id);
+
+        // 获取商品规格需要显示的规格项
+        $item_ids = [];
+        foreach ($goods->specs as $value) {
+            $temp     = explode('_', $value->item_ids);
+            $item_ids = array_merge($item_ids, $temp);
+        }
+        // 获取规格项数据
+        $specsItems = SpecItem::whereIn('id', array_unique($item_ids))->with('spec')->get();
+        // 处理数据
+        $show_specs = [];
+        foreach ($specsItems as $item) {
+            $show_specs[$item->spec->name][] = [
+                'id'      => $item->id,
+                'spec_id' => $item->spec_id,
+                'name'    => $item->name,
+            ];
+        }
 
         // 相似的商品
-        // 1 根据用户在那个商品上停留的时间 来给用户做只能推荐商品
+        // 1 根据用户在那个商品上停留的时间 来给用户做推荐商品
         // 2 或者是哪一类的商品查看很多次
         $like_goods = Goods::where('is_on', 1)
             ->where('category_id', $goods['category_id'])
             ->limit(10)
             ->inRandomOrder() // 随机排序
-            ->select('id', 'title', 'cover', 'price', 'sales')
+            ->select('id', 'title', 'cover', 'shop_price', 'sales')
             ->get();
         // 单个隐藏
         // ->transform(function ($item) {
@@ -113,8 +138,8 @@ class GoodsController extends BaseController
         // 返回数据
         return $this->response->array([
             'goods'      => $goods,
+            'show_specs' => $show_specs,
             'like_goods' => $like_goods,
         ]);
     }
-
 }

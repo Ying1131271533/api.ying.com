@@ -25,7 +25,7 @@ class AttributeSeeder extends Seeder
             [
                 'goods_type_id' => 1,
                 'name' => '尺寸/体积',
-                'is_index' => 1,
+                'is_index' =>0,
                 'input_type' => 0,
             ],
             [

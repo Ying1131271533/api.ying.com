@@ -27,7 +27,7 @@ class GoodsTransformer extends TransformerAbstract
             'details',
             'goodsAttributes',
             'goodsSpecs',
-            'specItmePics',
+            'specItemPics',
             'comments',
         ]);
 
@@ -111,7 +111,7 @@ class GoodsTransformer extends TransformerAbstract
     /**
      * 加载商品规格项的图片数据
      */
-    public function includeSpecItmePics(Goods $goods)
+    public function includeSpecItemPics(Goods $goods)
     {
         return $this->collection($goods->specItemPics, new GoodsSpecItemPicTransformer());
     }
