@@ -11,7 +11,17 @@ class TestController extends BaseController
     public function index(Request $request)
     {
 
-        echo "JIT is " . (ini_get('opcache.jit') ? "enabled" : "disabled") . "\n";
+
+        $satrt = microtime(true);
+        $total = 0;
+        for($i = 0;$i < 1000000;$i++){
+        $total += $i;
+        }
+        echo "Count:".$i.",Total".$total."\n";
+        $end = microtime(true);
+
+        $spend = floor(($end - $satrt)*1000);
+        echo $spend;
 
         return ['name' => '阿卡丽'];
         // Redis::set('akali', 100);return 1;
