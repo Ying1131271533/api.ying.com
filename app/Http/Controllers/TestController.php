@@ -17,14 +17,14 @@ class TestController extends BaseController
         for($i = 0;$i < 1000000;$i++){
         $total += $i;
         }
-        echo "Count:".$i.",Total".$total."\n";
+        echo "Count:".$i.",Total".$total."\r\n";
         $end = microtime(true);
 
         $spend = floor(($end - $satrt)*1000);
-        echo $end."\n";
-        echo $spend."\n";
+        echo $end."\r\n";
+        echo $spend."\r\n";
 
-        echo "JIT is " . (ini_get('opcache.jit') ? "enabled" : "disabled") . "\n";
+        echo "JIT is " . (ini_get('opcache.jit') ? "enabled" : "disabled") . "\r\n";
 
         exit;
         return ['name' => '阿卡丽'];
