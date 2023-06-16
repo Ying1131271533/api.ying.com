@@ -13,8 +13,7 @@ class TestController extends BaseController
 
 
         $satrt = microtime(true);
-        echo '开始时间：';
-        $tiem = time();
+        echo '开始时间：'.time();
         $total = 0;
         for($i = 0;$i < 1000000;$i++){
         $total += $i;
@@ -26,8 +25,7 @@ class TestController extends BaseController
 
         $spend = floor(($end - $satrt)*1000);
         echo $end."\r\n";
-        echo '结束时间：';
-        echo $end_tiem."\r\n";
+        echo '结束时间：'.$end_tiem."\r\n";
         echo $spend."\r\n";
         echo $spend."\r\n";
 
