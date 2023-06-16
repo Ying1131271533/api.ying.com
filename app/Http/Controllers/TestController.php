@@ -10,6 +10,9 @@ class TestController extends BaseController
 {
     public function index(Request $request)
     {
+
+        echo "JIT is " . (ini_get('opcache.jit') ? "enabled" : "disabled") . "\n";
+
         return ['name' => '阿卡丽'];
         // Redis::set('akali', 100);return 1;
         // 实例化redisLock

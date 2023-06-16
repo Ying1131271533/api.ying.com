@@ -93,28 +93,13 @@ class GoodsController extends BaseController
             'specs',
             'specItemPics',
             'comments',
-            'comments.user'        => function ($query) {
+            'comments.user' => function ($query) {
                 $query->select('id', 'name', 'avatar');
             }])
             ->find($id);
 
         // 获取商品规格需要显示的规格项
-        $item_ids = [];
-        foreach ($goods->specs as $value) {
-            $temp     = explode('_', $value->item_ids);
-            $item_ids = array_merge($item_ids, $temp);
-        }
-        // 获取规格项数据
-        $specsItems = SpecItem::whereIn('id', array_unique($item_ids))->with('spec')->get();
-        // 处理数据
-        $show_specs = [];
-        foreach ($specsItems as $item) {
-            $show_specs[$item->spec->name][] = [
-                'id'      => $item->id,
-                'spec_id' => $item->spec_id,
-                'name'    => $item->name,
-            ];
-        }
+       $show_specs = GoodsService::getShowSpecs($goods->specs);
 
         // 相似的商品
         // 1 根据用户在那个商品上停留的时间 来给用户做推荐商品

@@ -5,9 +5,34 @@ namespace App\Services\Api;
 use App\Models\Brand;
 use App\Models\Goods;
 use App\Models\GoodsAttribute;
+use App\Models\SpecItem;
 
 class GoodsService
 {
+    /**
+     * 获取显示的商品规格
+     */
+    public static function getShowSpecs($goods_specs)
+    {
+        $item_ids = [];
+        foreach ($goods_specs as $value) {
+            $temp     = explode('_', $value->item_ids);
+            $item_ids = array_merge($item_ids, $temp);
+        }
+        // 获取规格项数据
+        $specsItems = SpecItem::whereIn('id', array_unique($item_ids))->with('spec')->get();
+        // 处理数据
+        $show_specs = [];
+        foreach ($specsItems as $item) {
+            $show_specs[$item->spec->name][] = [
+                'id'      => $item->id,
+                'spec_id' => $item->spec_id,
+                'name'    => $item->name,
+            ];
+        }
+        return $show_specs;
+    }
+
     // 获取商品属性筛选数据
     public static function getGoodsAttrScreen($params)
     {

@@ -66,6 +66,7 @@ class GoodsController extends BaseController
      */
     public function show(Goods $good)
     {
+
         return $this->response->item($good, new GoodsTransformer);
     }
 
