@@ -72,12 +72,12 @@ class GoodsController extends BaseController
         $end = microtime(true);
 
         return $this->response->array([
-            'end_time' => $satrt - $end,
-            'categorys'       => $catgorys,
-            'goodsAttrScreen' => $goodsAttrScreen,
-            'goods'           => $goods,
+            'end_time' => $end - $satrt,
+            // 'categorys'       => $catgorys,
+            // 'goodsAttrScreen' => $goodsAttrScreen,
+            // 'goods'           => $goods,
             // 'goods'           => json_decode($this->response->paginator($goods, new GoodsTransformer)->morph()->getContent()),
-            'recommend_goods' => $recommend_goods,
+            // 'recommend_goods' => $recommend_goods,
         ]);
     }
 
