@@ -21,8 +21,12 @@ class TestController extends BaseController
         $end = microtime(true);
 
         $spend = floor(($end - $satrt)*1000);
-        echo $spend;
+        echo $end."\n";
+        echo $spend."\n";
 
+        echo "JIT is " . (ini_get('opcache.jit') ? "enabled" : "disabled") . "\n";
+
+        exit;
         return ['name' => '阿卡丽'];
         // Redis::set('akali', 100);return 1;
         // 实例化redisLock
