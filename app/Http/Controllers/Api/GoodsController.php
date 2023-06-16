@@ -21,6 +21,7 @@ class GoodsController extends BaseController
      */
     public function index(Request $request)
     {
+        $satrt = microtime(true);
         // 分类数据
         $catgorys = cache_categorys();
 
@@ -68,8 +69,10 @@ class GoodsController extends BaseController
             ->inRandomOrder()
             ->limit(10)
             ->get();
+        $end = microtime(true);
 
         return $this->response->array([
+            'end_time' => $satrt - $end,
             'categorys'       => $catgorys,
             'goodsAttrScreen' => $goodsAttrScreen,
             'goods'           => $goods,
