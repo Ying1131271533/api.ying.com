@@ -85,17 +85,21 @@ class GoodsController extends BaseController
     {
         // 详情
         $goods = Goods::with([
-            'details',
-            'attributes',
-            'attributes.attribute' => function ($query) {
-                $query->select('id', 'goods_type_id', 'name', 'input_type', 'values');
-            },
-            'specs',
-            'specItemPics',
-            'comments',
-            'comments.user' => function ($query) {
-                $query->select('id', 'name', 'avatar');
-            }])
+                'details',
+                'attributes',
+                'attributes.attribute' => function ($query) {
+                    $query->select('id', 'goods_type_id', 'name', 'input_type', 'values');
+                },
+                'specs',
+                'specItemPics',
+                'comments',
+                'comments.user' => function ($query) {
+                    $query->select('id', 'name', 'avatar');
+                },
+                'category.parent.parent' => function ($query) {
+                    $query->select('id', 'parent_id', 'name');
+                },
+            ])
             ->find($id);
 
         // 获取商品规格需要显示的规格项

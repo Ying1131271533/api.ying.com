@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('order_goods', function (Blueprint $table) {
             $table->unsignedBigInteger('order_id')->comment('订单id');
             $table->unsignedBigInteger('goods_id')->comment('商品id');
+            $table->char('spec', 120)->comment('套餐组合，例如：1_3');
+            $table->char('spec_name', 120)->comment('套餐组合名称，例如：颜色_白色，网络_5G，就记录规格值的名称，前端可以直接使用');
             $table->unsignedDecimal('market_price', 10, 2)->default(0)->comment('市场价格');
             $table->unsignedDecimal('shop_price', 10, 2)->default(0)->comment('购买价格');
             $table->unsignedSmallInteger('number')->comment('数量'); // 65535

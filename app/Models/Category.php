@@ -23,11 +23,19 @@ class Category extends Model
     ];
 
     /**
-     * 分类的子类
+     * 分类的子级
      */
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id', 'id');
+    }
+
+    /**
+     * 分类的父级
+     */
+    public function parent()
+    {
+        return $this->hasMany(Category::class, 'id', 'parent_id');
     }
 
     /**
