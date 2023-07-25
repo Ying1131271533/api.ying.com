@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PayController;
 use App\Http\Controllers\Api\SwooleController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\ElasticsearhController;
 use App\Http\Controllers\TestController;
 
 $api = app('Dingo\Api\Routing\Router');
@@ -29,6 +30,11 @@ $api->version('v1', $params, function ($api) {
 
     // 测试
     $api->get('test', [TestController::class, 'index'])->name('test');
+
+
+    /****************** Ealsticsearch *************/
+    $api->get('es/index', [ElasticsearhController::class, 'index'])->name('ealsticsearch.index');
+
 
     // 首页数据
     $api->get('index', [IndexController::class, 'index'])->name('index');
