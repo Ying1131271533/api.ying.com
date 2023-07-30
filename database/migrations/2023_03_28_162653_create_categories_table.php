@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id(); // 自动递增
             // $table->unsignedBigInteger('id', true); // 自动递增
             $table->unsignedBigInteger('parent_id')->default(0)->comment('父级id');
+            $table->char('category_path')->comment('分类路径，例如：1,2,5 分类名称是：家用电器,大家电,冰箱');
             $table->char('name', 25)->comment('分类名称');
             $table->char('url', 100)->nullable()->comment('链接'); // 菜单那边可能要用到
             $table->tinyInteger('status')->default(1)->comment('状态：0 禁用 1 正常');

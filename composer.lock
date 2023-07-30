@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02cfde07a5dc7709d411b767bcee9e72",
+    "content-hash": "1bc15ac14ffeb5e83e93a48e407c9206",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -181,6 +181,292 @@
                 "source": "https://github.com/archtechx/enums/tree/v0.3.2"
             },
             "time": "2023-02-15T13:05:41+00:00"
+        },
+        {
+            "name": "babenkoivan/elastic-adapter",
+            "version": "v3.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/babenkoivan/elastic-adapter.git",
+                "reference": "f2bd15d9d57d8631cf8f86539d815e749109d499"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/babenkoivan/elastic-adapter/zipball/f2bd15d9d57d8631cf8f86539d815e749109d499",
+                "reference": "f2bd15d9d57d8631cf8f86539d815e749109d499",
+                "shasum": ""
+            },
+            "require": {
+                "babenkoivan/elastic-client": "^2.1",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "dg/bypass-finals": "^1.3",
+                "friendsofphp/php-cs-fixer": "^3.14",
+                "orchestra/testbench": "^8.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Elastic\\Adapter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Babenko",
+                    "email": "babenko.i.a@gmail.com"
+                }
+            ],
+            "description": "Adapter for official PHP Elasticsearch client",
+            "keywords": [
+                "adapter",
+                "client",
+                "elastic",
+                "elasticsearch",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/babenkoivan/elastic-adapter/issues",
+                "source": "https://github.com/babenkoivan/elastic-adapter/tree/v3.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://ko-fi.com/ivanbabenko",
+                    "type": "ko-fi"
+                },
+                {
+                    "url": "https://paypal.me/babenkoi",
+                    "type": "paypal"
+                }
+            ],
+            "time": "2023-04-25T07:13:38+00:00"
+        },
+        {
+            "name": "babenkoivan/elastic-client",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/babenkoivan/elastic-client.git",
+                "reference": "c3f016a1b33cf1e378fffb64f8aeed37be228234"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/babenkoivan/elastic-client/zipball/c3f016a1b33cf1e378fffb64f8aeed37be228234",
+                "reference": "c3f016a1b33cf1e378fffb64f8aeed37be228234",
+                "shasum": ""
+            },
+            "require": {
+                "elasticsearch/elasticsearch": "^8.0",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.14",
+                "orchestra/testbench": "^8.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Elastic\\Client\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Elastic\\Client\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Babenko",
+                    "email": "babenko.i.a@gmail.com"
+                }
+            ],
+            "description": "The official PHP Elasticsearch client integrated with Laravel",
+            "keywords": [
+                "client",
+                "elastic",
+                "elasticsearch",
+                "laravel",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/babenkoivan/elastic-client/issues",
+                "source": "https://github.com/babenkoivan/elastic-client/tree/v2.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://ko-fi.com/ivanbabenko",
+                    "type": "ko-fi"
+                },
+                {
+                    "url": "https://paypal.me/babenkoi",
+                    "type": "paypal"
+                }
+            ],
+            "time": "2023-03-04T08:16:47+00:00"
+        },
+        {
+            "name": "babenkoivan/elastic-migrations",
+            "version": "v3.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/babenkoivan/elastic-migrations.git",
+                "reference": "a0118e9e833e5ae75073ec783f64a4136bd44325"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/babenkoivan/elastic-migrations/zipball/a0118e9e833e5ae75073ec783f64a4136bd44325",
+                "reference": "a0118e9e833e5ae75073ec783f64a4136bd44325",
+                "shasum": ""
+            },
+            "require": {
+                "babenkoivan/elastic-adapter": "^3.2",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "dg/bypass-finals": "^1.3",
+                "friendsofphp/php-cs-fixer": "^3.14",
+                "orchestra/testbench": "^8.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Elastic\\Migrations\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Elastic\\Migrations\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Babenko",
+                    "email": "babenko.i.a@gmail.com"
+                }
+            ],
+            "description": "Elasticsearch migrations for Laravel",
+            "keywords": [
+                "elastic",
+                "elasticsearch",
+                "laravel",
+                "migrations",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/babenkoivan/elastic-migrations/issues",
+                "source": "https://github.com/babenkoivan/elastic-migrations/tree/v3.3.0"
+            },
+            "funding": [
+                {
+                    "url": "https://ko-fi.com/ivanbabenko",
+                    "type": "ko-fi"
+                },
+                {
+                    "url": "https://paypal.me/babenkoi",
+                    "type": "paypal"
+                }
+            ],
+            "time": "2023-03-04T10:57:57+00:00"
+        },
+        {
+            "name": "babenkoivan/elastic-scout-driver",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/babenkoivan/elastic-scout-driver.git",
+                "reference": "485eb1fa671e9b907bcad78a4afba1ed481f47fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/babenkoivan/elastic-scout-driver/zipball/485eb1fa671e9b907bcad78a4afba1ed481f47fb",
+                "reference": "485eb1fa671e9b907bcad78a4afba1ed481f47fb",
+                "shasum": ""
+            },
+            "require": {
+                "babenkoivan/elastic-adapter": "^3.2",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "babenkoivan/elastic-migrations": "^3.3",
+                "friendsofphp/php-cs-fixer": "^3.14",
+                "laravel/legacy-factories": "^1.3",
+                "laravel/scout": "^10.0",
+                "orchestra/testbench": "^8.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Elastic\\ScoutDriver\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Elastic\\ScoutDriver\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Babenko",
+                    "email": "babenko.i.a@gmail.com"
+                }
+            ],
+            "description": "Elasticsearch driver for Laravel Scout",
+            "keywords": [
+                "driver",
+                "elastic",
+                "elasticsearch",
+                "laravel",
+                "php",
+                "scout"
+            ],
+            "support": {
+                "issues": "https://github.com/babenkoivan/elastic-scout-driver/issues",
+                "source": "https://github.com/babenkoivan/elastic-scout-driver/tree/v3.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://ko-fi.com/ivanbabenko",
+                    "type": "ko-fi"
+                },
+                {
+                    "url": "https://paypal.me/babenkoi",
+                    "type": "paypal"
+                }
+            ],
+            "time": "2023-03-04T11:01:40+00:00"
         },
         {
             "name": "brick/math",
@@ -1123,6 +1409,109 @@
                 }
             ],
             "time": "2023-01-14T14:17:03+00:00"
+        },
+        {
+            "name": "elastic/transport",
+            "version": "v8.7.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:elastic/elastic-transport-php.git",
+                "reference": "4d7937f026393186f48b2e4fba6d8db85ca0dba6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elastic/elastic-transport-php/zipball/4d7937f026393186f48b2e4fba6d8db85ca0dba6",
+                "reference": "4d7937f026393186f48b2e4fba6d8db85ca0dba6",
+                "shasum": ""
+            },
+            "require": {
+                "composer-runtime-api": "^2.0",
+                "php": "^7.4 || ^8.0",
+                "php-http/discovery": "^1.14",
+                "php-http/httplug": "^2.3",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0 || ^2.0",
+                "psr/log": "^1 || ^2 || ^3"
+            },
+            "require-dev": {
+                "nyholm/psr7": "^1.5",
+                "php-http/mock-client": "^1.5",
+                "phpstan/phpstan": "^1.4",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Elastic\\Transport\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "HTTP transport PHP library for Elastic products",
+            "keywords": [
+                "PSR_17",
+                "elastic",
+                "http",
+                "psr-18",
+                "psr-7",
+                "transport"
+            ],
+            "time": "2023-05-23T08:44:23+00:00"
+        },
+        {
+            "name": "elasticsearch/elasticsearch",
+            "version": "v8.4.3",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:elastic/elasticsearch-php.git",
+                "reference": "078ac89240b4c02524a4881de33b0dd8d36e60d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/078ac89240b4c02524a4881de33b0dd8d36e60d6",
+                "reference": "078ac89240b4c02524a4881de33b0dd8d36e60d6",
+                "shasum": ""
+            },
+            "require": {
+                "elastic/transport": "^8.4",
+                "guzzlehttp/guzzle": "^7.0",
+                "php": "^7.4 || ^8.0",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^1.0",
+                "psr/log": "^1|^2|^3"
+            },
+            "require-dev": {
+                "ext-yaml": "*",
+                "ext-zip": "*",
+                "mockery/mockery": "^1.5",
+                "nyholm/psr7": "^1.5",
+                "php-http/mock-client": "^1.5",
+                "phpstan/phpstan": "^1.4",
+                "phpunit/phpunit": "^9.5",
+                "symfony/finder": "~4.0",
+                "symfony/http-client": "^5.0|^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Elastic\\Elasticsearch\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP Client for Elasticsearch",
+            "keywords": [
+                "client",
+                "elastic",
+                "elasticsearch",
+                "search"
+            ],
+            "time": "2022-09-27T07:48:48+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -2210,6 +2599,81 @@
                 "source": "https://github.com/laravel/sanctum"
             },
             "time": "2023-04-25T16:15:12+00:00"
+        },
+        {
+            "name": "laravel/scout",
+            "version": "v10.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/scout.git",
+                "reference": "51d662fb00728dcf726a9e53a234a05896da888a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/51d662fb00728dcf726a9e53a234a05896da888a",
+                "reference": "51d662fb00728dcf726a9e53a234a05896da888a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/bus": "^9.0|^10.0",
+                "illuminate/contracts": "^9.0|^10.0",
+                "illuminate/database": "^9.0|^10.0",
+                "illuminate/http": "^9.0|^10.0",
+                "illuminate/pagination": "^9.0|^10.0",
+                "illuminate/queue": "^9.0|^10.0",
+                "illuminate/support": "^9.0|^10.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "algolia/algoliasearch-client-php": "^3.2",
+                "meilisearch/meilisearch-php": "^1.0",
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^7.0|^8.0",
+                "php-http/guzzle7-adapter": "^1.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.3"
+            },
+            "suggest": {
+                "algolia/algoliasearch-client-php": "Required to use the Algolia engine (^3.2).",
+                "meilisearch/meilisearch-php": "Required to use the Meilisearch engine (^1.0)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "10.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Scout\\ScoutServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Scout\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Scout provides a driver based solution to searching your Eloquent models.",
+            "keywords": [
+                "algolia",
+                "laravel",
+                "search"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/scout/issues",
+                "source": "https://github.com/laravel/scout"
+            },
+            "time": "2023-07-11T15:04:19+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -3554,6 +4018,198 @@
                 }
             ],
             "time": "2023-04-14T08:54:03+00:00"
+        },
+        {
+            "name": "php-http/discovery",
+            "version": "1.19.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-http/discovery.git",
+                "reference": "57f3de01d32085fea20865f9b16fb0e69347c39e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/57f3de01d32085fea20865f9b16fb0e69347c39e",
+                "reference": "57f3de01d32085fea20865f9b16fb0e69347c39e",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0|^2.0",
+                "php": "^7.1 || ^8.0"
+            },
+            "conflict": {
+                "nyholm/psr7": "<1.0",
+                "zendframework/zend-diactoros": "*"
+            },
+            "provide": {
+                "php-http/async-client-implementation": "*",
+                "php-http/client-implementation": "*",
+                "psr/http-client-implementation": "*",
+                "psr/http-factory-implementation": "*",
+                "psr/http-message-implementation": "*"
+            },
+            "require-dev": {
+                "composer/composer": "^1.0.2|^2.0",
+                "graham-campbell/phpspec-skip-example-extension": "^5.0",
+                "php-http/httplug": "^1.0 || ^2.0",
+                "php-http/message-factory": "^1.0",
+                "phpspec/phpspec": "^5.1 || ^6.1 || ^7.3",
+                "symfony/phpunit-bridge": "^6.2"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Http\\Discovery\\Composer\\Plugin",
+                "plugin-optional": true
+            },
+            "autoload": {
+                "psr-4": {
+                    "Http\\Discovery\\": "src/"
+                },
+                "exclude-from-classmap": [
+                    "src/Composer/Plugin.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com"
+                }
+            ],
+            "description": "Finds and installs PSR-7, PSR-17, PSR-18 and HTTPlug implementations",
+            "homepage": "http://php-http.org",
+            "keywords": [
+                "adapter",
+                "client",
+                "discovery",
+                "factory",
+                "http",
+                "message",
+                "psr17",
+                "psr7"
+            ],
+            "support": {
+                "issues": "https://github.com/php-http/discovery/issues",
+                "source": "https://github.com/php-http/discovery/tree/1.19.1"
+            },
+            "time": "2023-07-11T07:02:26+00:00"
+        },
+        {
+            "name": "php-http/httplug",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-http/httplug.git",
+                "reference": "625ad742c360c8ac580fcc647a1541d29e257f67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-http/httplug/zipball/625ad742c360c8ac580fcc647a1541d29e257f67",
+                "reference": "625ad742c360c8ac580fcc647a1541d29e257f67",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0",
+                "php-http/promise": "^1.1",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^1.0 || ^2.0"
+            },
+            "require-dev": {
+                "friends-of-phpspec/phpspec-code-coverage": "^4.1 || ^5.0 || ^6.0",
+                "phpspec/phpspec": "^5.1 || ^6.0 || ^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Http\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eric GELOEN",
+                    "email": "geloen.eric@gmail.com"
+                },
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com",
+                    "homepage": "https://sagikazarmark.hu"
+                }
+            ],
+            "description": "HTTPlug, the HTTP client abstraction for PHP",
+            "homepage": "http://httplug.io",
+            "keywords": [
+                "client",
+                "http"
+            ],
+            "support": {
+                "issues": "https://github.com/php-http/httplug/issues",
+                "source": "https://github.com/php-http/httplug/tree/2.4.0"
+            },
+            "time": "2023-04-14T15:10:03+00:00"
+        },
+        {
+            "name": "php-http/promise",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-http/promise.git",
+                "reference": "4c4c1f9b7289a2ec57cde7f1e9762a5789506f88"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-http/promise/zipball/4c4c1f9b7289a2ec57cde7f1e9762a5789506f88",
+                "reference": "4c4c1f9b7289a2ec57cde7f1e9762a5789506f88",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "friends-of-phpspec/phpspec-code-coverage": "^4.3.2",
+                "phpspec/phpspec": "^5.1.2 || ^6.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Http\\Promise\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joel Wurtz",
+                    "email": "joel.wurtz@gmail.com"
+                },
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com"
+                }
+            ],
+            "description": "Promise used for asynchronous HTTP requests",
+            "homepage": "http://httplug.io",
+            "keywords": [
+                "promise"
+            ],
+            "support": {
+                "issues": "https://github.com/php-http/promise/issues",
+                "source": "https://github.com/php-http/promise/tree/1.1.0"
+            },
+            "time": "2020-07-07T09:29:14+00:00"
         },
         {
             "name": "php-open-source-saver/jwt-auth",

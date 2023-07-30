@@ -6,6 +6,8 @@ use App\Models\Brand;
 use App\Models\Goods;
 use App\Models\GoodsAttribute;
 use App\Models\SpecItem;
+use App\Services\Lib\ElasticsearchService;
+use App\Services\Lib\PublicService;
 
 class GoodsService
 {
@@ -51,12 +53,14 @@ class GoodsService
     {
         // 参数
         $title       = $params['title'];
+        $category_id = $params['category_id'];
         $brand_id    = $params['brand_id'];
         $attr        = $params['attr'];
         $sort        = $params['sort'];
+        $is_on       = $params['is_on'];
         $price_range = $params['price_range'];
         $limit       = $params['limit'];
-        $category_id = $params['category_id'];
+        $page        = $params['page'];
 
         // 查询条件
         $where   = [];
@@ -83,7 +87,7 @@ class GoodsService
                         ->toArray();
                     if (empty($goods_ids)) {
                         $goods_ids = $temp;
-                    }else{
+                    } else {
                         // 符合条件的数组， 每次都进行交集
                         $goods_ids = array_intersect($goods_ids, $temp);
                     }
@@ -130,6 +134,79 @@ class GoodsService
         return $goods;
     }
 
+    // 获取es商品列表
+    public static function getEsGoodsList(array $params)
+    {
+        // 参数
+        $search      = $params['search'];
+        $category_id = $params['category_id'];
+        $brand_id    = $params['brand_id'];
+        $attributes  = $params['attributes'];
+        $skus        = $params['skus'];
+        $sort        = $params['sort'];
+        $price_range = $params['price_range'];
+        $limit       = $params['limit'];
+        $page        = $params['page'];
+
+        $esService = new ElasticsearchService('goods');
+        // 封装es类，增加商品状态为上架条件的分页查询结构
+        // $builder = $esService->queryByFilter('term', 'shop_id', $shop_id)->paginate($page, $limit);
+        $builder = $esService->queryByFilter('term', 'is_on', 1)->paginate($page, $limit);
+
+        // 分类搜索
+        if ($category_id) {
+            // 获取分类信息
+            $category = PublicService::category($category_id);
+
+            // 根据字段-条件搜索
+            if ($category && $category->is_directory) {
+                $builder->queryByFilter('prefix', 'category_path', $category->path . $category->id . '-');
+            } else {
+                $builder->queryByFilter('term', 'category_id', $category->id);
+            }
+        }
+
+        // 关键词按照权重进行搜索
+        if ($search) {
+            $keywords = array_filter(explode(' ', $search));
+
+            $builder->keyWords($keywords);
+        }
+
+        // 排序
+        if ($sort) {
+            if (preg_match('/^(.+)_(asc|desc)$/', $sort, $m)) {
+                // 只有当前三个字段才可以进行排序搜索
+                if (in_array($m[1], ['price', 'sales', 'review_count'])) {
+                    $builder->orderBy($m[1], $m[2]);
+                }
+            }
+        }
+
+        $attributeFilter = [];
+
+        // 根据商品属性搜索
+        if ($attributes) {
+            $attrArray = explode("|", $attributes);
+            foreach ($attrArray as $attr) {
+                list($name, $value)     = explode(":", $attr);
+                $attributeFilter[$name] = $value;
+                $builder->attributeFilter($name, $value);
+            }
+        }
+
+        // 获取的字段
+        $builder->source(['id', 'title', 'cover', 'skus', 'attributes', 'created_at']);
+
+        // 执行es搜索
+        $restful = app('es')->search($builder->getParams());
+
+        // 多维数组转换一维数组
+        list($data, $total) = $builder->getDataByEs($restful);
+
+        return compact('data', 'total', 'page');
+    }
+
     // 获取商品拥有的属性
     protected static function getAttrData($params)
     {
@@ -141,7 +218,7 @@ class GoodsService
         $goods_ids = Goods::where('category_id', $category_id)->pluck('id');
 
         // 获取商品拥有的属性
-        $goodsAttr = GoodsAttribute::select('attribute_id', 'value')
+        $goodsAttr = GoodsAttribute::select('attributesibute_id', 'value')
             ->whereIn('goods_id', $goods_ids)
             ->with('attribute')
             ->groupBy('attribute_id', 'value')

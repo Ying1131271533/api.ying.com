@@ -7,11 +7,15 @@
     "require": {
         "php": "^8.0.2",
         "api-ecosystem-for-laravel/dingo-api": "^4.0",
+        "babenkoivan/elastic-migrations": "^3.3",
+        "babenkoivan/elastic-scout-driver": "^3.1",
+        "elasticsearch/elasticsearch": "8.4.x",
         "guzzlehttp/guzzle": "^7.2",
         "iidestiny/laravel-filesystem-oss": "^3.1",
         "laravel-lang/lang": "^12.19",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
+        "laravel/scout": "^10.2",
         "laravel/tinker": "^2.7",
         "liyu/dingo-serializer-switch": "^0.3.0",
         "overtrue/easy-sms": "^2.4",
@@ -69,7 +73,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "stable",

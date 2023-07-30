@@ -148,4 +148,17 @@ return [
 
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Elasticsearch
+    |--------------------------------------------------------------------------
+    */
+    'elasticsearch' => [
+        // Elasticsearch 支持多台服务器负载均衡，因此这里是一个数组
+        'host' => env('ELASTIC_HOST'),
+        'hosts' => explode(',', env('ELASTIC_HOSTS')),
+        'username' => env('ELASTIC_USERNAME'),
+        'password' => env('ELASTIC_PASSWORD'),
+    ]
+
 ];

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('admin_id')->comment('创建商品的用户id');
             $table->unsignedBigInteger('category_id')->comment('分类id');
             $table->unsignedBigInteger('brand_id')->comment('品牌id');
-            $table->char('title', 100)->unique()->comment('标题');
+            // $table->unsignedTinyInteger('shop_id')->comment('店铺id');
+            // $table->char('category_name', 25)->comment('分类名称');
+            $table->char('name', 100)->unique()->comment('商品名称');
             $table->char('cover', 100)->comment('封面图');
             $table->unsignedDecimal('market_price', 10, 2)->default(0)->comment('市场价格');
             $table->unsignedDecimal('shop_price', 10, 2)->default(0)->comment('购买价格');
@@ -28,12 +30,15 @@ return new class extends Migration
             $table->unsignedTinyInteger('is_on')->default(0)->comment('上架：0 否 1 是');
             $table->unsignedTinyInteger('is_recommend')->default(0)->comment('推荐商品：0 否 1 是');
             // $table->mediumText('details')->comment('商品详情');
+            $table->unsignedBigInteger('view_count')->comment('浏览次数');
             $table->timestamps();
+
 
             // 单个索引
             $table->index('admin_id');
             $table->index('category_id');
             $table->index('brand_id');
+            // $table->index('shop_id');
 
             $table->index('title');
             $table->index('is_on');
@@ -47,6 +52,7 @@ return new class extends Migration
             $table->foreign('admin_id')->references('id')->on('admins');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('brand_id')->references('id')->on('brands');
+            // $table->foreign('shop_id')->references('id')->on('shops');
 
             // 主键
             // $table->primary(['id', 'user_id', 'category_id']);

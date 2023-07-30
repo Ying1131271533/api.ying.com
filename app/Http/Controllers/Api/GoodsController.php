@@ -79,31 +79,62 @@ class GoodsController extends BaseController
     }
 
     /**
+     * es搜索商品列表
+     */
+    public function esIndex(Request $request)
+    {
+        // 分类数据
+        $catgorys = cache_categorys();
+
+        // 条件参数
+        $params = [
+            'search'       => $request->query('search'),
+            'category_id' => $request->query('category_id', 0),
+            'brand_id'    => $request->query('brand_id'),
+            'attributes'  => $request->query('attributes'),
+            'skus'        => $request->query('skus'),
+            'sort'        => $request->query('sort'),
+            'price_range' => $request->query('price_range'),
+            'limit'       => $request->query('limit', 10),
+            'page'        => $request->query('page', 1),
+        ];
+
+        // 获取商品列表
+        $goods = GoodsService::getEsGoodsList($params);
+        return $goods;
+        // 返回
+        return $this->response->array([
+            'categorys'       => $catgorys,
+            'goods'           => $goods,
+        ]);
+    }
+
+    /**
      * 商品详情
      */
     public function show($id)
     {
         // 详情
         $goods = Goods::with([
-                'details',
-                'attributes',
-                'attributes.attribute' => function ($query) {
-                    $query->select('id', 'goods_type_id', 'name', 'input_type', 'values');
-                },
-                'specs',
-                'specItemPics',
-                'comments',
-                'comments.user' => function ($query) {
-                    $query->select('id', 'name', 'avatar');
-                },
-                'category.parent.parent' => function ($query) {
-                    $query->select('id', 'parent_id', 'name');
-                },
-            ])
+            'details',
+            'attributes',
+            'attributes.attribute'   => function ($query) {
+                $query->select('id', 'goods_type_id', 'name', 'input_type', 'values');
+            },
+            'specs',
+            'specItemPics',
+            'comments',
+            'comments.user'          => function ($query) {
+                $query->select('id', 'name', 'avatar');
+            },
+            'category.parent.parent' => function ($query) {
+                $query->select('id', 'parent_id', 'name');
+            },
+        ])
             ->find($id);
 
         // 获取商品规格需要显示的规格项
-       $show_specs = GoodsService::getShowSpecs($goods->specs);
+        $show_specs = GoodsService::getShowSpecs($goods->specs);
 
         // 相似的商品
         // 1 根据用户在那个商品上停留的时间 来给用户做推荐商品

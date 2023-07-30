@@ -30,11 +30,7 @@ $api->version('v1', $params, function ($api) {
 
     // 测试
     $api->get('test', [TestController::class, 'index'])->name('test');
-
-
-    /****************** Ealsticsearch *************/
-    $api->get('es/index', [ElasticsearhController::class, 'index'])->name('ealsticsearch.index');
-
+    $api->get('test/es', [TestController::class, 'es'])->name('es');
 
     // 首页数据
     $api->get('index', [IndexController::class, 'index'])->name('index');
@@ -44,6 +40,8 @@ $api->version('v1', $params, function ($api) {
 
     // 商品列表
     $api->get('goods', [GoodsController::class, 'index'])->name('goods.index');
+    // es搜素商品列表
+    $api->get('goods-es-index', [GoodsController::class, 'esIndex'])->name('goods.esIndex');
 
     /**
      * 回调
