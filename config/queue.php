@@ -71,6 +71,31 @@ return [
             'after_commit' => true,
         ],
 
+        'rabbitmq' => [
+
+            'hosts' => [
+                [
+                    'host' => env('RABBITMQ_HOST', '127.0.0.1'),
+                    'port' => env('RABBITMQ_PORT', 5672),
+                    'user' => env('RABBITMQ_USER', 'guest'),
+                    'password' => env('RABBITMQ_PASSWORD', 'guest'),
+                    'vhost' => env('RABBITMQ_VHOST', '/'),
+                ],
+            ],
+
+            'queue' => env('RABBITMQ_QUEUE', 'default'), // 默认队列的名称
+
+            // 'options' => [
+            //     'queue' => [
+            //         'prioritize_delayed' =>  false,
+            //         'queue_max_priority' => 10, // 队列最大优先级b
+            //     ],
+            // ],
+
+            // 'lazy' => true, // 是否允许队列可以延迟执行
+            'after_commit' => true, // 如果数据库事务期间发生异常而回滚，则在该事务期间分发的已分发任务将被丢弃。
+        ],
+
     ],
 
     /*

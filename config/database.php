@@ -63,6 +63,20 @@ return [
             ]) : [],
         ],
 
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'dsn' => env('MONGO_DB_DSN'), // 连接字符串，密码记得用urlencode()编译再放进去
+            // 'host' => env('MONGO_DB_HOST', '127.0.0.1'),
+            // 'port' => env('MONGO_DB_POST', 27017),
+            'database' => env('MONGO_DB_DATABASE', 'homestead'),
+            // 'username' => env('MONGO_DB_USERNAME', 'homestead'),
+            // 'password' => env('MONGO_DB_PASSWORD', 'secrets'),
+            // 'options' => [
+            //    'appname' => 'homestead',
+            //    'database' => 'admin', // MongoDB 默认数据库
+            // ],
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
@@ -93,6 +107,20 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+    ],
+
+    // mongodb
+    'mongodb' => [
+        'driver' => 'mongodb',
+        'host' => env('MONGO_DB_HOST', '127.0.0.1'),
+        'port' => env('MONGO_DB_POST', 27017),
+        'database' => env('MONGO_DB_DATABASE', 'homestead'),
+        'username' => env('MONGO_DB_USERNAME', 'homestead'),
+        'password' => env('MONGO_DB_PASSWORD', 'secret'),
+        // 'options' => [
+        //    'appname' => 'homestead',
+        //    'database' => 'admin', // MongoDB 默认数据库
+        // ],
     ],
 
     /*
@@ -159,6 +187,6 @@ return [
         'hosts' => explode(',', env('ELASTIC_HOSTS')),
         'username' => env('ELASTIC_USERNAME'),
         'password' => env('ELASTIC_PASSWORD'),
-    ]
+    ],
 
 ];

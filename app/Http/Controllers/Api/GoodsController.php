@@ -101,7 +101,7 @@ class GoodsController extends BaseController
 
         // 获取商品列表
         $goods = GoodsService::getEsGoodsList($params);
-        return $goods;
+
         // 返回
         return $this->response->array([
             'categorys'       => $catgorys,

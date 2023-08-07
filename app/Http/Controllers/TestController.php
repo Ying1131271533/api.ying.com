@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\RabbitJob;
 use App\Models\Goods;
+use App\Models\Mongo\Book;
 use App\Services\Lib\RedisLock;
+use Elastic\Client\ClientBuilderInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
-use Elastic\Client\ClientBuilderInterface;
 
 class TestController extends BaseController
 {
@@ -27,7 +29,7 @@ class TestController extends BaseController
 
             // 逻辑代码
             $akali = Redis::get('akali');
-            if($akali > 0) {
+            if ($akali > 0) {
                 Redis::decr('akali');
             }
 
@@ -44,62 +46,63 @@ class TestController extends BaseController
 
     public function es()
     {
-        $params = [
-            'index' => 'goods',
-            'body' => [
-                'query' => [
-                    'nested' => [
-                        'path' => 'attributes',
-                        'query' => [
-                            'bool' => [
-                                'must' => [
-                                    [
-                                        'term' => [
-                                            'attributes.name' => '适用季节'
-                                        ]
-                                    ],
-                                    [
-                                        'term' => [
-                                            'attributes.value' => '夏季'
-                                        ]
-                                    ],
-                                ],
-                                'must' => [
-                                    [
-                                        'term' => [
-                                            'attributes.name' => '布料'
-                                        ]
-                                    ],
-                                    [
-                                        'term' => [
-                                            'attributes.value' => '棉66% 聚酯纤维34%'
-                                        ]
-                                    ],
-                                ],
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
-        $response = $this->client->search($params);
-        $goods = $response['hits']['hits'];
-        // 根据需要处理搜索结果
-        dd($goods);
-
-        $goods = Goods::search()
-        // ->where('attributes.value', 'nested', function ($query) {
-        //     $query->where('attributes.value', '夏季');
-        // })
-        // ->where('attributes.name', '适用季节')
-        // ->where('title', '苹果')
-        // ->where('attributes.value', '夏季')
+        $goods = Goods::search('苹果')
         // ->raw();
-        ->get()
-        ->toArray();
+            ->get()
+            ->toArray();
         // $goods = Goods::search()
-        // ->query(fn (Builder $query) => $query->with('category'))
+        // ->query(fn (Builder $query) => $query->with('category')) // 关联模型
         // ->get();
         dd($goods);
+    }
+
+    public function mongo()
+    {
+        // $book = Book::find('64c76f02f78e0509130bd878');
+        // return 1;
+        // return Book::all();
+        // $result = Book::create([
+        //     'title' => '离群之刺 - 阿卡丽',
+        //     'view_count' => 1,
+        // ]);
+        // $result = Book::create([
+        //     'title' => '灵罗娃娃 - 格温',
+        //     'view_count' => 2,
+        // ]);
+        $book = new Book();
+        $data = [
+            'title'      => '暴走萝莉 - 金克丝',
+            'view_count' => 5,
+        ];
+        // 保存
+        $book->fill($data)->save();
+        // 保存作者
+        $result = $book->author()->create([
+            'name' => '神织知更',
+        ]);
+        return $result;
+    }
+
+    public function rabbitmq()
+    {
+        // 正常推送任务到 default 队列中
+        RabbitJob::dispatch([
+            'id'   => 1,
+            'name' => '默认',
+        ]);
+
+        // 延时10秒推送到 akali 的队列
+        RabbitJob::dispatch([
+            'id'   => 2,
+            'name' => '阿卡丽',
+        ])->onQueue('akali')
+        ->delay(now()->addSeconds(10));
+
+        return '阿卡丽';
+    }
+
+    public function swoole()
+    {
+        return '格温';
     }
 }

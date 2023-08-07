@@ -10,7 +10,7 @@ use App\Http\Requests\Api\OrderRequest;
 use App\Jobs\OrderSubmit as JobsOrderSubmit;
 use App\Models\Address;
 use App\Models\Cart;
-use App\Models\Good;
+use App\Models\Goods;
 use App\Models\Order;
 use App\Models\User;
 use App\Transformers\OrderTransformer;
@@ -139,7 +139,7 @@ class OrderController extends BaseController
 
             // 减去商品对应的库存量
             foreach ($carts as $cart) {
-                Good::where('id', $cart->goods_id)->decrement('stock', $cart->number);
+                Goods::where('id', $cart->goods_id)->decrement('stock', $cart->number);
             }
 
             // 提交事务
@@ -207,7 +207,7 @@ class OrderController extends BaseController
             // 增加订单下所有商品的销量
             foreach ($orderDetails as $detail) {
                 // 更新商品销量
-                Good::where('id', $detail->goods_id)->increment('sales', $detail->number);
+                Goods::where('id', $detail->goods_id)->increment('sales', $detail->number);
             }
 
             DB::commit();

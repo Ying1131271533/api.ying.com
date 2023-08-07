@@ -195,6 +195,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * jenssegers/mongodb
+         */
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
+
     ],
 
     /*
@@ -210,7 +215,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-        'UtilService' => App\Services\Lib\UtilService::class,
+        'PublicService' => App\Services\Lib\PublicService::class,
         'Express' => App\Services\Lib\Express::class,
     ])->toArray(),
 

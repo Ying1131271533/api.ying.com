@@ -31,6 +31,9 @@ $api->version('v1', $params, function ($api) {
     // 测试
     $api->get('test', [TestController::class, 'index'])->name('test');
     $api->get('test/es', [TestController::class, 'es'])->name('es');
+    $api->get('test/mongo', [TestController::class, 'mongo'])->name('mongo');
+    $api->get('test/rabbitmq', [TestController::class, 'rabbitmq'])->name('rabbitmq');
+    $api->get('test/swoole', [TestController::class, 'swoole'])->name('swoole');
 
     // 首页数据
     $api->get('index', [IndexController::class, 'index'])->name('index');
