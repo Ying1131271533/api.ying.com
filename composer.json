@@ -9,6 +9,7 @@
         "api-ecosystem-for-laravel/dingo-api": "^4.0",
         "babenkoivan/elastic-migrations": "^3.3",
         "babenkoivan/elastic-scout-driver": "^3.1",
+        "doctrine/annotations": "^2.0",
         "elasticsearch/elasticsearch": "8.4.x",
         "guzzlehttp/guzzle": "^7.2",
         "iidestiny/laravel-filesystem-oss": "^3.1",
