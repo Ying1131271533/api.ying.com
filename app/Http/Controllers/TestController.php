@@ -7,7 +7,6 @@ use App\Models\Goods;
 use App\Models\Mongo\Book;
 use App\Services\Lib\RedisLock;
 use Elastic\Client\ClientBuilderInterface;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -103,6 +102,7 @@ class TestController extends BaseController
 
     public function swoole()
     {
+        phpinfo();
         return '格温';
     }
 }
