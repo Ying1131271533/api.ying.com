@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Events\OrderNotify;
+use App\Http\Controllers\BaseController;
+use App\Models\Goods;
 use Illuminate\Http\Request;
 
-class SwooleController extends Controller
+class SwooleController extends BaseController
 {
+    /**
+     * 测试
+     */
     public function test()
     {
-        $client = new Client('ws://124.71.218.160:9502');
-        // $client = new Client('wss://124.71.218.160:9502');
-        $client->send('哎嘿');
-        // 接收服务端返回的信息
-        dump($client->receive());
-        $client->close();
+        return '阿卡丽';
+        $goods = Goods::find(1);
+        OrderNotify::dispatch($goods);
     }
 }

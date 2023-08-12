@@ -14,6 +14,11 @@ class RabbitJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    // 队列连接的名称
+    // public $connection = 'rabbtimq';
+    // 队列使用上的名称
+    // public $queue = 'rabbit.job';
+
     /**
      * Create a new job instance.
      *

@@ -165,7 +165,7 @@ class Goods extends Model
     use Searchable;
 
     /**
-     * 指定索引
+     * 指定索引(表名)
      * @return string
      */
     // public function searchableAs()

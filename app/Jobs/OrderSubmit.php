@@ -14,6 +14,13 @@ class OrderSubmit implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    // 队列连接的名称
+    public $connection = 'rabbtimq';
+    // 队列使用上的名称
+    public $queue = 'order.submit';
+    // 只能在数据库事务提交后被调度
+    // public $afterCommit = true;
+
     /**
      * Create a new job instance.
      *

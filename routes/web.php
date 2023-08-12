@@ -21,6 +21,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// swoole
+Route::get('swoole/test', function () {
+    return view('swoole/test');
+});
+Route::get('swoole/notify', function () {
+    return view('swoole/notify');
+});
+Route::get('swoole/room', function () {
+    return view('swoole/room');
+});
+
 
 // 路由前缀 路由名称前缀
 Route::prefix('admin')->name('admin.')->group(function () {

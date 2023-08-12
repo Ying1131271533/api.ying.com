@@ -102,7 +102,6 @@ class TestController extends BaseController
 
     public function swoole()
     {
-        phpinfo();
         return '格温';
     }
 }

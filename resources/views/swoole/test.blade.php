@@ -3,86 +3,88 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>聊天测试</title>
+    <title>测试</title>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('static/common/js/jquery.min.js') }}" charset="utf-8"></script>
 </head>
 
 <body class="layui-card">
 
-    <div id="akali"></div>
+    <div id="status"></div>
     <div>
         <input type="text" id="input" />
         <input type="button" onclick="send()" value="发送" />
     </div>
     <div id="message"></div>
 
+    {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> --}}
     <script>
 
-        // 不使用ssl
-        let wsServer = 'ws://127.0.0.1:9502',
-        // 使用ssl
-        // let wsServer = 'wss://127.0.0.1:9502',
-            websocket = null,
-            lock = false; // 锁，用于断线重连
+    import Echo from "laravel-echo";
+    import Pusher from "pusher-js";
 
-        $(document).ready(function () {
-            link();
-        });
+    // 启用推进器日志记录-不包括在生产中
+    Pusher.logToConsole = true;
+    // 实例化
+    // var pusher = new Pusher('9c4bd1644e4d169d5885', {
+    //     cluster: 'mt1'
+    // });
 
-        // 连接聊天室
-        function link() {
-            // 创建WebSocket Server对象，监听127.0.0.1:9502端口
-            websocket = new WebSocket(wsServer);
-
-            // 连接
-            websocket.onopen = function (res) {
-                console.log("Connected to WebSocket server.");
-                $('#akali').append(
-                    '<h1>连接成功！牡蛎摸牡蛎~</h1>'
-                );
+    export default {
+        data() {
+            return {
+                messages: [],
+                text: "",
             };
+        },
 
-            // 关闭连接
-            websocket.onclose = function (res) {
-                websocket.close();
-                // 关闭连接时，重连
-                relink();
-            };
+        mounted() {
+            this.initEcho();
+            this.fetchMessages();
+        },
 
-            // 服务器返回的数据
-            websocket.onmessage = function (res) {
-                console.log('Retrieved data from server: ' + res.data);
-                $('#message').append(
-                    '<h3>' + res.data + '</h3>'
-                );
-            };
+        methods: {
+            initEcho() {
+                window.Echo = new Echo({
+                    broadcaster: "pusher",
+                    key: "9c4bd1644e4d169d5885",
+                    cluster: "mt1",
+                    forceTLS: true,
+                    authEndpoint: "/api/authenticate",
+                    auth: {
+                        headers: {
+                            Authorization: "Bearer " + localStorage.getItem("access_token"),
+                        },
+                    },
+                });
 
-            // 内容抛出的错误，可以写入日志，用户那边则显示404错误
-            websocket.onerror = function (res, e) {
-                console.log('Error occured: ' + res.data);
-                websocket.close();
-                // 关闭连接时，重连
-                relink();
-            };
-        }
+                window.Echo.join(`chat`).here((users) => {
+                    console.log(users);
+                });
 
-        // 发送消息
-        function send() {
-            var message = $('#input').val();
-            websocket.send(message);
-        }
+                // 订阅的频道名称
+                window.Echo.channel(`chat`)
+                // 要监听的事件名称
+                .listen(".message.sent", (event) => {
+                    // 传递数据
+                    this.messages.push(event.message);
+                });
+            },
 
-        // 重连聊天室
-        function relink() {
-            if (lock) {
-                return false;
-            }
-            // 锁住
-            lock = true;
-            setTimeout(() => {
-                link();
-                lock = false;
-            }, 1000);
-        }
+            fetchMessages() {
+                axios.get(`/api/chat/messages`).then((response) => {
+                    this.messages = response.data.messages;
+                });
+            },
+
+            send() {
+                axios.post(`/api/chat/messages`, { text: this.text }).then(() => {
+                    this.text = "";
+                });
+            },
+        },
+    };
     </script>
 </body>
 

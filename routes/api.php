@@ -47,6 +47,16 @@ $api->version('v1', $params, function ($api) {
     $api->get('goods-es-index', [GoodsController::class, 'esIndex'])->name('goods.esIndex');
 
     /**
+     * Laravel-Swoole
+     */
+    // 测试
+    $api->get('swoole/test', [SwooleController::class, 'test'])->name('swoole.test');
+    // 消息通知
+    $api->get('swoole/notify', [SwooleController::class, 'notify'])->name('swoole.notify');
+    // 聊天室
+    $api->get('swoole/room', [SwooleController::class, 'room'])->name('swoole.room');
+
+    /**
      * 回调
      */
     // 支付宝支付成功之后异步的回调
@@ -118,9 +128,5 @@ $api->version('v1', $params, function ($api) {
         // 收货地址的资源路由
         $api->resource('address', AddressController::class);
 
-        /**
-         * swoole
-         */
-        $api->get('swoole/test', [SwooleController::class, 'test'])->name('swoole.test');
     });
 });
