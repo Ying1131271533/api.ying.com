@@ -17,7 +17,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $params = [
     'middleware' => [
-        // 'cross.domain', // 允许哪些域名访问
+        // 'cross.domain', // 允许哪些域名访问，文件在 Kernel.php 注册 ，不开启则是允许跨域
         'api.throttle',
         'bindings', // 支持模型注入
         'serializer:default_array', // 去掉 transformer 的包裹层
@@ -47,16 +47,6 @@ $api->version('v1', $params, function ($api) {
     $api->get('goods-es-index', [GoodsController::class, 'esIndex'])->name('goods.esIndex');
 
     /**
-     * Laravel-Swoole
-     */
-    // 测试
-    $api->get('swoole/test', [SwooleController::class, 'test'])->name('swoole.test');
-    // 消息通知
-    $api->get('swoole/notify', [SwooleController::class, 'notify'])->name('swoole.notify');
-    // 聊天室
-    $api->get('swoole/room', [SwooleController::class, 'room'])->name('swoole.room');
-
-    /**
      * 回调
      */
     // 支付宝支付成功之后异步的回调
@@ -67,8 +57,23 @@ $api->version('v1', $params, function ($api) {
     // 微信支付成功之后异步的回调
     $api->any('pay/notify/wechat', [PayController::class, 'notifyWechat'])->name('pay.notifyWechat');
 
+    // 信息
+    $api->get('swoole/messages', [SwooleController::class, 'messages'])->name('swoole.messages');
+
     // 需要登录的路由
     $api->group(['middleware' => 'api.auth'], function ($api) {
+
+        /**
+         * Laravel-Swoole
+         */
+        // 授权
+        $api->post('swoole/auth', [SwooleController::class, 'auth'])->name('swoole.auth');
+        // 测试
+        $api->post('swoole/test', [SwooleController::class, 'test'])->name('swoole.test');
+        // 消息通知
+        $api->post('swoole/notify', [SwooleController::class, 'notify'])->name('swoole.notify');
+        // 聊天室
+        $api->post('swoole/room', [SwooleController::class, 'room'])->name('swoole.room');
 
         /**
          * 个人中心

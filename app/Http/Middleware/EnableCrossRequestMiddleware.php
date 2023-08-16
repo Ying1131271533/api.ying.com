@@ -24,7 +24,7 @@ class EnableCrossRequestMiddleware
         // 允许访问
         $allow_origin = [
             'http://www.ying.com',
-            // 浏览器访问时，前缀为: api 的不行
+            // 浏览器访问时，二级域名为: api 的不行
             // postman设置头部信息 Origin 为: http://api.ying.com 可以访问
             'http://api.ying.com',
             'http://m.ying.com',
@@ -36,7 +36,7 @@ class EnableCrossRequestMiddleware
         }
 
         $response->header('Access-Control-Allow-Origin', $origin);
-        $response->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Cookie, X-CSRF-TOKEN, Accept, Authorization, X-XSRF-TOKEN');
+        $response->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Cookie, X-CSRF-TOKEN, Accept, X-XSRF-TOKEN, Authorization');
         $response->header('Access-Control-Expose-Headers', 'Authorization, authenticated');
         $response->header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, DEAD, OPTIONS');
         $response->header('Access-Control-Allow-Credentials', 'true');

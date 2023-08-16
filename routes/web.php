@@ -22,15 +22,9 @@ Route::get('/', function () {
 });
 
 // swoole
-Route::get('swoole/test', function () {
-    return view('swoole/test');
-});
-Route::get('swoole/notify', function () {
-    return view('swoole/notify');
-});
-Route::get('swoole/room', function () {
-    return view('swoole/room');
-});
+Route::view('swoole/test', 'swoole/test');
+Route::view('swoole/notify', 'swoole/notify');
+Route::view('swoole/room', 'swoole/room');
 
 
 // 路由前缀 路由名称前缀
