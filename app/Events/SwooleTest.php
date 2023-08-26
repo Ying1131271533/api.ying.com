@@ -9,6 +9,8 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Log;
 
 class SwooleTest implements ShouldBroadcast // 1. 事件是要广播出去的
 {
@@ -56,7 +58,7 @@ class SwooleTest implements ShouldBroadcast // 1. 事件是要广播出去的
     // }
 
     /**
-     * 触发事件时返回的数据
+     * 触发事件时返回的数据，订阅事件后返回的数据
      *
      * @return array<string, mixed>
      */

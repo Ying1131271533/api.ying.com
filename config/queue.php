@@ -96,6 +96,10 @@ return [
             'after_commit' => true, // 如果数据库事务期间发生异常而回滚，则在该事务期间分发的已分发任务将被丢弃。
         ],
 
+        'swoole' => [
+            'driver' => 'swoole'
+        ],
+
     ],
 
     /*

@@ -14,75 +14,30 @@
         <input type="button" onclick="send()" value="发送" />
     </div>
     <div id="message"></div>
-
+    {{-- <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script> --}}
+    {{-- <script src="https://cdn.socket.io/socket.io-3.0.4.min.js"></script> --}}
+    <script src="https://unpkg.com/socket.io-client@2.5.0/dist/socket.io.js"></script>
     <script>
 
-        // 不使用ssl
-        let wsServer = 'ws://127.0.0.1:9502',
-        // 使用ssl
-        // let wsServer = 'wss://127.0.0.1:9502',
-            websocket = null,
-            lock = false; // 锁，用于断线重连
+        const socket = io("ws://127.0.0.1:1215");
+        // socket.on("connect", function (event) {
+        //     console.log(event);
+        // });
+        // function send() {
+        //     socket.emit("test", { text: "i say hey" });
+        // }
 
-        $(document).ready(function () {
-            link();
-        });
+        // const socket = io('127.0.0.1:1215');
 
-        // 连接聊天室
-        function link() {
-            // 创建WebSocket Server对象，监听127.0.0.1:9502端口
-            websocket = new WebSocket(wsServer);
+        // socket.on('connect', () => {
+        //     console.log('Connected to server');
+        // });
 
-            // 连接
-            websocket.onopen = function (res) {
-                console.log("Connected to WebSocket server.");
-                $('#akali').append(
-                    '<h1>连接成功！牡蛎摸牡蛎~</h1>'
-                );
-            };
+        // socket.on('disconnect', () => {
+        //     console.log('Disconnected from server');
+        // });
 
-            // 关闭连接
-            websocket.onclose = function (res) {
-                websocket.close();
-                // 关闭连接时，重连
-                relink();
-            };
-
-            // 服务器返回的数据
-            websocket.onmessage = function (res) {
-                console.log('Retrieved data from server: ' + res.data);
-                $('#message').append(
-                    '<h3>' + res.data + '</h3>'
-                );
-            };
-
-            // 内容抛出的错误，可以写入日志，用户那边则显示404错误
-            websocket.onerror = function (res, e) {
-                console.log('Error occured: ' + res.data);
-                websocket.close();
-                // 关闭连接时，重连
-                relink();
-            };
-        }
-
-        // 发送消息
-        function send() {
-            var message = $('#input').val();
-            websocket.send(message);
-        }
-
-        // 重连聊天室
-        function relink() {
-            if (lock) {
-                return false;
-            }
-            // 锁住
-            lock = true;
-            setTimeout(() => {
-                link();
-                lock = false;
-            }, 1000);
-        }
+        // socket.emit('test', 'Hello');
     </script>
 </body>
 

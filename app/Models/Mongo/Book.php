@@ -5,7 +5,7 @@ namespace App\Models\Mongo;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
-class Book extends Model
+class Book extends Model // 这里继承mongodb的模型类
 {
     // 主动维护时间戳
     public $timestamps = true;

@@ -11,16 +11,21 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderNotify implements ShouldBroadcast
+class OrderPay implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    // 广播事件时要使用的队列连接的名称
+    public $connection = 'redis';
+    // 广播作业要放置在哪个队列上的名称
+    public $queue = 'order-notify';
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(public $goods)
+    public function __construct(public Order $order)
     // public function __construct(public Order $order)
     {
         //
@@ -33,22 +38,16 @@ class OrderNotify implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('order-notify');
+        return new PrivateChannel('user.' . $this->order->user_id);
     }
 
     public function broadcastWith()
     {
         return [
-            'id' => $this->goods->id,
-            'title' => $this->goods->title,
-            'message'  => '订单已提交',
+            'id' => $this->order->id,
+            'user_id' => $this->order->user_id,
+            'order_no' => $this->order->order_no,
+            'status' => $this->order->status,
         ];
-        // return [
-        //     'order_id' => $this->order->id,
-        //     'user_id' => $this->order->user_id,
-        //     'order_no' => $this->order->order_no,
-        //     'amount' => $this->order->amount,
-        //     'message'  => '订单已提交',
-        // ];
     }
 }

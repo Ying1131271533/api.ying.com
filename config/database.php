@@ -109,20 +109,6 @@ return [
 
     ],
 
-    // mongodb
-    'mongodb' => [
-        'driver' => 'mongodb',
-        'host' => env('MONGO_DB_HOST', '127.0.0.1'),
-        'port' => env('MONGO_DB_POST', 27017),
-        'database' => env('MONGO_DB_DATABASE', 'homestead'),
-        'username' => env('MONGO_DB_USERNAME', 'homestead'),
-        'password' => env('MONGO_DB_PASSWORD', 'secret'),
-        // 'options' => [
-        //    'appname' => 'homestead',
-        //    'database' => 'admin', // MongoDB 默认数据库
-        // ],
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | Migration Repository Table

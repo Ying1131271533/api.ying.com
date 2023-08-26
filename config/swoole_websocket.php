@@ -8,6 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'handler' => SwooleTW\Http\Websocket\SocketIO\WebsocketHandler::class,
+    // 'handler' => \App\Swoole\WebsocketHandler::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -16,6 +17,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'parser' => SwooleTW\Http\Websocket\SocketIO\SocketIOParser::class,
+    // 'parser' => \App\Swoole\Parser::class,
 
     /*
     |--------------------------------------------------------------------------

@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Transformers\UserTransformer;
 use Illuminate\Support\Facades\Auth;
+use PDO;
 
 class LoginController extends BaseController
 {
@@ -14,11 +15,16 @@ class LoginController extends BaseController
      */
     public function login(LoginRequest $request)
     {
+        // 获取验证数据
         $validated = $request->validated();
         // 获取账号类型 邮箱/手机
         $type = filter_var($validated['account'], FILTER_VALIDATE_EMAIL ) ? 'email' : 'phone';
-        $data = [$type => $validated['account'], 'password' => $validated['password']];
+        // 判断是否为用户名
+        if($type === 'phone') {
+            preg_match("/^1[3-9]\d{9}$/", $validated['account']) or $type = 'name';
+        }
         // 验证账号
+        $data = [$type => $validated['account'], 'password' => $validated['password']];
         if (!$token = auth('api')->attempt($data)) {
             return $this->response->errorUnauthorized('账号或密码错误！');
         }

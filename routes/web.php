@@ -26,7 +26,6 @@ Route::view('swoole/test', 'swoole/test');
 Route::view('swoole/notify', 'swoole/notify');
 Route::view('swoole/room', 'swoole/room');
 
-
 // 路由前缀 路由名称前缀
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -65,16 +64,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     /************************ 品牌列表 ************************/
     Route::prefix('brands')
-        ->name('brands.')
-        ->controller(BrandController::class)
-        ->group(function () {
-            // 列表
-            Route::get('index', 'index')->name('index');
-            // 添加
-            Route::get('create', 'create')->name('create');
-            // 修改
-            Route::get('edit', 'edit')->name('edit');
-        });
+    ->name('brands.')
+    ->controller(BrandController::class)
+    ->group(function () {
+        // 列表
+        Route::get('index', 'index')->name('index');
+        // 添加
+        Route::get('create', 'create')->name('create');
+        // 修改
+        Route::get('edit', 'edit')->name('edit');
+    });
 
     /************************ 商品管理 ************************/
     Route::prefix('goods')

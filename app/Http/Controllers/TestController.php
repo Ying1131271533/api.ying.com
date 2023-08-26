@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MongoTestRequest;
 use App\Jobs\RabbitJob;
 use App\Models\Goods;
 use App\Models\Mongo\Book;
 use App\Services\Lib\RedisLock;
 use Elastic\Client\ClientBuilderInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
+use SwooleTW\Http\Websocket\Facades\Websocket;
 
 class TestController extends BaseController
 {
@@ -56,15 +59,21 @@ class TestController extends BaseController
     }
 
     public function mongo()
+    // 暂时不知道怎么用mongo验证数据
+    // public function mongo(MongoTestRequest $request)
     {
+        // $validated = $request->validated();
+        // return $validated;
         // $book = Book::find('64c76f02f78e0509130bd878');
         // return 1;
         // return Book::all();
-        // $result = Book::create([
+        // 搜索条件要严格区分字符串还是数字
+        // Book::where('title', '暴走萝莉 - 金克丝')->get();
+        // $book = Book::create([
         //     'title' => '离群之刺 - 阿卡丽',
         //     'view_count' => 1,
         // ]);
-        // $result = Book::create([
+        // $book = Book::create([
         //     'title' => '灵罗娃娃 - 格温',
         //     'view_count' => 2,
         // ]);
@@ -100,8 +109,11 @@ class TestController extends BaseController
         return '阿卡丽';
     }
 
-    public function swoole()
+    public function swoole(Websocket $websocket, $data)
     {
+        $websocket->emit('return', "我收到了你的消息" . json_encode($data));
+        Log::info('message', ['name' => '格温']);
+        Websocket::toUserId(2)->emit('message', '你好，在吗');
         return '格温';
     }
 }

@@ -1,6 +1,6 @@
 {
 	"authHost": "http://api.ying.com",
-	"authEndpoint": "/api/swoole/auth",
+	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",
 	"databaseConfig": {

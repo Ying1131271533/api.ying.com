@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\SwooleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ElasticsearhController;
 use App\Http\Controllers\TestController;
+use Illuminate\Foundation\Console\AboutCommand;
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -31,7 +32,7 @@ $api->version('v1', $params, function ($api) {
     // 测试
     $api->get('test', [TestController::class, 'index'])->name('test');
     $api->get('test/es', [TestController::class, 'es'])->name('es');
-    $api->get('test/mongo', [TestController::class, 'mongo'])->name('mongo');
+    $api->post('test/mongo', [TestController::class, 'mongo'])->name('mongo');
     $api->get('test/rabbitmq', [TestController::class, 'rabbitmq'])->name('rabbitmq');
     $api->get('test/swoole', [TestController::class, 'swoole'])->name('swoole');
 
@@ -57,8 +58,9 @@ $api->version('v1', $params, function ($api) {
     // 微信支付成功之后异步的回调
     $api->any('pay/notify/wechat', [PayController::class, 'notifyWechat'])->name('pay.notifyWechat');
 
-    // 信息
-    $api->get('swoole/messages', [SwooleController::class, 'messages'])->name('swoole.messages');
+
+    // 获取聊天信息
+    $api->get('swoole/room-chat-messages', [SwooleController::class, 'roomChatMessages'])->name('swoole.roomChatMessages');
 
     // 需要登录的路由
     $api->group(['middleware' => 'api.auth'], function ($api) {
@@ -67,13 +69,21 @@ $api->version('v1', $params, function ($api) {
          * Laravel-Swoole
          */
         // 授权
-        $api->post('swoole/auth', [SwooleController::class, 'auth'])->name('swoole.auth');
+        $api->post('swoole/auth', function(){
+            return abort(200);
+        })->name('swoole.auth');
         // 测试
         $api->post('swoole/test', [SwooleController::class, 'test'])->name('swoole.test');
-        // 消息通知
-        $api->post('swoole/notify', [SwooleController::class, 'notify'])->name('swoole.notify');
+        // 订单支付通知
+        $api->post('swoole/order-pay', [SwooleController::class, 'orderPay'])->name('swoole.orderPay');
+        // 订单发货通知
+        $api->post('swoole/order-dispatch', [SwooleController::class, 'orderDispatch'])->name('swoole.orderDispatch');
+        // 用户申请聊天
+        $api->post('swoole/room-notify', [SwooleController::class, 'roomNotify'])->name('swoole.roomNotify');
         // 聊天室
         $api->post('swoole/room', [SwooleController::class, 'room'])->name('swoole.room');
+        // 发送聊天消息
+        $api->post('swoole/room-new-message', [SwooleController::class, 'roomNewMessage'])->name('swoole.roomNewMessage');
 
         /**
          * 个人中心
