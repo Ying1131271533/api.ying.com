@@ -44,3 +44,7 @@ Websocket::on('test', function ($websocket, $data) {
     $websocket->emit('message', '测试');
 });
 
+/**
+ * 定义一个login路由，指向控制器方法，和http类似
+ */
+Websocket::on('login','App\Http\Controllers\Index\LoginController@index');
