@@ -95,7 +95,6 @@ if (!function_exists('layui')) {
     }
 }
 
-
 if (!function_exists('cache_time')) {
     /**
      * 缓存时间
@@ -206,26 +205,25 @@ if (!function_exists('category_tree')) {
     function category_tree($status = false)
     {
         $categorys = Category::with([
-            'children' => function($qeury) use ($status){
-                $qeury->when($status !== false, function($query) use ($status) {
+            'children'          => function ($qeury) use ($status) {
+                $qeury->when($status !== false, function ($query) use ($status) {
                     $query->where('status', $status);
                 })->select(['id', 'parent_id', 'name', 'level']);
             },
-            'children.children' => function($qeury) use ($status){
-                $qeury->when($status !== false, function($query) use ($status) {
+            'children.children' => function ($qeury) use ($status) {
+                $qeury->when($status !== false, function ($query) use ($status) {
                     $query->where('status', $status);
                 })->select(['id', 'parent_id', 'name', 'level']);
-            }
+            },
         ])
-        ->when($status !== false, function($query) use ($status) {
-            $query->where('status', $status);
-        })
-        ->where('parent_id', 0)
-        ->select(['id', 'parent_id', 'name', 'level'])
-        ->get();
+            ->when($status !== false, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->where('parent_id', 0)
+            ->select(['id', 'parent_id', 'name', 'level'])
+            ->get();
 
         return $categorys->toArray();
-
 
         // 拆分查询
         // $sql = Category::select(['id', 'parent_id', 'name', 'level'])
@@ -258,7 +256,6 @@ if (!function_exists('category_tree')) {
         // $categorys = $sql->get();
         // return $categorys;
 
-
         // 递归
         // $categorys = Category::where('status', 1)->where('parent_id', 1)->get();
         // return get_children($categorys->toArray(), 1);
@@ -274,7 +271,7 @@ if (!function_exists('cache_categorys')) {
      */
     function cache_categorys()
     {
-        $categorys = Cache::store('redis')->rememberForever('categorys_1', function() {
+        $categorys = Cache::store('redis')->rememberForever('categorys_1', function () {
             return category_tree(1);
         });
 
@@ -291,7 +288,7 @@ if (!function_exists('cache_categorys_all')) {
      */
     function cache_categorys_all()
     {
-        $categorys = Cache::store('redis')->rememberForever('categorys', function() {
+        $categorys = Cache::store('redis')->rememberForever('categorys', function () {
             return category_tree();
         });
         return $categorys;
@@ -321,7 +318,7 @@ if (!function_exists('cache_menus')) {
      */
     function cache_menus()
     {
-        $menus = Cache::store('redis')->rememberForever('menus_1', function() {
+        $menus = Cache::store('redis')->rememberForever('menus_1', function () {
             return category_tree('menu', 1);
         });
 
@@ -338,7 +335,7 @@ if (!function_exists('cache_menus_all')) {
      */
     function cache_menus_all()
     {
-        $menus = Cache::store('redis')->rememberForever('menus', function() {
+        $menus = Cache::store('redis')->rememberForever('menus', function () {
             return category_tree('menu');
         });
         return $menus;
@@ -356,21 +353,22 @@ if (!function_exists('oss_url')) {
     function oss_url($url)
     {
         // 如果没有url
-        if(empty($url)) return '';
+        if (empty($url)) {
+            return '';
+        }
 
         // 如果$url包含了http等，是一个完整的地址，直接返回
-        if(
+        if (
             strpos($url, 'http://') !== false
             || strpos($url, 'https://') !== false
             || strpos($url, 'data:image') !== false
             || strpos($url, 'storage') !== false
-        ){
+        ) {
             return $url;
         }
         return config('filesystems.disks.oss.bucket_url') . '/' . $url;
     }
 }
-
 
 if (!function_exists('pay_type_name')) {
     /**
@@ -417,7 +415,7 @@ if (!function_exists('cities_cache')) {
      */
     function cities_cache($parent_code = '000000')
     {
-        return Cache::store('redis')->rememberForever('cities:'.$parent_code, function () use ($parent_code) {
+        return Cache::store('redis')->rememberForever('cities:' . $parent_code, function () use ($parent_code) {
             return Citie::where('parent_code', $parent_code)->get()->keyBy('code')->toArray();
         });
     }
@@ -456,7 +454,7 @@ if (!function_exists('delete_old_file')) {
      */
     function delete_old_file($file, $old_file)
     {
-        if($file != $old_file && Storage::disk('public_link')->exists($old_file)) {
+        if ($file != $old_file && Storage::disk('public_link')->exists($old_file)) {
             // 删除旧文件
             Storage::disk('public_link')->delete($old_file);
         }
@@ -469,9 +467,109 @@ if (!function_exists('delete_file')) {
      */
     function delete_file($file)
     {
-        if(Storage::disk('public_link')->exists($file)) {
+        if (Storage::disk('public_link')->exists($file)) {
             // 删除文件
             Storage::disk('public_link')->delete($file);
         }
+    }
+}
+
+if (!function_exists('delete_file')) {
+    /**
+     * curl的GET请求方式
+     *
+     * @param string    $url    请求链接
+     * @return json             返回结果
+     */
+    function curl_get($url)
+    {
+        $header = array(
+            'Accept: application/json',
+        );
+        $curl = curl_init();
+        //设置抓取的url
+        curl_setopt($curl, CURLOPT_URL, $url);
+        //设置头文件的信息作为数据流输出
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        // 超时设置,以秒为单位
+        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+
+        // 超时设置，以毫秒为单位
+        // curl_setopt($curl, CURLOPT_TIMEOUT_MS, 500);
+
+        // 设置请求头
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+        //设置获取的信息以文件流的形式返回，而不是直接输出。
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        //执行命令
+        $data = curl_exec($curl);
+
+        // 返回信息
+        curl_close($curl);
+        return $data;
+    }
+}
+
+if (!function_exists('delete_file')) {
+    /**
+     * curl的POST请求方式
+     *
+     * @param string    $url        请求链接
+     * @param string    $postdata   需要传输的数据，数组格式
+     * @return json                 返回结果
+     */
+    function curl_post($url, $postdata)
+    {
+
+        $header = array(
+            'Accept: application/json',
+        );
+
+        //初始化
+        $curl = curl_init();
+        //设置抓取的url
+        curl_setopt($curl, CURLOPT_URL, $url);
+        //设置头文件的信息作为数据流输出
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        //设置获取的信息以文件流的形式返回，而不是直接输出。
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        // 超时设置
+        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+
+        // 超时设置，以毫秒为单位
+        // curl_setopt($curl, CURLOPT_TIMEOUT_MS, 500);
+
+        // 设置请求头
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        //设置post方式提交
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+        //执行命令
+        $data = curl_exec($curl);
+
+        // 返回信息
+        curl_close($curl);
+        return $data;
+    }
+}
+
+if (!function_exists('delete_file')) {
+    /**
+     * 生成验证码
+     *
+     * @param  int      $number     验证码个数
+     * @return string               生成的验证码
+     */
+    function get_random_number($number = 6): string
+    {
+        $max = pow(10, $number) - 1;
+        $min = pow(10, $number - 1);
+        return (string) rand($min, $max);
     }
 }

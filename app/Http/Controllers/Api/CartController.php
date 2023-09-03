@@ -6,7 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\Api\CartRequest;
 use App\Services\Api\CartService;
 use App\Models\Cart;
-use App\Models\Good;
+use App\Models\Goods;
 use App\Transformers\CartTransformer;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Catch_;
@@ -32,7 +32,7 @@ class CartController extends BaseController
         // CartService::saveCart($validated);
 
         // 获取商品信息
-        $goods = Good::find($validated['goods_id']);
+        $goods = Goods::find($validated['goods_id']);
 
         // 获取购物车商品数量
         $number = isset($validated['number']) ? $validated['number'] : 1;

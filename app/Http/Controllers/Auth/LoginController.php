@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
+use App\Services\Auth\WechatApplet;
 use App\Transformers\UserTransformer;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDO;
 
@@ -34,6 +37,40 @@ class LoginController extends BaseController
             return $this->response->errorForbidden('用户被禁止使用！');
         }
 
+        return $this->respondWithToken($token);
+    }
+
+    /**
+     * 微信登录
+     */
+    public function loginWechatApplet(Request $request)
+    {
+        // 小程序code
+        $code  = $request->params['code'];
+
+        // 获取微信openid
+        $wxReuslt = (new WechatApplet($code))->get();
+
+        $data = [
+            'openid'    => $wxReuslt['openid'],
+            'last_ip'   => $request->ip(),
+            'last_time' => now(),
+        ];
+
+        $user = User::where('openid', $wxReuslt['openid'])->frist();
+        if (!$user) {
+            $user = User::create($data);
+            if (!$user) $this->response->errorBadRequest('用户创建失败');
+
+        }
+
+        // 检查用户状态
+        if($user->is_locked == 1) {
+            return $this->response->errorForbidden('用户被禁止使用！');
+        }
+
+        // 通过用户获取token
+        $token = auth('api')->login($user);
         return $this->respondWithToken($token);
     }
 
