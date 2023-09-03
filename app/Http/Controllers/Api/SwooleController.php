@@ -53,7 +53,7 @@ class SwooleController extends BaseController
         // 只发给其他人
         // broadcast(new SwooleTest('你好啊！'))->toOthers();
 
-        $websocket->emit('akali', "我收到了你的消息：" . $data);
+        $websocket->emit('akali', "我收到了你的消息：" . json_encode($data));
         return '发送成功';
     }
 
