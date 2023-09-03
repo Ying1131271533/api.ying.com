@@ -90,6 +90,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'instances' => [
+        // 'log', 'cache'
         'auth',
     ],
 
@@ -100,6 +101,8 @@ return [
     */
     'providers' => [
         Illuminate\Pagination\PaginationServiceProvider::class,
+        // PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider::class,
+        Dingo\Api\Provider\LaravelServiceProvider::class,
     ],
 
     /*

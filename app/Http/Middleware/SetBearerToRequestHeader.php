@@ -22,7 +22,7 @@ class SetBearerToRequestHeader
         // if (!$token = auth('api')->attempt($data)) {
         //     return $this->response->errorUnauthorized('账号或密码错误！');
         // }
-        // Log::info('id', ['token' => $request->get('token')]);
+        // Log::info('header', ['token' => $request->get('token')]);
         $request->headers->set('Authorization', 'Bearer ' . $request->get('token'));
         return $next($request);
     }

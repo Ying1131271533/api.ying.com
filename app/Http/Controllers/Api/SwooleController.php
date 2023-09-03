@@ -18,18 +18,42 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use SwooleTW\Http\Websocket\Facades\Websocket;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 
 class SwooleController extends BaseController
 {
+    public function __construct()
+    {
+        // 如果路由那边出现问题就用这里
+        // $this->middleware('auth.api');
+    }
+
     /**
      * 测试
      */
-    public function test()
+    public function test($websocket, $data, Request $request)
     {
-        SwooleTest::dispatch('你好啊！阿卡丽');
+        // SwooleTest::dispatch('你好啊！阿卡丽');
+        // info('message', ['data' => json_decode($data)]);
+        // dump($data);
+        // array:2 [
+        //     "text" => "i say hey"
+        //     "token" => "eyJ0eXAiO......"
+        // ]
+        dump($data['token']);
+        // $request->headers->set('Authorization', 'Bearer ' . $data['token']);
+        // $token = $this->jwt->getToken();
+        // dump($token);
+        // $user = auth('api')->setToken($data['token']);
+        // dump($user);
+        // $user = auth()->setToken($data['token'])->user();
+        // dump($user);
         // broadcast(new SwooleTest('你好啊！'));
         // 只发给其他人
         // broadcast(new SwooleTest('你好啊！'))->toOthers();
+
+        $websocket->emit('akali', "我收到了你的消息：" . $data);
         return '发送成功';
     }
 
