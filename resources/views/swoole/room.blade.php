@@ -38,7 +38,7 @@
             console.log(data);
         })
 
-        // 访问websockt的login路由
+        // 访问 websockt 的 login 路由
         function send() {
             // socket.emit("login", {
             //     headers: {
@@ -59,9 +59,9 @@
         //     console.log('Connected to server');
         // });
 
-        // socket.on('disconnect', () => {
-        //     console.log('Disconnected from server');
-        // });
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
 
         // socket.emit('test', 'Hello');
     </script>
