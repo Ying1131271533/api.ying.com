@@ -43,9 +43,19 @@ class CartRequest extends BaseRequest
                         'gt:0',
                         new CheckGoodsStock($this->goods_id),
                     ],
+                    'spec'   => [
+                        'required',
+                        'max:120',
+                        'exists:goods_specs,item_ids',
+                    ],
+                    'spec_name'   => [
+                        'required',
+                        'max:120',
+                        'exists:goods_specs,item_ids_name',
+                    ],
                 ];
                 break;
-            case 'carts.update':
+            case 'carts.number':
                 return [
                     'number' => [
                         'required',
@@ -62,10 +72,26 @@ class CartRequest extends BaseRequest
                     ],
                 ];
                 break;
+                case 'carts.spec':
+                    return [
+                        'spec'   => [
+                            'required',
+                            'max:255',
+                            'exists:goods_specs,item_ids',
+                            new GoodsIsOn($this->cart->goods_id),
+                        ],
+                        'spec_name'   => [
+                            'required',
+                            'max:255',
+                            'exists:goods_specs,item_ids_name',
+                        ],
+                    ];
+                    break;
             default:
                 return [];
                 break;
 
         }
     }
+
 }

@@ -14,6 +14,7 @@ class RabbitJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    // 切记不能使用下面这些属性，events事件系统可以用
     // 队列连接的名称
     // public $connection = 'rabbtimq';
     // 队列使用上的名称

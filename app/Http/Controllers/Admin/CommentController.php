@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\CommentRequest;
 use App\Models\Comment;
-use App\Models\Good;
+use App\Models\Goods;
 use App\Transformers\CommentTransformer;
 use Illuminate\Http\Request;
 
@@ -24,7 +24,7 @@ class CommentController extends BaseController
         })
         ->when($goods_title, function($query) use ($goods_title) {
             // 获取相关的商品id，老师说一般项目里面不会这样用，因为like很耗费性能
-            $goods_ids = Good::where('title', 'like', "%{$goods_title}%")->pluck('id');
+            $goods_ids = Goods::where('title', 'like', "%{$goods_title}%")->pluck('id');
             $query->whereIn('goods_id', $goods_ids);
         })
         ->paginate(1);

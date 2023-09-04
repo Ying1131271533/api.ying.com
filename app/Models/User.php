@@ -100,7 +100,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function goods()
     {
-        return $this->hasMany(Good::class);
+        return $this->hasMany(Goods::class);
     }
 
     /**
@@ -144,7 +144,7 @@ class User extends Authenticatable implements JWTSubject
     public function cartGoods(): HasManyThrough
     {
         return $this->hasManyThrough(
-            Good::class, // 要远程访问的最终模型
+            Goods::class, // 要远程访问的最终模型
             Cart::class, // 中间模型
             'user_id', // 中间模型和本模型关联的外键
             'id', // 最终关联模型的本地键

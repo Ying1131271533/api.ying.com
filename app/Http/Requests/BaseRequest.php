@@ -69,7 +69,9 @@ class BaseRequest extends FormRequest
             'attributes'    => '商品属性',
             'specs'         => '商品规格',
             'title'         => '标题',
-            'room'         => '聊天室',
+            'room'          => '聊天室',
+            'spec'          => '规格',
+            'spec_name'     => '规格名称',
         ];
     }
 }

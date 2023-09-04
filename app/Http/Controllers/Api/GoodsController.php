@@ -131,7 +131,7 @@ class GoodsController extends BaseController
                 $query->select('id', 'parent_id', 'name');
             },
         ])
-            ->find($id);
+        ->find($id);
 
         // 获取商品规格需要显示的规格项
         $show_specs = GoodsService::getShowSpecs($goods->specs);

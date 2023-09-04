@@ -18,7 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->comment('买家id');
             $table->unsignedBigInteger('goods_id')->comment('商品id');
             $table->char('spec', 120)->comment('套餐组合，例如：1_3');
-            $table->char('spec_name', 120)->comment('套餐组合名称，例如：颜色_白色，网络_5G，就记录规格值的名称，前端可以直接使用');
+            $table->char('spec_name', 120)->comment('套餐组合名称，例如：颜色_白色,网络_5G，就记录规格值的名称，前端可以直接使用');
+            $table->char('spec_item_pic', 100)->comment('规格值图');
             $table->unsignedSmallInteger('number')->default(1)->comment('数量');
             $table->tinyInteger('is_checked')->default(0)->comment('是否选中：0 否 1 是');
             $table->timestamps();

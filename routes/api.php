@@ -63,6 +63,7 @@ $api->version('v1', $params, function ($api) {
     $api->get('swoole/room-chat-messages', [SwooleController::class, 'roomChatMessages'])->name('swoole.roomChatMessages');
 
     // 需要登录的路由
+    // $api->group(['middleware' => ['auth:api']], function ($api) {
     $api->group(['middleware' => 'api.auth'], function ($api) {
 
         /**
@@ -101,10 +102,16 @@ $api->version('v1', $params, function ($api) {
          * 购物车
          */
         // 选中
-        $api->patch('carts/{cart}/checked', [CartController::class, 'isChecked']);
+        $api->patch('carts/{cart}/checked', [CartController::class, 'isChecked'])->name('carts.checked');
+        // 修改数量
+        $api->patch('carts/{cart}/number', [CartController::class, 'number'])->name('carts.number');
+        // 修改规格
+        $api->patch('carts/{cart}/spec', [CartController::class, 'spec'])->name('carts.spec');
+        // 获取规格
+        $api->get('carts/{cart}/specs', [CartController::class, 'showSpecs'])->name('carts.showSpecs');
         // 资源路由
         $api->resource('carts', CartController::class, [
-            'except' => ['show']
+            'except' => ['show', 'udpate']
         ]);
 
         /**

@@ -54,7 +54,7 @@ class Comment extends Model
      */
     public function goods()
     {
-        return $this->belongsTo(Good::class, 'goods_id', 'id');
+        return $this->belongsTo(Goods::class, 'goods_id', 'id');
     }
 
     /**

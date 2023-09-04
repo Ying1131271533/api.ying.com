@@ -21,6 +21,8 @@ return new class extends Migration
             $table->decimal('spec_price')->unsigned()->default(0)->comment('套餐价格');
             $table->unsignedInteger('stock')->default(0)->comment('库存');
             $table->integer('sales')->unsigned()->default(0)->comment('销量');
+            // 有了套餐组合 1_4_17 这种好像就不需要sku，不过淘宝有sku_id
+            // $table->unsignedBigInteger('sku_id');
             $table->timestamps();
             // 单个索引
             $table->index('goods_id');

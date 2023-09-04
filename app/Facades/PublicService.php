@@ -4,10 +4,10 @@ namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class UtilService extends Facade
+class PublicService extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'UtilService';
+        return 'PublicService';
     }
 }

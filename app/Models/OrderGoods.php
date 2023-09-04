@@ -18,6 +18,8 @@ class OrderGoods extends Model
         'order_id',
         'goods_id',
         'price',
+        'spec',
+        'spec_name',
         'number',
     ];
 
@@ -44,7 +46,7 @@ class OrderGoods extends Model
      */
     public function goods()
     {
-        // return $this->hasOne(Good::class, 'id', 'goods_id');
-        return $this->belongsTo(Good::class, 'goods_id');
+        // return $this->hasOne(Goods::class, 'id', 'goods_id');
+        return $this->belongsTo(Goods::class, 'goods_id');
     }
 }

@@ -13,7 +13,7 @@ class OrderSubmitInTenMinutes implements ShouldQueue
      *
      * @var string|null
      */
-    public $connection = 'rabbit';
+    public $connection = 'rabbtimq';
 
     /**
      * 任务将被发送到的队列的名称。

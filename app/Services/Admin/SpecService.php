@@ -3,7 +3,6 @@
 namespace App\Services\Admin;
 
 use App\Models\Category;
-use App\Models\Good;
 use App\Models\Spec;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;

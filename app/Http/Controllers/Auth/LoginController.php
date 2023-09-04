@@ -57,7 +57,7 @@ class LoginController extends BaseController
             'last_time' => now(),
         ];
 
-        $user = User::where('openid', $wxReuslt['openid'])->frist();
+        $user = User::where('openid', $wxReuslt['openid'])->first();
         if (!$user) {
             $user = User::create($data);
             if (!$user) $this->response->errorBadRequest('用户创建失败');

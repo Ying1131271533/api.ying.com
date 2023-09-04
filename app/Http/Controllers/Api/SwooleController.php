@@ -34,7 +34,7 @@ class SwooleController extends BaseController
      */
     public function test($websocket, $data, Request $request)
     {
-        // SwooleTest::dispatch('你好啊！阿卡丽');
+        SwooleTest::dispatch('你好啊！阿卡丽');
         // info('message', ['data' => json_decode($data)]);
         // dump($data);
         // array:2 [

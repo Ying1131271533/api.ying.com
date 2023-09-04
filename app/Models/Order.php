@@ -62,9 +62,9 @@ class Order extends Model
     /**
      * 获取这个订单的所有详情
      */
-    public function details()
+    public function orderGoods()
     {
-        return $this->hasMany(OrderDetails::class, 'order_id');
+        return $this->hasMany(orderGoods::class);
     }
 
     /**
@@ -73,8 +73,8 @@ class Order extends Model
     public function goods(): HasManyThrough
     {
         return $this->hasManyThrough(
-            Good::class, // 要远程访问的最终模型
-            OrderDetails::class, // 中间模型
+            Goods::class, // 要远程访问的最终模型
+            orderGoods::class, // 中间模型
             'order_id', // 中间模型和本模型关联的外键
             'id', // 最终关联模型的本地键
             'id', // 本模型和中间模型关联的本地键

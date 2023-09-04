@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\OrderSubmit;
 use App\Facades\Express;
-use App\Facades\UtilService;
+use App\Facades\PublicService;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Api\OrderRequest;
 use App\Jobs\OrderSubmit as JobsOrderSubmit;
@@ -48,12 +48,15 @@ class OrderController extends BaseController
     {
         // 地址数据
         $address = Address::where('user_id', auth('api')->id())->orderBy('is_default', 'desc')->get();
+        if ($address->isEmpty()) {
+            return $this->response->errorBadRequest('请添加收货地址');
+        }
 
         // 购物车数据
         $carts = Cart::where('user_id', auth('api')->id())
             ->where('is_checked', 1)
-            ->with('goods:id,cover,title,price')
-        // ->with(['goods:id,cover,title,price', 'user:id,name,avatar'])
+            ->with('goods:id,cover,title,shop_price')
+        // ->with(['goods:id,cover,title,shop_price', 'user:id,name,avatar'])
             ->get();
 
         // 返回数据
@@ -78,19 +81,18 @@ class OrderController extends BaseController
         $validated = $request->validated();
 
         // 处理订单数据
-        $user_id  = auth('api')->id();
-        $amount   = 0;
+        $user_id = auth('api')->id();
+        $amount  = 0;
 
         // 获取选中的购物车 - 查询构造器
         $cartsQuery = Cart::where('user_id', $user_id)
             ->where('is_checked', 1)
-            ->with('goods:id,title,price,stock,user_id');
-
+            ->with('goods:id,title,market_price,shop_price,stock');
 
         // 查询构造器获取购物车数据
         $carts = $cartsQuery->get();
         if ($carts->isEmpty()) {
-            return $this->response->errorBadRequest('未选择商品！');
+            return $this->response->errorBadRequest('未选择购物车！');
         }
 
         // 要保存的订单详情的数据
@@ -103,36 +105,36 @@ class OrderController extends BaseController
                 return $this->response->errorBadRequest('商品：' . $cart->goods->title . ' 库存不足，请重新选择商品！');
             }
             $orderGoodsData[] = [
-                'goods_id' => $cart->goods->id,
-                'price'    => $cart->goods->price,
-                'number'   => $cart->number,
-                'user_id'   => $cart->goods->user_id,
+                'goods_id'     => $cart->goods->id,
+                'market_price' => $cart->goods->market_price,
+                'shop_price'   => $cart->goods->shop_price,
+                'spec'         => $cart->spec,
+                'spec_name'    => $cart->spec_name,
+                'number'       => $cart->number,
             ];
             // 总金额
-            $amount += $cart->goods->price * $cart->number;
+            $amount += $cart->goods->shop_price * $cart->number;
         }
 
-
-        // 开启事务
-        DB::beginTransaction();
-
         try {
-
+            // 开启事务
+            DB::beginTransaction();
             // 生成订单号
-            $order_no = UtilService::generateReceiptCode();
+            $order_no = PublicService::generateReceiptCode();
+            // 找到地址
+            $address = Address::where('id', $validated['address_id'])->first();
             // 生成订单
             $order = Order::create([
-                'user_id'    => $user_id,
-                'order_no'   => $order_no,
-                'address_id' => $validated['address_id'],
-                'address'    => cities_name(Address::where('id', $$validated['address_id'])->value('code')),
-                'amount'     => $amount,
+                'user_id'  => $user_id,
+                'order_no' => $order_no,
+                'name'     => $address['name'],
+                'phone'    => $address['phone'],
+                'address'  => cities_name($address['citie_code']) . ' '. $address['address'],
+                'amount'   => $amount,
             ]);
 
             // 生成订单商品
             $order->orderGoods()->createMany($orderGoodsData);
-
-
 
             // 查询构造器删除选中的购物车数据
             $cartsQuery->delete();
@@ -147,9 +149,13 @@ class OrderController extends BaseController
 
             // 用户下单后，十分钟内是否支付 - 普通队列
             // Laravel 会等到所有打开的数据库事务都已提交，然后才会开始分发任务
-            // 已经在queue.php配置了，这里可以不用afterCommit()
-            JobsOrderSubmit::dispatch($order)->delay(now()->addMinutes(1))->afterCommit();
-            // 用户下单后，十分钟内是否支付 - 事件队列
+            // 已经在queue.php配置了，这里可以不用 afterCommit()
+            JobsOrderSubmit::dispatch($order)
+                ->delay(now()->addMinutes(10))
+                ->afterCommit()
+                ->onConnection('rabbitmq')
+                ->onQueue('order-submit');
+            // 用户下单后，十分钟内是否支付 - 事件系统
             // OrderSubmit::dispatch($order);
 
             return $this->response->created();

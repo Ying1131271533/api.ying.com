@@ -2,7 +2,7 @@
 
 namespace App\Rules\Api;
 
-use App\Models\Good;
+use App\Models\Goods;
 use Illuminate\Contracts\Validation\Rule;
 
 class CheckGoodsStock implements Rule
@@ -26,7 +26,7 @@ class CheckGoodsStock implements Rule
      */
     public function passes($attribute, $value)
     {
-        $stock = Good::where('id', $this->goods_id)->value('stock');
+        $stock = Goods::where('id', $this->goods_id)->value('stock');
         // 数量必须少于库存
         return (int)$value < $stock;
     }
